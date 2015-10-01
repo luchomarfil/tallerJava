@@ -2,7 +2,7 @@ package practica4.app;
 
 import org.jfugue.player.Player;
 
-public class JFogueService {
+public class FogueService {
 
 	public void ejecutarMelodia(String melodia) {
 		Player player = new Player();
@@ -10,7 +10,7 @@ public class JFogueService {
 	}
 	
 	public static void main(String[] args) {
-		new JFogueService().ejecutarMelodia("");
+		new FogueService().ejecutarMelodia("");
 	}
 
 }
