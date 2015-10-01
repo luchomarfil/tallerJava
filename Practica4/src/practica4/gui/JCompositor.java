@@ -1,4 +1,4 @@
-package practica4.compositor;
+package practica4.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,9 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
-import practica4.compositor.components.EspacioPentagramaPanel;
-import practica4.compositor.components.LineaPentagramaPanel;
 
 public class JCompositor extends JFrame {
 

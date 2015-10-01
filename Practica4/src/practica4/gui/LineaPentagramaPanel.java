@@ -1,4 +1,4 @@
-package practica4.compositor.components;
+package practica4.gui;
 
 import java.awt.Color;
 

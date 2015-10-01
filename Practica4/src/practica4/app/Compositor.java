@@ -1,4 +1,6 @@
-package practica4.compositor;
+package practica4.app;
+
+import practica4.gui.JCompositor;
 
 public class Compositor {
 
