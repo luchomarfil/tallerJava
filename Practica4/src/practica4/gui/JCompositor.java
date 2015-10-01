@@ -81,18 +81,7 @@ public class JCompositor extends JFrame {
 		
 		//construimos el panel para la seleccion de la nota
 		this.pnlSeleccionNota.add(new JLabel("Pentagrama"));
-		this.pnlSeleccionNota.add(new EspacioPentagramaPanel());
-		this.pnlSeleccionNota.add(new LineaPentagramaPanel());
-		this.pnlSeleccionNota.add(new EspacioPentagramaPanel());
-		this.pnlSeleccionNota.add(new LineaPentagramaPanel());
-		this.pnlSeleccionNota.add(new EspacioPentagramaPanel());
-		this.pnlSeleccionNota.add(new LineaPentagramaPanel());
-		this.pnlSeleccionNota.add(new EspacioPentagramaPanel());
-		this.pnlSeleccionNota.add(new LineaPentagramaPanel());
-		this.pnlSeleccionNota.add(new EspacioPentagramaPanel());
-		this.pnlSeleccionNota.add(new LineaPentagramaPanel());
-		this.pnlSeleccionNota.add(new EspacioPentagramaPanel());
-		
+
 		
 		//construimos el panel para mostrar la nota
 		this.melodiaGenerada="No existe melodia aun";
