@@ -97,13 +97,13 @@ public class JCompositor extends JFrame {
 		this.pnlSeleccionDuracion = new JPanel(new GridLayout(8, 1));
 
 		// construimos el panel para la duracion de la nota
-		jLabelRedonda = new JLabelDuracionNota("Redonda");
-		jLabelBlanca = new JLabelDuracionNota("Blanca");
-		jLabelNegra = new JLabelDuracionNota("Negra");
-		jLabelCorchea = new JLabelDuracionNota("Corchea");
-		jLabelSemicorchea = new JLabelDuracionNota("SemiCorchea");
-		jLabelFusa = new JLabelDuracionNota("Fusa");
-		jLabelSemifusa = new JLabelDuracionNota("Semifusa");
+		jLabelRedonda = new JLabelDuracionNota(DuracionNota.REDONDA);
+		jLabelBlanca = new JLabelDuracionNota(DuracionNota.BLANCA);
+		jLabelNegra = new JLabelDuracionNota(DuracionNota.NEGRA);
+		jLabelCorchea = new JLabelDuracionNota(DuracionNota.CORCHEA);
+		jLabelSemicorchea = new JLabelDuracionNota(DuracionNota.SEMICORCHEA);
+		jLabelFusa = new JLabelDuracionNota(DuracionNota.FUSA);
+		jLabelSemifusa = new JLabelDuracionNota(DuracionNota.SEMIFUSA);
 
 		inicializarEstiloJLabel(jLabelRedonda);
 		inicializarEstiloJLabel(jLabelBlanca);
