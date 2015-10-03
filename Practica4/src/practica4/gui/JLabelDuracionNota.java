@@ -9,9 +9,9 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 public class JLabelDuracionNota extends JLabel{
-
-	private Border borderNormal;
+	private Color colorNormal;
 	private DuracionNota duracion;
+	private Boolean clicked = false;
 
 	public JLabelDuracionNota() {
 		this.initialize();
@@ -19,22 +19,31 @@ public class JLabelDuracionNota extends JLabel{
 	public JLabelDuracionNota(DuracionNota duracion){
 		super(duracion.getNombre());	
 		this.initialize();
+		
 	}
 
 	private void initialize() {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				borderNormal = getBorder();
-				setBorder(new LineBorder(Color.black, 1));
-
+				if(!clicked){
+					colorNormal = getForeground();
+					setForeground(Color.white);
+				}
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				setBorder(borderNormal);
-
+				if(!clicked){
+					setForeground(colorNormal);
+				}
 			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				clicked = !clicked;
+			}
+			
 		});
 		
 	}
@@ -43,6 +52,10 @@ public class JLabelDuracionNota extends JLabel{
 	}
 	public void setDuracion(DuracionNota duracion) {
 		this.duracion = duracion;
+	}
+	
+	public void resetClick(){
+		this.clicked = false;
 	}
 
 }

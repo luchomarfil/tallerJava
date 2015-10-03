@@ -168,26 +168,26 @@ public class JCompositor extends JFrame {
 				.getResource("/resources/clavesol.png")));
 
 		panelPentagramaSol5 = new JPanelPentagrama(this);
-		panelPentagramaSol5.setNota("E5");
+		panelPentagramaSol5.setNota(EntonacionNota.G5);
 		panelPentagramaSol5.setBounds(0, 8, 154, 10);
 		listaPanelesPentagrama.add(panelPentagramaSol5);
 		pnlContenedorPentagrama.add(panelPentagramaSol5);
 
 		panelPentagramaFa5 = new JPanelPentagrama(this);
-		panelPentagramaFa5.setNota("F5");
+		panelPentagramaFa5.setNota(EntonacionNota.F5);
 		panelPentagramaFa5.setBounds(0, 19, 154, 2);
 		pnlContenedorPentagrama.add(panelPentagramaFa5);
 		listaPanelesPentagrama.add(panelPentagramaFa5);
 		panelPentagramaFa5.setBackground(Color.BLACK);
 
 		panelPentagramaMi5 = new JPanelPentagrama(this);
-		panelPentagramaMi5.setNota("E5");
+		panelPentagramaMi5.setNota(EntonacionNota.E5);
 		panelPentagramaMi5.setBounds(0, 23, 154, 10);
 		listaPanelesPentagrama.add(panelPentagramaMi5);
 		pnlContenedorPentagrama.add(panelPentagramaMi5);
 
 		panelPentagramaRe5 = new JPanelPentagrama(this);
-		panelPentagramaRe5.setNota("D5");
+		panelPentagramaRe5.setNota(EntonacionNota.D5);
 		panelPentagramaRe5.setBounds(new Rectangle(0, 0, 100, 2));
 		panelPentagramaRe5.setBounds(0, 35, 154, 2);
 		listaPanelesPentagrama.add(panelPentagramaRe5);
@@ -195,13 +195,13 @@ public class JCompositor extends JFrame {
 		panelPentagramaRe5.setBackground(Color.BLACK);
 
 		panelPentagramaDo5 = new JPanelPentagrama(this);
-		panelPentagramaDo5.setNota("C5");
+		panelPentagramaDo5.setNota(EntonacionNota.C5);
 		panelPentagramaDo5.setBounds(0, 38, 154, 10);
 		listaPanelesPentagrama.add(panelPentagramaDo5);
 		pnlContenedorPentagrama.add(panelPentagramaDo5);
 
 		panelPentagramaSi4 = new JPanelPentagrama(this);
-		panelPentagramaSi4.setNota("B4");
+		panelPentagramaSi4.setNota(EntonacionNota.B4);
 		panelPentagramaSi4.setBounds(new Rectangle(0, 0, 100, 2));
 		panelPentagramaSi4.setBounds(0, 51, 154, 2);
 		pnlContenedorPentagrama.add(panelPentagramaSi4);
@@ -209,13 +209,13 @@ public class JCompositor extends JFrame {
 		panelPentagramaSi4.setBackground(Color.BLACK);
 
 		panelPentagramaLa4 = new JPanelPentagrama(this);
-		panelPentagramaLa4.setNota("A4");
+		panelPentagramaLa4.setNota(EntonacionNota.A4);
 		panelPentagramaLa4.setBounds(0, 54, 154, 10);
 		listaPanelesPentagrama.add(panelPentagramaLa4);
 		pnlContenedorPentagrama.add(panelPentagramaLa4);
 
 		panelPentagramaSol4 = new JPanelPentagrama(this);
-		panelPentagramaSol4.setNota("G4");
+		panelPentagramaSol4.setNota(EntonacionNota.G4);
 		panelPentagramaSol4.setBounds(new Rectangle(0, 0, 100, 2));
 		panelPentagramaSol4.setBounds(0, 67, 154, 2);
 		listaPanelesPentagrama.add(panelPentagramaSol4);
@@ -223,13 +223,13 @@ public class JCompositor extends JFrame {
 		panelPentagramaSol4.setBackground(Color.BLACK);
 
 		panelPentagramaFa4 = new JPanelPentagrama(this);
-		panelPentagramaFa4.setNota("F4");
+		panelPentagramaFa4.setNota(EntonacionNota.F4);
 		panelPentagramaFa4.setBounds(0, 70, 154, 10);
 		listaPanelesPentagrama.add(panelPentagramaFa4);
 		pnlContenedorPentagrama.add(panelPentagramaFa4);
 
 		panelPentagramaMi4 = new JPanelPentagrama(this);
-		panelPentagramaMi4.setNota("E4");
+		panelPentagramaMi4.setNota(EntonacionNota.E4);
 		panelPentagramaMi4.setBounds(new Rectangle(0, 0, 100, 2));
 		panelPentagramaMi4.setBounds(0, 83, 154, 2);
 		listaPanelesPentagrama.add(panelPentagramaMi4);
@@ -237,13 +237,13 @@ public class JCompositor extends JFrame {
 		panelPentagramaMi4.setBackground(Color.BLACK);
 
 		panelPentagramaRe4 = new JPanelPentagrama(this);
-		panelPentagramaRe4.setNota("D4");
+		panelPentagramaRe4.setNota(EntonacionNota.D4);
 		panelPentagramaRe4.setBounds(0, 85, 154, 10);
 		listaPanelesPentagrama.add(panelPentagramaRe4);
 		pnlContenedorPentagrama.add(panelPentagramaRe4);
 
 		panelPentagramaDo4 = new JPanelPentagrama(this);
-		panelPentagramaDo4.setNota("C4");
+		panelPentagramaDo4.setNota(EntonacionNota.C4);
 		panelPentagramaDo4.setBounds(0, 97, 154, 3);
 		listaPanelesPentagrama.add(panelPentagramaDo4);
 		pnlContenedorPentagrama.add(panelPentagramaDo4);
@@ -268,7 +268,7 @@ public class JCompositor extends JFrame {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				JPanelPentagrama jp = (JPanelPentagrama) e.getSource();
-				lblNotaActual.setText(jp.getNota());
+				lblNotaActual.setText(jp.getNota().name());
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
