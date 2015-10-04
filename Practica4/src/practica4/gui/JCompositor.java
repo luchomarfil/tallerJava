@@ -318,7 +318,7 @@ public class JCompositor extends JFrame {
 		getContentPane().add(lblBotonTocarMelodia, gbc_lblBotonTocarMelodia);
 		
 		lblMelodiaPegada = new JTextField();
-		lblMelodiaPegada.setText("T60   V0 E5s D#5s | E5s D#5s E5s B4s D5s C5s | A4i Rs C4s E4s A4s |  B4i Rs E4s G#4s B4s | C5i Rs E4s E5s D#5s | E5s D#5s E5s B4s  D5s C5s | A4i Rs C4s E4s A4s | B4i Rs E4s C5s B4s | A4q   V1 Ri       | Riii                     | A2s E2s A3s Rsi    |  E2s E3s G#3s Rsi    | A2s E2s A3s Rsi | Riii | A2s E2s A3s  Rsi    | E2s E3s G#3s Rsi | Riii ");
+		lblMelodiaPegada.setText("Cq Dq Gq F#q Dq Ch Cq Dq Gq F#q Dq Ch Cq Dq Gq F#q Dq Bminw Bh");
 		GridBagConstraints gbc_lblMelodiaPegada = new GridBagConstraints();
 		gbc_lblMelodiaPegada.gridwidth = 2;
 		gbc_lblMelodiaPegada.insets = new Insets(0, 0, 0, 5);
