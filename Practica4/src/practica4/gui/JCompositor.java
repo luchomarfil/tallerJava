@@ -18,6 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import practica4.gui.components.JLabelDuracionNota;
+import practica4.gui.components.JPanelPentagrama;
+
 public class JCompositor extends JFrame {
 
 	private static final String SIN_NOTA_SELECCIONADA = "_";

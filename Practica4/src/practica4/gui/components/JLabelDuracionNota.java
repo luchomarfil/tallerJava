@@ -1,4 +1,4 @@
-package practica4.gui;
+package practica4.gui.components;
 
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+
+import practica4.gui.DuracionNota;
 
 public class JLabelDuracionNota extends JLabel{
 	private Color colorNormal;

@@ -1,4 +1,4 @@
-package practica4.gui;
+package practica4.gui.components;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -6,6 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
+
+import practica4.gui.EntonacionNota;
 
 public class JPanelPentagrama extends JPanel {
 	/**
