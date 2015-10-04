@@ -18,8 +18,9 @@ public class JLabelDuracionNota extends JLabel{
 	public JLabelDuracionNota() {
 		this.initialize();
 	}
-	public JLabelDuracionNota(DuracionNota duracion){
-		super(duracion.getNombre());	
+	public JLabelDuracionNota(DuracionNota duracion){		
+		super(duracion.getNombre());
+		this.duracion = duracion;
 		this.initialize();
 		
 	}
@@ -58,6 +59,8 @@ public class JLabelDuracionNota extends JLabel{
 	
 	public void resetClick(){
 		this.clicked = false;
+		setForeground(colorNormal);
+		this.repaint();
 	}
 
 }

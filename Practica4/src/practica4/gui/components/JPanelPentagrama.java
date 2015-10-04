@@ -21,7 +21,7 @@ public class JPanelPentagrama extends JPanel {
 
 
 	public JPanelPentagrama(Component owner) {
-		this.owner = owner;
+		this.owner = owner;		
 		initialize();
 	}
 
@@ -29,8 +29,10 @@ public class JPanelPentagrama extends JPanel {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				if(!clicked){
+				if(colorNormal==null){
 					colorNormal = getBackground();
+				}
+				if(!clicked){
 					setBackground(Color.LIGHT_GRAY);
 					owner.repaint();
 				}
@@ -62,7 +64,16 @@ public class JPanelPentagrama extends JPanel {
 	}
 
 	public void resetClick(){
+		Color color;
 		this.clicked = false;
+		if(colorNormal==null){
+			color = getBackground();
+		}
+		else{
+			color = colorNormal;
+		}
+		setBackground(color);
+		//owner.repaint();
 	}
 
 	

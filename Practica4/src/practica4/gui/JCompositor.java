@@ -18,8 +18,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import practica4.app.FogueService;
+import practica4.app.Melodia;
 import practica4.gui.components.JLabelDuracionNota;
 import practica4.gui.components.JPanelPentagrama;
+
+import javax.swing.JTextField;
+import javax.swing.BoxLayout;
+
+import java.awt.BorderLayout;
 
 public class JCompositor extends JFrame {
 
@@ -56,20 +63,31 @@ public class JCompositor extends JFrame {
 	private List<JPanelPentagrama> listaPanelesPentagrama = new ArrayList<JPanelPentagrama>();
 	private List<JLabelDuracionNota> listaLabelsDuracionNota = new ArrayList<JLabelDuracionNota>();
 	private JPanelPentagrama panelPentagramaDo4;
+	private DuracionNota duracionSeleccionada;
+	private Melodia melodia;
+	private EntonacionNota notaSeleccionada;
+	private JLabel lblMelodiaGenerada;
+	private JTextField lblMelodiaGeneradaContenido;
+	private JLabel lblBotonPlay;
+	private JLabel lblNewLabel;
+	private JLabel lblBotonTocarMelodia;
+	private JTextField lblMelodiaPegada;
 
 	public JCompositor() {
 		this.initialize();
 	}
 
 	private void initialize() {
+		//inicializo la melodia
+		this.melodia = new Melodia();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Mozart");
 		this.setSize(536, 400);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 224, 264, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 199, 0, 0, 0, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
+		gridBagLayout.rowHeights = new int[] { 0, 199, 0, 0, 0, 20, 0 };
+		gridBagLayout.columnWeights = new double[] { 1.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				Double.MIN_VALUE };
 		getContentPane().setLayout(gridBagLayout);
 
@@ -134,21 +152,22 @@ public class JCompositor extends JFrame {
 		jLabelMelodiaGenerada = new JLabel("melodiaaa");
 		jLabelMelodiaGenerada.setBounds(159, 35, 74, 15);
 
-		jLabelRedonda.setIcon(new ImageIcon(JCompositor.class
-				.getResource("/resources/redonda.png")));
-		jLabelBlanca.setIcon(new ImageIcon(JCompositor.class
-				.getResource("/resources/blanca.png")));
-		jLabelNegra.setIcon(new ImageIcon(JCompositor.class
-				.getResource("/resources/negra.png")));
-		jLabelCorchea.setIcon(new ImageIcon(JCompositor.class
-				.getResource("/resources/corchea.png")));
-		jLabelSemicorchea.setIcon(new ImageIcon(JCompositor.class
-				.getResource("/resources/semicorchea.png")));
-		jLabelFusa.setIcon(new ImageIcon(JCompositor.class
-				.getResource("/resources/fusa.png")));
-		jLabelSemifusa.setIcon(new ImageIcon(JCompositor.class
-				.getResource("/resources/semifusa.png")));
+		jLabelRedonda.setIcon(new ImageIcon(JCompositor.class.getResource("/resources/redonda.png")));
+		jLabelBlanca.setIcon(new ImageIcon(JCompositor.class.getResource("/resources/blanca.png")));
+		jLabelNegra.setIcon(new ImageIcon(JCompositor.class.getResource("/resources/negra.png")));
+		jLabelCorchea.setIcon(new ImageIcon(JCompositor.class.getResource("/resources/corchea.png")));
+		jLabelSemicorchea.setIcon(new ImageIcon(JCompositor.class.getResource("/resources/semicorchea.png")));
+		jLabelFusa.setIcon(new ImageIcon(JCompositor.class.getResource("/resources/fusa.png")));
+		jLabelSemifusa.setIcon(new ImageIcon(JCompositor.class.getResource("/resources/semifusa.png")));
 
+		listaLabelsDuracionNota.add(jLabelRedonda);
+		listaLabelsDuracionNota.add(jLabelBlanca);
+		listaLabelsDuracionNota.add(jLabelNegra);
+		listaLabelsDuracionNota.add(jLabelCorchea);
+		listaLabelsDuracionNota.add(jLabelSemicorchea);
+		listaLabelsDuracionNota.add(jLabelFusa);
+		listaLabelsDuracionNota.add(jLabelSemifusa);
+		
 		panel = new JPanel();
 		panel.setLayout(null);
 		GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -255,9 +274,164 @@ public class JCompositor extends JFrame {
 		lblNotaActual.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNotaActual.setBounds(91, 175, 70, 15);
 		panel.add(lblNotaActual);
+		
+		lblMelodiaGenerada = new JLabel("Melodia Generada");
+		GridBagConstraints gbc_lblMelodiaGenerada = new GridBagConstraints();
+		gbc_lblMelodiaGenerada.insets = new Insets(0, 0, 5, 5);
+		gbc_lblMelodiaGenerada.gridx = 0;
+		gbc_lblMelodiaGenerada.gridy = 2;
+		getContentPane().add(lblMelodiaGenerada, gbc_lblMelodiaGenerada);
+		
+		lblBotonPlay = new JLabel("");
+		GridBagConstraints gbc_lblBotonPlay = new GridBagConstraints();
+		gbc_lblBotonPlay.insets = new Insets(0, 0, 5, 0);
+		gbc_lblBotonPlay.gridx = 1;
+		gbc_lblBotonPlay.gridy = 2;
+		getContentPane().add(lblBotonPlay, gbc_lblBotonPlay);
+		lblBotonPlay.setIcon(new ImageIcon(JCompositor.class.getResource("/resources/play.png")));
+		
+		lblMelodiaGeneradaContenido = new JTextField("...");
+		GridBagConstraints gbc_lblMelodiaGeneradaContenido = new GridBagConstraints();
+		gbc_lblMelodiaGeneradaContenido.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblMelodiaGeneradaContenido.gridwidth = 2;
+		gbc_lblMelodiaGeneradaContenido.insets = new Insets(0, 0, 5, 0);
+		gbc_lblMelodiaGeneradaContenido.gridx = 0;
+		gbc_lblMelodiaGeneradaContenido.gridy = 3;
+		getContentPane().add(lblMelodiaGeneradaContenido, gbc_lblMelodiaGeneradaContenido);
+		lblMelodiaGeneradaContenido.setEditable(false);
 
+
+		
+		lblNewLabel = new JLabel("Tocar Melodia");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 4;
+		getContentPane().add(lblNewLabel, gbc_lblNewLabel);
+		
+		lblBotonTocarMelodia = new JLabel("");
+		lblBotonTocarMelodia.setIcon(new ImageIcon(JCompositor.class.getResource("/resources/play.png")));
+		GridBagConstraints gbc_lblBotonTocarMelodia = new GridBagConstraints();
+		gbc_lblBotonTocarMelodia.insets = new Insets(0, 0, 5, 0);
+		gbc_lblBotonTocarMelodia.gridx = 1;
+		gbc_lblBotonTocarMelodia.gridy = 4;
+		getContentPane().add(lblBotonTocarMelodia, gbc_lblBotonTocarMelodia);
+		
+		lblMelodiaPegada = new JTextField();
+		lblMelodiaPegada.setText("T60   V0 E5s D#5s | E5s D#5s E5s B4s D5s C5s | A4i Rs C4s E4s A4s |  B4i Rs E4s G#4s B4s | C5i Rs E4s E5s D#5s | E5s D#5s E5s B4s  D5s C5s | A4i Rs C4s E4s A4s | B4i Rs E4s C5s B4s | A4q   V1 Ri       | Riii                     | A2s E2s A3s Rsi    |  E2s E3s G#3s Rsi    | A2s E2s A3s Rsi | Riii | A2s E2s A3s  Rsi    | E2s E3s G#3s Rsi | Riii ");
+		GridBagConstraints gbc_lblMelodiaPegada = new GridBagConstraints();
+		gbc_lblMelodiaPegada.gridwidth = 2;
+		gbc_lblMelodiaPegada.insets = new Insets(0, 0, 0, 5);
+		gbc_lblMelodiaPegada.fill = GridBagConstraints.BOTH;
+		gbc_lblMelodiaPegada.gridx = 0;
+		gbc_lblMelodiaPegada.gridy = 5;
+		getContentPane().add(lblMelodiaPegada, gbc_lblMelodiaPegada);
+		lblMelodiaPegada.setColumns(10);
+		
+		
 		inicializarListenersHintNotaActual(listaPanelesPentagrama);
+		inicializarListenersDuracionSeleccionada(listaLabelsDuracionNota);
+		inicializarListenersEntonacionNotaSeleccionada(listaPanelesPentagrama);
+		inicializarListenerPlayMelodia(lblBotonPlay);
+		inicializarListenerPlayMelodiaPegada(lblBotonTocarMelodia);
+		
+	}
 
+	private void inicializarListenerPlayMelodiaPegada(JLabel lblBotonPlay2) {
+		lblBotonPlay2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				FogueService.instancia().ejecutarMelodia(lblMelodiaPegada.getText());
+			}
+		});
+	}
+
+	private void inicializarListenerPlayMelodia(JLabel lblBotonPlay2) {
+		lblBotonPlay2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				FogueService.instancia().ejecutarMelodia(melodia.getMelodia());
+			}
+		});
+		
+	}
+
+	private void inicializarListenersEntonacionNotaSeleccionada(
+			final List<JPanelPentagrama> listaPaneles) {
+		MouseAdapter mouseAdapterClick = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JPanelPentagrama lSeleccionado = (JPanelPentagrama) e.getSource();
+				resetearPanelsClickeados(lSeleccionado,listaPaneles);
+				agregarNotaEnMelodia(lSeleccionado.getNota(),lSeleccionado);
+				
+			}
+		};
+		for (JPanelPentagrama jPanel : listaPaneles) {
+			jPanel.addMouseListener(mouseAdapterClick);
+		}
+		
+	}
+
+	protected void agregarNotaEnMelodia(EntonacionNota nota, JPanelPentagrama lSeleccionado) {
+		this.notaSeleccionada = nota;
+		if(this.duracionSeleccionada!=null  && this.notaSeleccionada != null){
+			this.melodia.agregarNota(this.notaSeleccionada, this.duracionSeleccionada);
+			this.duracionSeleccionada = null;			
+			this.notaSeleccionada = null;
+			resetearLabelsClickeados(null,listaLabelsDuracionNota);
+			resetearPanelsClickeados(null, listaPanelesPentagrama);
+			//repinto la melodia
+			this.lblMelodiaGeneradaContenido.setText(this.melodia.getMelodia());
+		}
+
+	}
+
+
+	protected void resetearPanelsClickeados(JPanelPentagrama pSeleccionado,
+			List<JPanelPentagrama> listaPaneles) {
+		
+		for (JPanelPentagrama jPanel : listaPaneles) {
+			if(!jPanel.equals(pSeleccionado)){
+				jPanel.resetClick();
+			}
+		}
+		
+		
+	}
+
+	private void inicializarListenersDuracionSeleccionada(
+			final List<JLabelDuracionNota> listaLabels) {
+		MouseAdapter mouseAdapterClick = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JLabelDuracionNota lSeleccionado = (JLabelDuracionNota) e.getSource();
+				setearDuracionNota(lSeleccionado.getDuracion());
+				resetearLabelsClickeados(lSeleccionado,listaLabels);
+			}
+		};
+		for (JLabelDuracionNota jLabelDuracionNota : listaLabels) {
+			jLabelDuracionNota.addMouseListener(mouseAdapterClick);
+		}
+	}
+
+	/**
+	 * Resetea el estado click de todos los labels, excepto el pasado como parametro
+	 * @param lSeleccionado
+	 * @param listaLabels 
+	 */
+	protected void resetearLabelsClickeados(JLabelDuracionNota lSeleccionado, List<JLabelDuracionNota> listaLabels) {
+		
+		for (JLabelDuracionNota jLabelDuracionNota : listaLabels) {
+			if(!jLabelDuracionNota.equals(lSeleccionado)){
+				jLabelDuracionNota.resetClick();
+			}
+		}
+		
+	}
+
+	protected void setearDuracionNota(DuracionNota duracion) {
+		this.duracionSeleccionada = duracion;
 	}
 
 	/**
@@ -282,10 +456,6 @@ public class JCompositor extends JFrame {
 		for (JPanelPentagrama jPanelPentagrama : lista) {
 			jPanelPentagrama.addMouseListener(mouseListenerActualizarEstadoNota);
 		}
-	}
-
-	private ImageIcon cargarIcono(String url) {
-		return new ImageIcon(this.getClass().getResource(url));
 	}
 
 	private void inicializarEstiloJLabel(JLabel jLabelRedonda) {
