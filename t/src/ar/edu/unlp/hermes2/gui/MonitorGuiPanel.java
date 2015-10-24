@@ -5,9 +5,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -15,6 +23,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -24,7 +33,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerDateModel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTable;
@@ -41,12 +49,13 @@ import ar.edu.unlp.hermes2.monitor.MonitorCore;
 import ar.edu.unlp.hermes2.monitor.MonitorUtils;
 import net.miginfocom.swing.MigLayout;
 
-public class MonitorGuiPanel extends JPanel {
+public class MonitorGuiPanel extends JPanel implements Observer {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8242603121100243154L;
+	private static Logger logger = Logger.getLogger(MonitorGuiPanel.class.getName());
 	private JXPanel panelContenedorFiltros;
 	private JXPanel panelContenedorNotificaciones;
 	private JXPanel panelContenedorEtiquetas;
@@ -65,6 +74,10 @@ public class MonitorGuiPanel extends JPanel {
 	private JButton btnFiltrar;
 	private JXDateTimePicker dateTimePickerHasta;
 	private JXTable tablaNotificaciones;
+	private JComboBox<TransferObject> comboBoxEtiquetaEliminar;
+	private JComboBox<TransferObject> comboBoxEtiquetaAsignar;
+	private JComboBox<TransferObject> comboBoxEtiquetaRenombrar;
+	protected Etiqueta etiquetaARenombrar;
 
 	public MonitorGuiPanel() {
 		setPreferredSize(new Dimension(1024, 600));
@@ -135,7 +148,7 @@ public class MonitorGuiPanel extends JPanel {
 		JLabel lblEliminarEtiqueta = new JLabel("Eliminar Etiqueta:");
 		panelContenedorEtiquetas.add(lblEliminarEtiqueta, "cell 0 2,alignx trailing");
 
-		JComboBox comboBoxEtiquetaEliminar = new JComboBox();
+		comboBoxEtiquetaEliminar = new JComboBox();
 		panelContenedorEtiquetas.add(comboBoxEtiquetaEliminar, "cell 1 2,growx");
 
 		btnEliminar = new JButton("Eliminar");
@@ -148,7 +161,7 @@ public class MonitorGuiPanel extends JPanel {
 		JLabel lblAsignarEtiqueta = new JLabel("Asignar Etiqueta:");
 		panelContenedorEtiquetas.add(lblAsignarEtiqueta, "cell 0 4,alignx trailing");
 
-		JComboBox comboBoxEtiquetaAsignar = new JComboBox();
+		comboBoxEtiquetaAsignar = new JComboBox();
 		panelContenedorEtiquetas.add(comboBoxEtiquetaAsignar, "cell 1 4,growx");
 
 		btnAsignar = new JButton("Asignar");
@@ -161,7 +174,7 @@ public class MonitorGuiPanel extends JPanel {
 		JLabel lblRenombrarEtiqueta = new JLabel("Renombrar Etiqueta:");
 		panelContenedorEtiquetas.add(lblRenombrarEtiqueta, "cell 0 6,alignx trailing");
 
-		JComboBox comboBoxEtiquetaRenombrar = new JComboBox();
+		comboBoxEtiquetaRenombrar = new JComboBox();
 		panelContenedorEtiquetas.add(comboBoxEtiquetaRenombrar, "cell 1 6,growx");
 
 		JLabel lblNuevoNombre = new JLabel("Nuevo Nombre:");
@@ -298,14 +311,21 @@ public class MonitorGuiPanel extends JPanel {
 						.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnFiltrar).addContainerGap()));
 		panelContenedorFiltros.setLayout(gl_panelContenedorFiltros);
 		setLayout(groupLayout);
-		// TODO Auto-generated constructor stub
 
 		JSpinner timeSpinner = new JSpinner(new SpinnerDateModel());
 
 		this.cargarDatosParaFiltros();
 		this.asignarEventoBotonFiltrar();
-
+		this.asignarEventoBotonesEtiquetas();
+		this.filtrarNotificaciones(new FiltroNotificacion());
+		this.cargarCombosPanelEtiquetas();
+		//agregar el patter observer para que funcione la actualizacion de notificaciones
+		//cuando se recibe alguna
+		MonitorCore.instance().addObserver(this);
+		
 	}
+
+
 
 	/**
 	 * Completa la informacion para el panel de filtros
@@ -317,30 +337,224 @@ public class MonitorGuiPanel extends JPanel {
 		comboBoxNinios.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaNinios(), true));
 		comboBoxCategoria.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaCategorias(), true));
 		comboBoxEtiqueta.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas(), true));
+		//seteo de manera predeterminada para el filtro de fechas para el periodo de una semana hacia atras
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, -7);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		dateTimePickerDesde.setDate(cal.getTime());
+		cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		dateTimePickerHasta.setDate(cal.getTime());
 	}
 
 	private void asignarEventoBotonFiltrar() {
-		btnFiltrar.addActionListener(new ActionListener() {
-				
+		btnFiltrar.addActionListener(new ActionListener() {				
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//preparo el filtro
-				FiltroNotificacion filtro = new FiltroNotificacion();
-				filtro.setCategoria((Categoria) MonitorUtils.getSiSeleccionado(comboBoxCategoria));
-				filtro.setContexto((Contexto) MonitorUtils.getSiSeleccionado(comboBoxContexto));
-				filtro.setEtiqueta((Etiqueta) MonitorUtils.getSiSeleccionado(comboBoxEtiqueta));
-				filtro.setNinio((Ninio)MonitorUtils.getSiSeleccionado(comboBoxNinios));
-				filtro.setMensaje((Mensaje)MonitorUtils.getSiSeleccionado(comboBoxContenido));
-				filtro.setFechaDesde(dateTimePickerDesde.getDate());
-				filtro.setFechaHasta(dateTimePickerHasta.getDate());
-				
-				//realizo la accion de filtrar
-				List<Notificacion> notificaciones = MonitorCore.instance().obtenerNotificacionesFiltradas(filtro);
-				
-				//actualizo la tabla
-				tablaNotificaciones.setModel(new ModelTablaNotificaciones(notificaciones));
+				filtrarNotificaciones();
+			}			
+		});
+	}
+	
+	/**
+	 * 
+	 */
+	private void filtrarNotificaciones() {
+			FiltroNotificacion filtro = obtenerFiltroDeLoSeleccionado();
+			
+			filtrarNotificaciones(filtro);
+		
+	}
+
+
+
+	private FiltroNotificacion obtenerFiltroDeLoSeleccionado() {
+		//preparo el filtro
+		FiltroNotificacion filtro = new FiltroNotificacion();
+		filtro.setCategoria((Categoria) MonitorUtils.getSiSeleccionado(comboBoxCategoria));
+		filtro.setContexto((Contexto) MonitorUtils.getSiSeleccionado(comboBoxContexto));
+		filtro.setEtiqueta((Etiqueta) MonitorUtils.getSiSeleccionado(comboBoxEtiqueta));
+		filtro.setNinio((Ninio)MonitorUtils.getSiSeleccionado(comboBoxNinios));
+		filtro.setMensaje((Mensaje)MonitorUtils.getSiSeleccionado(comboBoxContenido));
+		filtro.setFechaDesde(dateTimePickerDesde.getDate());
+		filtro.setFechaHasta(dateTimePickerHasta.getDate());
+		return filtro;
+	}
+	
+	private void filtrarNotificaciones(FiltroNotificacion filtro){
+		
+		//realizo la accion de filtrar
+		List<Notificacion> notificaciones = MonitorCore.instance().obtenerNotificacionesFiltradas(filtro);
+		
+		//actualizo la tabla
+		tablaNotificaciones.setModel(new ModelTablaNotificaciones(notificaciones));
+	}
+	
+	
+	/**
+	 * Crea todos los listeners para cada una de las operaciones sobre
+	 * etiquetas 
+	 * 
+	 */
+	private void asignarEventoBotonesEtiquetas() {
+		btnCrear.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				agregarEtiqueta(textFieldEtiquetaNueva.getText());
+				cargarCombosPanelEtiquetas();
+				textFieldEtiquetaNueva.setText("");
+			}
+		});
+		
+		btnEliminar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(comboBoxEtiquetaEliminar.getSelectedItem()!=null){
+					Object selectedItem = comboBoxEtiquetaEliminar.getSelectedItem();
+					int dialogResult = JOptionPane.showConfirmDialog (null, "Desea eliminar la etiqueta \""+selectedItem+"\"?","Warning",JOptionPane.YES_NO_OPTION);
+					if(dialogResult == JOptionPane.YES_OPTION){
+						eliminarEtiqueta((Etiqueta) selectedItem);
+						cargarCombosPanelEtiquetas();
+					}
+				}
+			}
+		});
+		
+		btnAsignar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(comboBoxEtiquetaAsignar.getSelectedItem()!=null){
+					Object selectedItem = comboBoxEtiquetaAsignar.getSelectedItem();
+					asignarEtiqueta((Etiqueta)selectedItem);					
+				}
+			}
+		});
+		
+		btnRenombrar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(etiquetaARenombrar!=null){
+					renombrarEtiqueta(etiquetaARenombrar,textFieldNuevoNombreEtiqueta.getText());
+					cargarCombosPanelEtiquetas();
+					etiquetaARenombrar = null;
+				}
+			}
+
+			
+		});
+		
+		comboBoxEtiquetaRenombrar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(comboBoxEtiquetaRenombrar.getSelectedItem()!=null){
+					etiquetaARenombrar = (Etiqueta) comboBoxEtiquetaRenombrar.getSelectedItem();
+					textFieldNuevoNombreEtiqueta.setText(etiquetaARenombrar.getNombre());
+					btnRenombrar.setEnabled(false);
+				}	
 				
 			}
 		});
+		
+		textFieldNuevoNombreEtiqueta.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				boolean vacio = textFieldNuevoNombreEtiqueta.getText().trim().equals("");
+				boolean mismoNombre = etiquetaARenombrar != null
+												&& etiquetaARenombrar.getNombre().equalsIgnoreCase(textFieldNuevoNombreEtiqueta.getText());
+				btnRenombrar.setEnabled(!vacio && !mismoNombre);
+				
+			}
+		});
+		
+	}
+
+
+
+	/**
+	 * Obtiene nuevamente la lista de etiquetas y genera un model
+	 * y se lo pasa a todos los combos
+	 */
+	protected void cargarCombosPanelEtiquetas() {		
+		comboBoxEtiquetaAsignar.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas()));
+		comboBoxEtiquetaEliminar.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas()));
+		comboBoxEtiquetaRenombrar.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas(),true));
+		comboBoxEtiqueta.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas(),true));
+	}
+
+
+
+	protected void agregarEtiqueta(String nombreNuevaEtiqueta) {
+		try {
+			MonitorCore.instance().agregarEtiqueta(nombreNuevaEtiqueta);
+		} catch (HermesException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+	}
+	
+
+	protected void eliminarEtiqueta(Etiqueta etiqueta) {
+//		try {
+			MonitorCore.instance().eliminarEtiqueta(etiqueta);
+//		} catch (HermesException e) {
+//			logger.log(Level.SEVERE, e.getMessage(), e);
+//		}		
+	}
+
+	protected void asignarEtiqueta(Etiqueta selectedItem) {
+		try {
+			int selectedRowCount = tablaNotificaciones.getSelectedRowCount();
+			if(selectedRowCount>0){
+				List<Long> idsNotificaciones = obtenerIdsSeleccionados();
+				MonitorCore.instance().asignarEtiqueta(selectedItem,idsNotificaciones);
+			}
+			else{
+				throw new HermesException("Debe seleccionar una o mas notificaciones");
+			}	
+		} catch (Exception | HermesException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+		
+		
+	}
+	
+	private void renombrarEtiqueta(Etiqueta etiqueta, String nuevoNombre) {
+		try {
+			MonitorCore.instance().renombrarEtiqueta(etiqueta,nuevoNombre);
+		} catch (HermesException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+
+		}
+	}
+
+
+
+	private List<Long> obtenerIdsSeleccionados() {
+		List<Long> lista = new ArrayList<Long>();
+		int[] selectedRows = tablaNotificaciones.getSelectedRows();
+		for (int actual : selectedRows) {
+			Long id = (Long) tablaNotificaciones.getModel().getValueAt(actual,0);
+			lista.add(id);			
+		}
+		return lista;
+	}
+
+
+	/**
+	 * El core me esta avisando que recibio una nueva notificacion desde la red
+	 * o desde un archivo
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+//		MonitorCore.instance().obtenerNotificacionesFiltradas(obtenerFiltroDeLoSeleccionado());
+		this.filtrarNotificaciones(obtenerFiltroDeLoSeleccionado());
 	}
 }

@@ -32,8 +32,9 @@ CREATE TABLE "Hermes.Notificaciones" (
     "idContexto" INTEGER,
     "idNinio" INTEGER,
     "idMensaje" TEXT,
-    "horaEnviado" TEXT,
-    "horaRecibido" TEXT
+    "fecha" TEXT,
+    "fechaEnviado" TEXT,
+    "fechaRecibido" TEXT
 );
 
 CREATE TABLE "Hermes.Mensajes" (
