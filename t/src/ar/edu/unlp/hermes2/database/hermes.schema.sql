@@ -14,9 +14,9 @@ CREATE TABLE "Hermes.Categorias" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "nombre" TEXT NOT NULL
 );
-CREATE TABLE "Hermes.Categorias.Restricciones" (
+CREATE TABLE "Hermes.Categorias.Contextos" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    "idContecto" INTEGER NOT NULL,
+    "idContexto" INTEGER NOT NULL,
     "idCategoria" INTEGER NOT NULL
 );
 CREATE TABLE "Hermes.Etiquetas" (
@@ -25,15 +25,24 @@ CREATE TABLE "Hermes.Etiquetas" (
     "descripcion" TEXT DEFAULT ('Sin descripción'),
     "idTerapeuta" INTEGER NOT NULL DEFAULT (0)
 );
+
 CREATE TABLE "Hermes.Notificaciones" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "idCategoria" INTEGER,
     "idContexto" INTEGER,
     "idNinio" INTEGER,
-    "descripcion" TEXT,
-    "horaComunicador" TEXT,
-    "horaMenu" TEXT
+    "idMensaje" TEXT,
+    "horaEnviado" TEXT,
+    "horaRecibido" TEXT
 );
+
+CREATE TABLE "Hermes.Mensajes" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "nombre" TEXT,
+    "descripcion" TEXT,
+    "imagen" TEXT
+);
+
 CREATE TABLE "Hermes.Notificaciones.Etiquetas" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "idNotificacion" INTEGER NOT NULL,
