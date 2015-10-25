@@ -1,5 +1,6 @@
 package ar.edu.unlp.hermes2.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import ar.edu.unlp.hermes2.model.Etiqueta;
@@ -77,6 +78,13 @@ public class HermesDaoImpl implements HermesDao{
 
 	@Override
 	public void renombrarEtiqueta(Etiqueta etiquetaARenombrar, String nuevoNombre) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void nuevaNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
+			Date fechaEnviado, Date fechaRecibido) {
 		// TODO Auto-generated method stub
 		
 	}

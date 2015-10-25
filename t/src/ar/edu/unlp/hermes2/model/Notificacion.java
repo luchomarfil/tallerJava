@@ -22,6 +22,11 @@ public class Notificacion extends TransferObject {
 		this.setEtiquetas(new ArrayList<Etiqueta>());
 	}
 
+	public Notificacion() {
+		this.fecha = new Date();
+		this.setEtiquetas(new ArrayList<Etiqueta>());
+	}
+
 	public String getNombre() {
 		return nombre;
 	}

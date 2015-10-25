@@ -3,6 +3,7 @@ package ar.edu.unlp.hermes2.dao;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -189,7 +190,7 @@ public class HermesDaoMockImpl implements HermesDao {
 
 	private String armarNombreLista(Class clazz) {
 		//si termina en vocal, solo agregamos s
-		if(clazz.getSimpleName().matches("[aeiou]$")){
+		if(clazz.getSimpleName().matches("^.*[aeiou]$")){
 			return clazz.getSimpleName().toLowerCase() + "s";
 		}
 		else{
@@ -263,6 +264,14 @@ public class HermesDaoMockImpl implements HermesDao {
 
 	public void setNotificaciones(HashMap<Long,Notificacion> notificaciones) {
 		this.notificaciones = notificaciones;
+	}
+
+	@Override
+	public void nuevaNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
+			Date fechaEnviado, Date fechaRecibido) {
+		Notificacion n = new Notificacion();
+		n.setMensaje((Mensaje) getTransferObject(Mensaje.class, idMensaje));
+		
 	}
 
 

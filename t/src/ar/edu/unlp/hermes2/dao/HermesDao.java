@@ -1,6 +1,7 @@
 package ar.edu.unlp.hermes2.dao;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import ar.edu.unlp.hermes2.model.Etiqueta;
@@ -33,5 +34,8 @@ public interface HermesDao {
 	Boolean existeEtiquetaPara(String nuevoNombre, Etiqueta etiquetaARenombrar);
 
 	void renombrarEtiqueta(Etiqueta etiquetaARenombrar, String nuevoNombre);
+
+	void nuevaNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
+			Date fechaEnviado, Date fechaRecibido);
 
 }

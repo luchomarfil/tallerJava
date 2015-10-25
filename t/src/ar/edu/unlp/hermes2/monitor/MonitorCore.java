@@ -94,8 +94,20 @@ public class MonitorCore extends Observable{
 		}
 	}
 
-	public void recibirNotificacion(Notificacion n){
-		n.fechaRecibido = new Date();
+	
+	/**
+	 * Metodo que recibe desde los listeners nuevos datos a transformar en notificacion
+	 * @param idCategoria
+	 * @param idContexto
+	 * @param idNinio
+	 * @param idMensaje
+	 * @param fecha
+	 * @param fechaEnviado
+	 */
+	public void recibirNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
+			Date fechaEnviado) {
+		Date fechaRecibido = new Date();
+		getHermesDao().nuevaNotificacion(idCategoria,idContexto,idNinio,idMensaje,fecha,fechaEnviado,fechaRecibido);
 		this.setChanged();
 		this.notifyObservers();
 	}
