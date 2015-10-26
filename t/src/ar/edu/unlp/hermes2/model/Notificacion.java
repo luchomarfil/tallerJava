@@ -7,7 +7,8 @@ import java.util.List;
 public class Notificacion extends TransferObject {
 
 
-	private String nombre;
+
+
 	private Date fecha;
 	private List<Etiqueta> etiquetas;
 	public Categoria categoria;
@@ -15,54 +16,23 @@ public class Notificacion extends TransferObject {
 	private Mensaje mensaje;
 	public Ninio ninio;
 	public Date fechaRecibido;
+	public Date fechaEnviado;
 	
-	public Notificacion(Mensaje mensaje) {		
-		this.setMensaje(mensaje);
-		this.fecha = new Date();
-		this.setEtiquetas(new ArrayList<Etiqueta>());
-	}
-
-	public Notificacion() {
-		this.fecha = new Date();
-		this.setEtiquetas(new ArrayList<Etiqueta>());
-	}
-	
-	public Notificacion (Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
-	Date fechaEnviado, Date fechaRecibido)
-	{}
-	
-	public Notificacion(Long idCategoria, String nombreContexto, String nombreNinio, String nombreMensaje, Date fecha,
-			Date fechaEnviado, Date fechaRecibido)
-			{}
-	/*select n.id,ni.nombre, co.nombre, me.nombre, ca.nombre,n.fecha,n.fechaEnviado, n.fechaRecibido
-	from 'hermes.notificaciones'  AS n 
-	inner join 'hermes.ninios' AS ni on n.idNinio = ni.id
-	inner join 'hermes.contextos' AS co on co.id= n.idContexto
-	inner join 'hermes.categorias' AS ca on ca.id= n.idCategoria
-	inner join 'hermes.mensajes' AS me on me.id= n.idMensaje;
-*/
-	
-	public Notificacion(long id,Mensaje mensaje) {		
+	public Notificacion(long id,Date fecha, List<Etiqueta> etiquetas,
+			Categoria categoria, Contexto contexto, Mensaje mensaje,
+			Ninio ninio, Date fechaRecibido, Date fechaEnviado) {
 		super(id);
-		this.setMensaje(mensaje);
-		this.fecha = new Date();
-		this.setEtiquetas(new ArrayList<Etiqueta>());
+		this.fecha = fecha;
+		this.etiquetas = etiquetas;
+		this.categoria = categoria;
+		this.contexto = contexto;
+		this.mensaje = mensaje;
+		this.ninio = ninio;
+		this.fechaRecibido = fechaRecibido;
+		this.fechaEnviado = fechaEnviado;
 	}
 
-	public Notificacion(long id) {
-		super(id);
-		this.fecha = new Date();
-		this.setEtiquetas(new ArrayList<Etiqueta>());
-	}
 
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
 	
 	@Override
 	public String toString() {

@@ -131,14 +131,48 @@ public class HermesDaoImpl implements HermesDao{
 
 	@Override
 	public List<Notificacion> obtenerNotificacionesFiltradas(FiltroNotificacion filtro) {
-	
-		List<TransferObject> l = new ArrayList<TransferObject>();		
 		
-		String sql = "select * from 'hermes.notificaciones'  AS n inner join 'hermes.notificaciones.etiquetas' AS ne on n.id = ne.idNotificacion where ne.idNotificacion <> '2'";
+		
+		/*
+
+	No estaría mostrando bien los nombres de las tablas en la consulta
+	, entonces cuando se las pido al resultSet dice que tal columna no existe
+	
+
+	*/
+		List<Notificacion> l = new ArrayList<Notificacion>();		
+		
+		String sql = "select *"
+				+ "		from 'hermes.notificaciones'  AS n "
+				+ "		inner join 'hermes.ninios' AS ni on n.idNinio = ni.id"
+				+ "		inner join 'hermes.contextos' AS co on co.id= n.idContexto"
+				+ "		inner join 'hermes.categorias' AS ca on ca.id= n.idCategoria"
+				+ "		inner join 'hermes.mensajes' AS me on me.id= n.idMensaje;";
 		ResultSet resultSet = getResult(sql);
+		long id;
+		Date fecha;
+		List<Etiqueta> etiquetas;
+		Categoria categoria;
+		Contexto contexto;
+		Mensaje mensaje;
+		Ninio ninio;
+		Date fechaRecibido;
+		Date fechaEnviado;
+
 		try {
-			while (resultSet.next())
-				l.add(new Notificacion(resultSet.getLong("id"),resultSet.getString("nombre"),resultSet.getString("descripcion")));
+			while (resultSet.next()){
+				id = resultSet.getLong("n.id");
+				fecha = new Date(resultSet.getString("n.fecha"));
+				categoria = new Categoria(resultSet.getLong("ca.id"),resultSet.getString("ca.nombre"));
+				contexto = new Contexto(resultSet.getLong("co.id"),resultSet.getString("co.nombre"), resultSet.getString("co.descripcion"));
+				mensaje = new Mensaje(resultSet.getLong("me.id"),resultSet.getString("me.nombre"), resultSet.getString("me.descripcion"), resultSet.getString("me.imagen"));
+				ninio = new Ninio(resultSet.getLong("ni.id"),resultSet.getString("ni.nombre"), resultSet.getString("ni.apellido"));
+				fechaRecibido = new Date(resultSet.getString("n.fechaRecibido"));
+				fechaEnviado = new Date(resultSet.getString("n.fechaEnviado"));
+				etiquetas = getEtiquetas(id);
+				
+				l.add(new Notificacion(id, fecha, etiquetas, categoria, contexto, mensaje, ninio, fechaRecibido, fechaEnviado));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
@@ -211,4 +245,22 @@ public class HermesDaoImpl implements HermesDao{
 	}
 
 
+	private List<Etiqueta> getEtiquetas(long id){
+		List<Etiqueta> l = new ArrayList<Etiqueta>();		
+		
+		
+		String sql =  "select e.* From 'hermes.etiquetas' AS e"
+		+ "		inner join 'hermes.notificaciones.etiquetas' AS ne"
+		+ "		on e.id = ne.idEtiqueta"
+		+ "		where idNotificacion = '"+ id +"';";
+		
+		ResultSet resultSet = getResult(sql);
+		try {
+			while (resultSet.next())
+				l.add(new Etiqueta(resultSet.getLong("id"),resultSet.getString("nombre"),resultSet.getString("descripcion")));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		return l;
+	}
 }
