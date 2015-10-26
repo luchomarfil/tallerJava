@@ -163,6 +163,9 @@ public class HermesDaoMockImpl implements HermesDao {
 	
 	@Override
 	public Boolean existeEtiquetaPara(String nuevoNombre, Etiqueta etiquetaExcluir) {
+		
+		//cuando modifico nombre no etiqueta.
+		
 		Collection<Etiqueta> etiquetasValues = getEtiquetas().values();
 		for (Etiqueta etiqueta : etiquetasValues) {
 

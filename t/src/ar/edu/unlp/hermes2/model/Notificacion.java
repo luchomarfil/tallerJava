@@ -26,6 +26,20 @@ public class Notificacion extends TransferObject {
 		this.fecha = new Date();
 		this.setEtiquetas(new ArrayList<Etiqueta>());
 	}
+	
+	public Notificacion(long id,Mensaje mensaje) {		
+		super(id);
+		this.setMensaje(mensaje);
+		this.fecha = new Date();
+		this.setEtiquetas(new ArrayList<Etiqueta>());
+	}
+
+	public Notificacion(long id) {
+		super(id);
+		this.fecha = new Date();
+		this.setEtiquetas(new ArrayList<Etiqueta>());
+	}
+
 
 	public String getNombre() {
 		return nombre;
@@ -37,7 +51,7 @@ public class Notificacion extends TransferObject {
 	
 	@Override
 	public String toString() {
-		return getNombre();
+		return getMensaje() + " de " + getNinio();
 	}
 
 	public Date getFecha() {
@@ -62,5 +76,37 @@ public class Notificacion extends TransferObject {
 
 	public void setMensaje(Mensaje mensaje) {
 		this.mensaje = mensaje;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public Contexto getContexto() {
+		return contexto;
+	}
+
+	public void setContexto(Contexto contexto) {
+		this.contexto = contexto;
+	}
+
+	public Ninio getNinio() {
+		return ninio;
+	}
+
+	public void setNinio(Ninio ninio) {
+		this.ninio = ninio;
+	}
+
+	public Date getFechaRecibido() {
+		return fechaRecibido;
+	}
+
+	public void setFechaRecibido(Date fechaRecibido) {
+		this.fechaRecibido = fechaRecibido;
 	}
 }

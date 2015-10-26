@@ -2,10 +2,14 @@ package ar.edu.unlp.hermes2.model;
 
 public class Categoria extends TransferObject {
 
-
 	private String nombre;
 	
 	public Categoria(String nombre) {		
+		this.nombre = nombre;
+	}
+	
+	public Categoria(long id,String nombre) {		
+		super(id);
 		this.nombre = nombre;
 	}
 

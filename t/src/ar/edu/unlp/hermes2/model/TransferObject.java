@@ -12,6 +12,10 @@ public class TransferObject {
 		id = (long) new Random().nextInt(300);
 	}
 
+	public TransferObject(long id) {
+		this.setId(id);
+	}
+	
 	public Long getId() {
 		return id;
 	}
