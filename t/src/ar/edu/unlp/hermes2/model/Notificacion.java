@@ -27,6 +27,21 @@ public class Notificacion extends TransferObject {
 		this.setEtiquetas(new ArrayList<Etiqueta>());
 	}
 	
+	public Notificacion (Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
+	Date fechaEnviado, Date fechaRecibido)
+	{}
+	
+	public Notificacion(Long idCategoria, String nombreContexto, String nombreNinio, String nombreMensaje, Date fecha,
+			Date fechaEnviado, Date fechaRecibido)
+			{}
+	/*select n.id,ni.nombre, co.nombre, me.nombre, ca.nombre,n.fecha,n.fechaEnviado, n.fechaRecibido
+	from 'hermes.notificaciones'  AS n 
+	inner join 'hermes.ninios' AS ni on n.idNinio = ni.id
+	inner join 'hermes.contextos' AS co on co.id= n.idContexto
+	inner join 'hermes.categorias' AS ca on ca.id= n.idCategoria
+	inner join 'hermes.mensajes' AS me on me.id= n.idMensaje;
+*/
+	
 	public Notificacion(long id,Mensaje mensaje) {		
 		super(id);
 		this.setMensaje(mensaje);

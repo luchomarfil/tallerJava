@@ -8,7 +8,8 @@ import java.util.logging.Logger;
 import javax.swing.JTextField;
 
 import ar.edu.unlp.hermes2.dao.HermesDao;
-import ar.edu.unlp.hermes2.dao.HermesDaoMockImpl;
+import ar.edu.unlp.hermes2.dao.HermesDaoImpl;
+//import ar.edu.unlp.hermes2.dao.HermesDaoMockImpl;
 import ar.edu.unlp.hermes2.gui.HermesException;
 import ar.edu.unlp.hermes2.model.Etiqueta;
 import ar.edu.unlp.hermes2.model.Notificacion;
@@ -17,7 +18,7 @@ import ar.edu.unlp.hermes2.model.TransferObject;
 public class MonitorCore extends Observable{
 	private Logger logger = Logger.getLogger(MonitorCore.class.getName());
 	private static MonitorCore instance;
-	private HermesDao hermesDao = new HermesDaoMockImpl();
+	private HermesDao hermesDao = new HermesDaoImpl();
 
 	private MonitorCore() {
 

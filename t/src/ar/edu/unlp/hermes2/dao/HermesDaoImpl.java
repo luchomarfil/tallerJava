@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,6 @@ import ar.edu.unlp.hermes2.model.TransferObject;
 import ar.edu.unlp.hermes2.monitor.FiltroNotificacion;
 
 public class HermesDaoImpl implements HermesDao{
-
 	private static ResultSet getResult(String sql){
 		try{
 		Class.forName("org.sqlite.JDBC");
@@ -30,12 +30,14 @@ public class HermesDaoImpl implements HermesDao{
 	    try
 	    {
 	      // create a database connection
-	      connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+	      connection = DriverManager.getConnection("jdbc:sqlite:t/hermes");
 	      Statement statement = connection.createStatement();
 	      statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
-	      return statement.executeQuery(sql);
+	      
+	      ResultSet returnValues = statement.executeQuery(sql);
+	      return returnValues;
 	    }
+	    
 	    catch(SQLException e)
 	    {
 	      // if the error message is "out of memory", 
@@ -45,17 +47,8 @@ public class HermesDaoImpl implements HermesDao{
 	    
 	    finally
 	    {
-	      try
-	      {
-	        if(connection != null)
-	          connection.close();
-	      }
-	      
-	      catch(SQLException e)
-	      {
-	        // connection close failed.
-	        System.err.println(e);
-	      }
+
+	        //if(connection != null)connection.close();
 	    }
 		return null;
 
@@ -69,7 +62,7 @@ public class HermesDaoImpl implements HermesDao{
 		ResultSet resultSet = getResult(sql);
 		try {
 			while (resultSet.next())
-				l.add(new Mensaje(resultSet.getString("nombre"), resultSet.getString("descripcion"),resultSet.getString("imagen")));
+				l.add(new Mensaje(resultSet.getLong("id"),resultSet.getString("nombre"), resultSet.getString("descripcion"),resultSet.getString("imagen")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
@@ -84,7 +77,7 @@ public class HermesDaoImpl implements HermesDao{
 		ResultSet resultSet = getResult(sql);
 		try {
 			while (resultSet.next())
-				l.add(new Contexto(resultSet.getString("nombre"), resultSet.getString("descripcion")));
+				l.add(new Contexto(resultSet.getLong("id"),resultSet.getString("nombre"), resultSet.getString("descripcion")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
@@ -99,7 +92,7 @@ public class HermesDaoImpl implements HermesDao{
 		ResultSet resultSet = getResult(sql);
 		try {
 			while (resultSet.next())
-				l.add(new Categoria(resultSet.getString("nombre")));
+				l.add(new Categoria(resultSet.getLong("id"),resultSet.getString("nombre")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
@@ -110,11 +103,11 @@ public class HermesDaoImpl implements HermesDao{
 	public List<TransferObject> getListaNinios() {
 		List<TransferObject> l = new ArrayList<TransferObject>();		
 		
-		String sql = "select id,nombre, apellido from 'hermes.categorias'";
+		String sql = "select id, nombre, apellido from 'hermes.ninios'";
 		ResultSet resultSet = getResult(sql);
 		try {
 			while (resultSet.next())
-				l.add(new Ninio(resultSet.getString("nombre"),resultSet.getString("apellido")));
+				l.add(new Ninio(resultSet.getLong("id"),resultSet.getString("nombre"),resultSet.getString("apellido")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
@@ -125,11 +118,11 @@ public class HermesDaoImpl implements HermesDao{
 	public List<TransferObject> getListaEtiquetas() {
 		List<TransferObject> l = new ArrayList<TransferObject>();		
 		
-		String sql = "select id,nombre, apellido from 'hermes.categorias'";
+		String sql = "select id, nombre, descripcion from 'hermes.etiquetas'";
 		ResultSet resultSet = getResult(sql);
 		try {
 			while (resultSet.next())
-				l.add(new Etiqueta(resultSet.getString("nombre"),resultSet.getString("apellido")));
+				l.add(new Etiqueta(resultSet.getLong("id"),resultSet.getString("nombre"),resultSet.getString("descripcion")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
@@ -138,50 +131,82 @@ public class HermesDaoImpl implements HermesDao{
 
 	@Override
 	public List<Notificacion> obtenerNotificacionesFiltradas(FiltroNotificacion filtro) {
-		// TODO Auto-generated method stub
-		return null;
+	
+		List<TransferObject> l = new ArrayList<TransferObject>();		
+		
+		String sql = "select * from 'hermes.notificaciones'  AS n inner join 'hermes.notificaciones.etiquetas' AS ne on n.id = ne.idNotificacion where ne.idNotificacion <> '2'";
+		ResultSet resultSet = getResult(sql);
+		try {
+			while (resultSet.next())
+				l.add(new Notificacion(resultSet.getLong("id"),resultSet.getString("nombre"),resultSet.getString("descripcion")));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		return l;
 	}
 
 	@Override
 	public void agregarEtiqueta(Etiqueta etiqueta) {
-		// TODO Auto-generated method stub
+		String etiquetaAux;
+		if (etiqueta.getDescripcion() == null) 
+			etiquetaAux = null;
+		else
+			etiquetaAux = etiqueta.getDescripcion();
 		
+		String sql = "INSERT INTO 'hermes.etiquetas' VALUES (null,'" + etiqueta.getNombre() + "','" + etiquetaAux +"',0);";
+
+		getResult(sql);
+
 	}
 
 	@Override
 	public Boolean existeEtiquetaPara(String nombreNuevaEtiqueta) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
+		//TODO  No la termino de entender !!!
 	}
-
+	
 	@Override
 	public void eliminarEtiqueta(Etiqueta etiqueta) {
-		// TODO Auto-generated method stub
+		
+		String sql = "DELETE FROM 'hermes.etiquetas' WHERE id = " + etiqueta.getId() + " ;";
+
+		getResult(sql);
 		
 	}
 
 	@Override
 	public void asignarEtiqueta(Etiqueta selectedItem, List<Long> idsNotificaciones) {
-		// TODO Auto-generated method stub
 		
+		
+		for (Long long1 : idsNotificaciones) {
+			String sql = "INSERT INTO 'hermes.notificaciones.etiquetas' VALUES (null,'" + long1 + "','" + selectedItem.getId() +";";
+			getResult(sql);
+		}
+
 	}
 
 	@Override
 	public Boolean existeEtiquetaPara(String nuevoNombre, Etiqueta etiquetaARenombrar) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
+		// TODO No la termino de entender !!!
 	}
 
 	@Override
 	public void renombrarEtiqueta(Etiqueta etiquetaARenombrar, String nuevoNombre) {
-		// TODO Auto-generated method stub
+
+		String sql = "UPDATE 'hermes.etiquetas' SET nombre= "+ nuevoNombre +"  WHERE id='"+ etiquetaARenombrar.getId() + "';";
+		getResult(sql);
+		
 		
 	}
 
 	@Override
 	public void nuevaNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
 			Date fechaEnviado, Date fechaRecibido) {
-		// TODO Auto-generated method stub
+		
+		String sql = "INSERT INTO 'hermes.notificaciones' VALUES (null,'" + idCategoria + "','" + idContexto +
+				"','" + idNinio + "','" + idMensaje + "','" + fecha + "','" + fechaEnviado + "','" +fechaRecibido +";";
+		getResult(sql);
 		
 	}
 

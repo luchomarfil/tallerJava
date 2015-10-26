@@ -77,3 +77,23 @@ VALUES (null,'Mariela','Pane');
 
 INSERT INTO 'hermes.ninios'
 VALUES (null,'Juan','Domingo');
+
+--Insertamos algunos mensajes
+
+INSERT INTO 'hermes.mensajes'
+VALUES (null,'Entusiasmado','Entusiasmado','entusiasmado.jpg');
+
+INSERT INTO 'hermes.mensajes'
+VALUES (null,'Alegre','Alegre','alegre.jpg');
+
+INSERT INTO 'hermes.mensajes'
+VALUES (null,'Molesto','Molesto','molesto.jpg');
+
+--Insertamos algunas notas
+
+INSERT INTO 'hermes.notificaciones' VALUES (null,'1','1','1','1','2013-02-01 03:13:49' ,'2013-02-01 03:13:49','2013-02-01 03:13:49');
+
+--Insertamos algunas etiquetas para los notas
+
+INSERT INTO 'hermes.notificaciones.etiquetas'
+VALUES (null,'1','1');
