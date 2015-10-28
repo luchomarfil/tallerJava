@@ -331,24 +331,28 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	 * Completa la informacion para el panel de filtros
 	 */
 	private void cargarDatosParaFiltros() {
-		List<TransferObject> lista = MonitorCore.instance().getListaMensajes();
-		comboBoxContenido.setModel(MonitorUtils.crearModelCombobox(lista, true));
-		comboBoxContexto.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaContextos(), true));
-		comboBoxNinios.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaNinios(), true));
-		comboBoxCategoria.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaCategorias(), true));
-		comboBoxEtiqueta.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas(), true));
-		//seteo de manera predeterminada para el filtro de fechas para el periodo de una semana hacia atras
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_MONTH, -7);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		dateTimePickerDesde.setDate(cal.getTime());
-		cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR_OF_DAY, 23);
-		cal.set(Calendar.MINUTE, 59);
-		cal.set(Calendar.SECOND, 59);
-		dateTimePickerHasta.setDate(cal.getTime());
+		try{
+			List<TransferObject> lista = MonitorCore.instance().getListaMensajes();
+			comboBoxContenido.setModel(MonitorUtils.crearModelCombobox(lista, true));
+			comboBoxContexto.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaContextos(), true));
+			comboBoxNinios.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaNinios(), true));
+			comboBoxCategoria.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaCategorias(), true));
+			comboBoxEtiqueta.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas(), true));
+			//seteo de manera predeterminada para el filtro de fechas para el periodo de una semana hacia atras
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DAY_OF_MONTH, -7);
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			dateTimePickerDesde.setDate(cal.getTime());
+			cal = Calendar.getInstance();
+			cal.set(Calendar.HOUR_OF_DAY, 23);
+			cal.set(Calendar.MINUTE, 59);
+			cal.set(Calendar.SECOND, 59);
+			dateTimePickerHasta.setDate(cal.getTime());
+		}catch (HermesException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
 	}
 
 	private void asignarEventoBotonFiltrar() {
@@ -386,12 +390,15 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	}
 	
 	private void filtrarNotificaciones(FiltroNotificacion filtro){
-		
-		//realizo la accion de filtrar
-		List<Notificacion> notificaciones = MonitorCore.instance().obtenerNotificacionesFiltradas(filtro);
-		
-		//actualizo la tabla
-		tablaNotificaciones.setModel(new ModelTablaNotificaciones(notificaciones));
+		try{
+			//realizo la accion de filtrar
+			List<Notificacion> notificaciones = MonitorCore.instance().obtenerNotificacionesFiltradas(filtro);
+			
+			//actualizo la tabla
+			tablaNotificaciones.setModel(new ModelTablaNotificaciones(notificaciones));
+		}catch (HermesException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
 	}
 	
 	
@@ -483,11 +490,15 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	 * Obtiene nuevamente la lista de etiquetas y genera un model
 	 * y se lo pasa a todos los combos
 	 */
-	protected void cargarCombosPanelEtiquetas() {		
-		comboBoxEtiquetaAsignar.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas()));
-		comboBoxEtiquetaEliminar.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas()));
-		comboBoxEtiquetaRenombrar.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas(),true));
-		comboBoxEtiqueta.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas(),true));
+	protected void cargarCombosPanelEtiquetas() {
+		try{			
+			comboBoxEtiquetaAsignar.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas()));
+			comboBoxEtiquetaEliminar.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas()));
+			comboBoxEtiquetaRenombrar.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas(),true));
+			comboBoxEtiqueta.setModel(MonitorUtils.crearModelCombobox(MonitorCore.instance().getListaEtiquetas(),true));
+		}catch (HermesException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
 	}
 
 
@@ -502,11 +513,11 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	
 
 	protected void eliminarEtiqueta(Etiqueta etiqueta) {
-//		try {
+		try {
 			MonitorCore.instance().eliminarEtiqueta(etiqueta);
-//		} catch (HermesException e) {
-//			logger.log(Level.SEVERE, e.getMessage(), e);
-//		}		
+		} catch (HermesException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}		
 	}
 
 	protected void asignarEtiqueta(Etiqueta selectedItem) {

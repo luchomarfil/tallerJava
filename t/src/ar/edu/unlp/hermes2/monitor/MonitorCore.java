@@ -39,29 +39,29 @@ public class MonitorCore extends Observable{
 		this.hermesDao = hermesDao;
 	}
 
-	public List<TransferObject> getListaMensajes() {
+	public List<TransferObject> getListaMensajes() throws HermesException {
 		return (List<TransferObject>) getHermesDao().getListaMensajes();
 	}
 
-	public List<TransferObject> getListaContextos() {
+	public List<TransferObject> getListaContextos() throws HermesException {
 		return getHermesDao().getListaContextos();
 	}
 
-	public List<TransferObject> getListaNinios() {
+	public List<TransferObject> getListaNinios() throws HermesException {
 		return getHermesDao().getListaNinios();
 
 	}
 
-	public List<TransferObject> getListaCategorias() {
+	public List<TransferObject> getListaCategorias() throws HermesException {
 		return getHermesDao().getListaCategorias();
 
 	}
 
-	public List<TransferObject> getListaEtiquetas() {
+	public List<TransferObject> getListaEtiquetas() throws HermesException {
 		return getHermesDao().getListaEtiquetas();
 	}
 
-	public List<Notificacion> obtenerNotificacionesFiltradas(FiltroNotificacion filtro) {
+	public List<Notificacion> obtenerNotificacionesFiltradas(FiltroNotificacion filtro) throws HermesException {
 		logger.info("El filtro recibido es:" + filtro);
 		return getHermesDao().obtenerNotificacionesFiltradas(filtro);
 	}
@@ -76,11 +76,11 @@ public class MonitorCore extends Observable{
 		}
 	}
 
-	public void eliminarEtiqueta(Etiqueta etiqueta) {
+	public void eliminarEtiqueta(Etiqueta etiqueta) throws HermesException {
 		getHermesDao().eliminarEtiqueta(etiqueta);
 	}
 
-	public void asignarEtiqueta(Etiqueta etiqueta, List<Long> idsNotificaciones) {
+	public void asignarEtiqueta(Etiqueta etiqueta, List<Long> idsNotificaciones) throws HermesException {
 		getHermesDao().asignarEtiqueta(etiqueta,idsNotificaciones);
 		
 	}
@@ -104,9 +104,10 @@ public class MonitorCore extends Observable{
 	 * @param idMensaje
 	 * @param fecha
 	 * @param fechaEnviado
+	 * @throws HermesException 
 	 */
 	public void recibirNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
-			Date fechaEnviado) {
+			Date fechaEnviado) throws HermesException {
 		Date fechaRecibido = new Date();
 		getHermesDao().nuevaNotificacion(idCategoria,idContexto,idNinio,idMensaje,fecha,fechaEnviado,fechaRecibido);
 		this.setChanged();

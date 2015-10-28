@@ -5,11 +5,16 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
+import ar.edu.unlp.hermes2.database.DatabaseUtil;
+import ar.edu.unlp.hermes2.gui.HermesException;
 import ar.edu.unlp.hermes2.model.Categoria;
 import ar.edu.unlp.hermes2.model.Contexto;
 import ar.edu.unlp.hermes2.model.Etiqueta;
@@ -19,136 +24,187 @@ import ar.edu.unlp.hermes2.model.Notificacion;
 import ar.edu.unlp.hermes2.model.TransferObject;
 import ar.edu.unlp.hermes2.monitor.FiltroNotificacion;
 
-public class HermesDaoImpl implements HermesDao{
-	private static ResultSet getResult(String sql){
-		try{
-		Class.forName("org.sqlite.JDBC");
-		}
-		catch(ClassNotFoundException e) {System.err.println(e.getMessage());}
-		
-	    Connection connection = null;
-	    try
-	    {
-	      // create a database connection
-	      connection = DriverManager.getConnection("jdbc:sqlite:t/hermes");
-	      Statement statement = connection.createStatement();
-	      statement.setQueryTimeout(30);  // set timeout to 30 sec.
-	      
-	      ResultSet returnValues = statement.executeQuery(sql);
-	      return returnValues;
-	    }
-	    
-	    catch(SQLException e)
-	    {
-	      // if the error message is "out of memory", 
-	      // it probably means no database file is found
-	      System.err.println(e.getMessage());
-	    }
-	    
-	    finally
-	    {
+public class HermesDaoImpl implements HermesDao {
+	private static Logger logger = Logger.getLogger(HermesDaoImpl.class
+			.getName());
 
-	        //if(connection != null)connection.close();
-	    }
-		return null;
-
-	};
-
-	@Override
-	public List<TransferObject> getListaMensajes() {
-		List<TransferObject> l = new ArrayList<TransferObject>();		
-		
-		String sql = "select id,nombre,descripcion, imagen from 'hermes.mensajes'";
-		ResultSet resultSet = getResult(sql);
-		try {
-			while (resultSet.next())
-				l.add(new Mensaje(resultSet.getLong("id"),resultSet.getString("nombre"), resultSet.getString("descripcion"),resultSet.getString("imagen")));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
-		return l;
+	/**
+	 * Para sqls que tienen que retornar informacion, devuelven un resultset
+	 * con el resultado del select
+	 * @param c 
+	 * @param sql
+	 * @return
+	 * @throws HermesException
+	 */
+	private static ResultSet getResult(Connection c, String sql) throws HermesException {
+		return DatabaseUtil.ejecutarSelect(c,sql);		
+	}
+	
+	/**
+	 * Para sqls que modifican la base de datos: INSERT, UPDATE, DELETE
+	 * Retornan la cantidad de tuplas afectadas 
+	 * @param c 
+	 * @param sql
+	 * 
+	 * @throws HermesException
+	 */
+	private static int executeScript(Connection c, String sql) throws HermesException{		
+		return DatabaseUtil.executeScript(c,sql);
 	}
 
-	@Override
-	public List<TransferObject> getListaContextos() {
-		List<TransferObject> l = new ArrayList<TransferObject>();		
-		
-		String sql = "select id,nombre,descripcion from 'hermes.contextos'";
-		ResultSet resultSet = getResult(sql);
-		try {
-			while (resultSet.next())
-				l.add(new Contexto(resultSet.getLong("id"),resultSet.getString("nombre"), resultSet.getString("descripcion")));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
-		return l;
+	/**
+	 * Ejecuta una lista de comandos INSERT, DELETE Y UPDATE
+	 * 
+	 * @param sql
+	 * @return Retorna el numero de tuplas afectadas
+	 * @throws HermesException 
+	 */
+	private static int[] executeBatch(Connection c, String sql) throws HermesException{
+		return DatabaseUtil.executeBatch(c,  sql);
 	}
-
-	@Override
-	public List<TransferObject> getListaCategorias() {
-		List<TransferObject> l = new ArrayList<TransferObject>();		
-		
-		String sql = "select id,nombre from 'hermes.categorias'";
-		ResultSet resultSet = getResult(sql);
-		try {
-			while (resultSet.next())
-				l.add(new Categoria(resultSet.getLong("id"),resultSet.getString("nombre")));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
-		return l;
+	
+	private static Connection getConnection() throws HermesException{
+		return DatabaseUtil.getConnection();
 	}
-
-	@Override
-	public List<TransferObject> getListaNinios() {
-		List<TransferObject> l = new ArrayList<TransferObject>();		
-		
-		String sql = "select id, nombre, apellido from 'hermes.ninios'";
-		ResultSet resultSet = getResult(sql);
-		try {
-			while (resultSet.next())
-				l.add(new Ninio(resultSet.getLong("id"),resultSet.getString("nombre"),resultSet.getString("apellido")));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
-		return l;
-	}
-
-	@Override
-	public List<TransferObject> getListaEtiquetas() {
-		List<TransferObject> l = new ArrayList<TransferObject>();		
-		
-		String sql = "select id, nombre, descripcion from 'hermes.etiquetas'";
-		ResultSet resultSet = getResult(sql);
-		try {
-			while (resultSet.next())
-				l.add(new Etiqueta(resultSet.getLong("id"),resultSet.getString("nombre"),resultSet.getString("descripcion")));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
-		return l;
-	}
-
-	@Override
-	public List<Notificacion> obtenerNotificacionesFiltradas(FiltroNotificacion filtro) {
-		
-		
-		/*
-
-	No estaría mostrando bien los nombres de las tablas en la consulta
-	, entonces cuando se las pido al resultSet dice que tal columna no existe
 	
 
-	*/
-		List<Notificacion> l = new ArrayList<Notificacion>();		
+	private static void cerrarConexion(Connection c) throws HermesException {
+		try {
+			if(c!=null && !c.isClosed()){				
+					c.close();			
+			}			
+		} catch (SQLException e) {
+			throw new HermesException("Error cerrando la conexion",e);
+		}
+	}
+	
+	@Override
+	public List<TransferObject> getListaMensajes() throws HermesException {
+		List<TransferObject> l = new ArrayList<TransferObject>();
+
+		String sql = "select id,nombre,descripcion, imagen from 'hermes.mensajes'";
+		Connection c = getConnection();
+		ResultSet resultSet = getResult(c,sql);
+		try {
+			while (resultSet.next())
+				l.add(new Mensaje(resultSet.getLong("id"), resultSet
+						.getString("nombre"), resultSet
+						.getString("descripcion"), resultSet
+						.getString("imagen")));
+		} catch (SQLException e) {
+			throw new HermesException("Error leyendo el conjunto de resultados de la query",e);
+		}
+		finally{
+			cerrarConexion(c);
+		}
 		
-		String sql = "select *"
+		return l;
+	}
+
+
+	@Override
+	public List<TransferObject> getListaContextos() throws HermesException {
+		List<TransferObject> l = new ArrayList<TransferObject>();
+
+		String sql = "select id,nombre,descripcion from 'hermes.contextos'";
+		Connection c = getConnection();
+		ResultSet resultSet = getResult(c,sql);
+		try {
+			while (resultSet.next())
+				l.add(new Contexto(resultSet.getLong("id"), resultSet
+						.getString("nombre"), resultSet
+						.getString("descripcion")));
+		} catch (SQLException e) {
+			throw new HermesException("Error leyendo el conjunto de resultados de la query",e);
+		}
+		return l;
+	}
+
+	@Override
+	public List<TransferObject> getListaCategorias() throws HermesException {
+		List<TransferObject> l = new ArrayList<TransferObject>();
+
+		String sql = "select id,nombre from 'hermes.categorias'";
+		Connection c = getConnection();
+		ResultSet resultSet = getResult(c,sql);
+		try {
+			while (resultSet.next())
+				l.add(new Categoria(resultSet.getLong("id"), resultSet
+						.getString("nombre")));
+		} catch (SQLException e) {
+			throw new HermesException("Error leyendo el conjunto de resultados de la query",e);
+		}
+		finally{
+			cerrarConexion(c);
+		}
+		return l;
+	}
+
+	@Override
+	public List<TransferObject> getListaNinios() throws HermesException {
+		List<TransferObject> l = new ArrayList<TransferObject>();
+
+		String sql = "select id, nombre, apellido from 'hermes.ninios'";
+		Connection c = getConnection();
+		ResultSet resultSet = getResult(c,sql);
+		try {
+			while (resultSet.next())
+				l.add(new Ninio(resultSet.getLong("id"), resultSet
+						.getString("nombre"), resultSet.getString("apellido")));
+		} catch (SQLException e) {
+			throw new HermesException("Error leyendo el conjunto de resultados de la query",e);
+		}
+		finally{
+			cerrarConexion(c);
+		}
+		return l;
+	}
+
+	@Override
+	public List<TransferObject> getListaEtiquetas() throws HermesException {
+		List<TransferObject> l = new ArrayList<TransferObject>();
+
+		String sql = "select id, nombre, descripcion from 'hermes.etiquetas'";
+		Connection c = getConnection();
+
+		ResultSet resultSet = getResult(c,sql);
+		try {
+			while (resultSet.next())
+				l.add(new Etiqueta(resultSet.getLong("id"), resultSet
+						.getString("nombre"), resultSet
+						.getString("descripcion")));
+		} catch (SQLException e) {
+			throw new HermesException("Error leyendo el conjunto de resultados de la query",e);
+		}
+		finally{
+			cerrarConexion(c);
+		}
+		return l;
+	}
+
+	@Override
+	public List<Notificacion> obtenerNotificacionesFiltradas(
+			FiltroNotificacion filtro) throws HermesException {
+
+		/*
+		 * 
+		 * No estaria mostrando bien los nombres de las tablas en la consulta ,
+		 * entonces cuando se las pido al resultSet dice que tal columna no
+		 * existe
+		 */
+		List<Notificacion> l = new ArrayList<Notificacion>();
+
+		String sql = "select n.id as n_id, n.fecha as n_fecha, ca.id as ca_id, ca.nombre as ca_nombre, co.id as co_id,"
+				+ "  	co.nombre as co_nombre, co.descripcion as co_descripcion, me.id as me_id, me.nombre as me_nombre,"
+				+ "		me.descripcion as me_descripcion, me.imagen as me_imagen, ni.id as ni_id, ni.nombre as ni_nombre,"
+				+ "		ni.apellido as ni_apellido, n.fechaRecibido as n_fechaRecibido, n.fechaEnviado as n_fechaEnviado"	
 				+ "		from 'hermes.notificaciones'  AS n "
 				+ "		inner join 'hermes.ninios' AS ni on n.idNinio = ni.id"
 				+ "		inner join 'hermes.contextos' AS co on co.id= n.idContexto"
 				+ "		inner join 'hermes.categorias' AS ca on ca.id= n.idCategoria"
 				+ "		inner join 'hermes.mensajes' AS me on me.id= n.idMensaje;";
-		ResultSet resultSet = getResult(sql);
+		Connection c = getConnection();
+		ResultSet resultSet = getResult(c,sql);
 		long id;
 		Date fecha;
 		List<Etiqueta> etiquetas;
@@ -158,109 +214,189 @@ public class HermesDaoImpl implements HermesDao{
 		Ninio ninio;
 		Date fechaRecibido;
 		Date fechaEnviado;
-
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 		try {
-			while (resultSet.next()){
-				id = resultSet.getLong("n.id");
-				fecha = new Date(resultSet.getString("n.fecha"));
-				categoria = new Categoria(resultSet.getLong("ca.id"),resultSet.getString("ca.nombre"));
-				contexto = new Contexto(resultSet.getLong("co.id"),resultSet.getString("co.nombre"), resultSet.getString("co.descripcion"));
-				mensaje = new Mensaje(resultSet.getLong("me.id"),resultSet.getString("me.nombre"), resultSet.getString("me.descripcion"), resultSet.getString("me.imagen"));
-				ninio = new Ninio(resultSet.getLong("ni.id"),resultSet.getString("ni.nombre"), resultSet.getString("ni.apellido"));
-				fechaRecibido = new Date(resultSet.getString("n.fechaRecibido"));
-				fechaEnviado = new Date(resultSet.getString("n.fechaEnviado"));
+			while (resultSet.next()) {
+				id = resultSet.getLong("n_id");				
+				fecha = sd.parse(resultSet.getString("n_fecha"));
+				categoria = new Categoria(resultSet.getLong("ca_id"),
+						resultSet.getString("ca_nombre"));
+				contexto = new Contexto(resultSet.getLong("co_id"),
+						resultSet.getString("co_nombre"),
+						resultSet.getString("co_descripcion"));
+				mensaje = new Mensaje(resultSet.getLong("me_id"),
+						resultSet.getString("me_nombre"),
+						resultSet.getString("me_descripcion"),
+						resultSet.getString("me_imagen"));
+				ninio = new Ninio(resultSet.getLong("ni_id"),
+						resultSet.getString("ni_nombre"),
+						resultSet.getString("ni_apellido"));
+				fechaRecibido = sd.parse(resultSet.getString("n_fechaRecibido"));
+				//fechaRecibido = new Date(resultSet.getString("n_fechaRecibido"));
+				fechaEnviado = sd.parse(resultSet.getString("n_fechaEnviado"));
+				//fechaEnviado = new Date(resultSet.getString("n_fechaEnviado"));
 				etiquetas = getEtiquetas(id);
-				
-				l.add(new Notificacion(id, fecha, etiquetas, categoria, contexto, mensaje, ninio, fechaRecibido, fechaEnviado));
+
+				l.add(new Notificacion(id, fecha, etiquetas, categoria,
+						contexto, mensaje, ninio, fechaRecibido, fechaEnviado));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
+			throw new HermesException("Error leyendo el conjunto de resultados de la query",e);
+		} catch (ParseException e) {
+			throw new HermesException("Error parseando la fecha",e);
+		}
+		finally{
+			cerrarConexion(c);
+		}
 		return l;
 	}
 
 	@Override
-	public void agregarEtiqueta(Etiqueta etiqueta) {
+	public void agregarEtiqueta(Etiqueta etiqueta) throws HermesException {
 		String etiquetaAux;
-		if (etiqueta.getDescripcion() == null) 
+		if (etiqueta.getDescripcion() == null){
 			etiquetaAux = null;
-		else
+		}
+		else{
 			etiquetaAux = etiqueta.getDescripcion();
-		
-		String sql = "INSERT INTO 'hermes.etiquetas' VALUES (null,'" + etiqueta.getNombre() + "','" + etiquetaAux +"',0);";
+		}
 
-		getResult(sql);
+		String sql = "INSERT INTO 'hermes.etiquetas' VALUES (null,'"
+				+ etiqueta.getNombre() + "','" + etiquetaAux + "',0);";
+		
+		Connection c = getConnection();
+		try {
+			executeScript(c,sql);
+		} catch (HermesException e){
+			throw e;
+		} catch (Exception e) {
+			throw new HermesException("Error agregando la etiqueta");
+		}		
+		finally{
+			cerrarConexion(c);
+		}
 
 	}
 
 	@Override
 	public Boolean existeEtiquetaPara(String nombreNuevaEtiqueta) {
 		return true;
-		//TODO  No la termino de entender !!!
-	}
-	
-	@Override
-	public void eliminarEtiqueta(Etiqueta etiqueta) {
-		
-		String sql = "DELETE FROM 'hermes.etiquetas' WHERE id = " + etiqueta.getId() + " ;";
-
-		getResult(sql);
-		
+		// TODO No la termino de entender !!!
 	}
 
 	@Override
-	public void asignarEtiqueta(Etiqueta selectedItem, List<Long> idsNotificaciones) {
-		
-		
-		for (Long long1 : idsNotificaciones) {
-			String sql = "INSERT INTO 'hermes.notificaciones.etiquetas' VALUES (null,'" + long1 + "','" + selectedItem.getId() +";";
-			getResult(sql);
+	public void eliminarEtiqueta(Etiqueta etiqueta) throws HermesException {
+
+		String sql = "DELETE FROM 'hermes.etiquetas' WHERE id = "
+				+ etiqueta.getId() + " ;";
+
+		Connection c = getConnection();
+		try {
+			executeScript(c,sql);
+		} catch (HermesException e){
+			throw e;
+		} catch (Exception e) {
+			throw new HermesException("Error agregando la etiqueta");
+		}		
+		finally{
+			cerrarConexion(c);
 		}
 
 	}
 
 	@Override
-	public Boolean existeEtiquetaPara(String nuevoNombre, Etiqueta etiquetaARenombrar) {
+	public void asignarEtiqueta(Etiqueta selectedItem,
+			List<Long> idsNotificaciones) throws HermesException {
+		String sql = "";
+		for (Long long1 : idsNotificaciones) {
+			sql = "INSERT INTO 'hermes.notificaciones.etiquetas' VALUES (null,'"
+					+ long1 + "','" + selectedItem.getId() + ";";
+			//getResult(sql);
+		}
+		Connection c = getConnection();
+		try {
+			executeBatch(c,sql);
+		} catch (HermesException e){
+			throw e;
+		} catch (Exception e) {
+			throw new HermesException("Error agregando la etiqueta");
+		}		
+		finally{
+			cerrarConexion(c);
+		}
+
+	}
+
+	@Override
+	public Boolean existeEtiquetaPara(String nuevoNombre,
+			Etiqueta etiquetaARenombrar) {
 		return true;
 		// TODO No la termino de entender !!!
 	}
 
 	@Override
-	public void renombrarEtiqueta(Etiqueta etiquetaARenombrar, String nuevoNombre) {
+	public void renombrarEtiqueta(Etiqueta etiquetaARenombrar,
+			String nuevoNombre) throws HermesException {
 
-		String sql = "UPDATE 'hermes.etiquetas' SET nombre= "+ nuevoNombre +"  WHERE id='"+ etiquetaARenombrar.getId() + "';";
-		getResult(sql);
-		
-		
+		String sql = "UPDATE 'hermes.etiquetas' SET nombre= " + nuevoNombre
+				+ "  WHERE id='" + etiquetaARenombrar.getId() + "';";
+		Connection c = getConnection();
+		try {
+			executeScript(c,sql);
+		} catch (HermesException e){
+			throw e;
+		} catch (Exception e) {
+			throw new HermesException("Error agregando la etiqueta");
+		}		
+		finally{
+			cerrarConexion(c);
+		}
+
 	}
 
 	@Override
-	public void nuevaNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
-			Date fechaEnviado, Date fechaRecibido) {
-		
-		String sql = "INSERT INTO 'hermes.notificaciones' VALUES (null,'" + idCategoria + "','" + idContexto +
-				"','" + idNinio + "','" + idMensaje + "','" + fecha + "','" + fechaEnviado + "','" +fechaRecibido +";";
-		getResult(sql);
-		
+	public void nuevaNotificacion(Long idCategoria, Long idContexto,
+			Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado,
+			Date fechaRecibido) throws HermesException {
+
+		String sql = "INSERT INTO 'hermes.notificaciones' VALUES (null,'"
+				+ idCategoria + "','" + idContexto + "','" + idNinio + "','"
+				+ idMensaje + "','" + fecha + "','" + fechaEnviado + "','"
+				+ fechaRecibido + ";";
+		Connection c = getConnection();
+		try {
+			executeScript(c,sql);
+		} catch (HermesException e){
+			throw e;
+		} catch (Exception e) {
+			throw new HermesException("Error agregando la etiqueta");
+		}		
+		finally{
+			cerrarConexion(c);
+		}
+
 	}
 
+	private List<Etiqueta> getEtiquetas(long id) throws HermesException {
+		List<Etiqueta> l = new ArrayList<Etiqueta>();
 
-	private List<Etiqueta> getEtiquetas(long id){
-		List<Etiqueta> l = new ArrayList<Etiqueta>();		
-		
-		
-		String sql =  "select e.* From 'hermes.etiquetas' AS e"
-		+ "		inner join 'hermes.notificaciones.etiquetas' AS ne"
-		+ "		on e.id = ne.idEtiqueta"
-		+ "		where idNotificacion = '"+ id +"';";
-		
-		ResultSet resultSet = getResult(sql);
+		String sql = "select e.* From 'hermes.etiquetas' AS e"
+				+ "		inner join 'hermes.notificaciones.etiquetas' AS ne"
+				+ "		on e.id = ne.idEtiqueta" + "		where idNotificacion = '"
+				+ id + "';";
+		Connection c = getConnection();
+		ResultSet resultSet = getResult(c,sql);
 		try {
 			while (resultSet.next())
-				l.add(new Etiqueta(resultSet.getLong("id"),resultSet.getString("nombre"),resultSet.getString("descripcion")));
+				l.add(new Etiqueta(resultSet.getLong("id"), resultSet
+						.getString("nombre"), resultSet
+						.getString("descripcion")));
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
+		}
+		finally{
+			cerrarConexion(c);
+		}
 		return l;
 	}
 }

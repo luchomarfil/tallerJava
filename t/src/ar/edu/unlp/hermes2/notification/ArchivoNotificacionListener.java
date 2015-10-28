@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.edu.unlp.hermes2.gui.HermesException;
 import ar.edu.unlp.hermes2.monitor.MonitorCore;
 
 public class ArchivoNotificacionListener implements IEventosExternosListener, Runnable {
@@ -71,7 +72,11 @@ public class ArchivoNotificacionListener implements IEventosExternosListener, Ru
 	@Override
 	public void procesarNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
 			Date fechaEnviado) {
-		MonitorCore.instance().recibirNotificacion(idCategoria,idContexto,idNinio,idMensaje,fecha,fechaEnviado);
+		try{
+			MonitorCore.instance().recibirNotificacion(idCategoria,idContexto,idNinio,idMensaje,fecha,fechaEnviado);
+		} catch (HermesException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
 
 	}
 

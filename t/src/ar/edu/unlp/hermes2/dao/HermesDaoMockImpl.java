@@ -31,15 +31,15 @@ public class HermesDaoMockImpl implements HermesDao {
 	}
 
 	private void inicializarListas() {
-		Mensaje mensaje1 = new Mensaje("Entusiasmado");
-		getMensajes().put(mensaje1.getId(),mensaje1);
-		Mensaje mensaje2 = new Mensaje("Contento");
-		getMensajes().put(mensaje2.getId(),mensaje2);
-		Mensaje mensaje3 = new Mensaje("Hambriento");
-		getMensajes().put(mensaje3.getId(),mensaje3);		
-		Mensaje mensaje4 = new Mensaje("Jugar");
-		getMensajes().put(mensaje4.getId(),mensaje4);
-		
+//		Mensaje mensaje1 = new Mensaje("Entusiasmado");
+//		getMensajes().put(mensaje1.getId(),mensaje1);
+//		Mensaje mensaje2 = new Mensaje("Contento");
+//		getMensajes().put(mensaje2.getId(),mensaje2);
+//		Mensaje mensaje3 = new Mensaje("Hambriento");
+//		getMensajes().put(mensaje3.getId(),mensaje3);		
+//		Mensaje mensaje4 = new Mensaje("Jugar");
+//		getMensajes().put(mensaje4.getId(),mensaje4);
+//		
 		Contexto contexto = new Contexto("Patio");
 		getContextos().put(contexto.getId(),contexto);
 		Contexto contexto2 = new Contexto("Sum");
@@ -48,19 +48,19 @@ public class HermesDaoMockImpl implements HermesDao {
 		getContextos().put(contexto3.getId(),contexto);
 		Contexto contexto4 = new Contexto("Escuela");
 		getContextos().put(contexto4.getId(),contexto4);
-		
-		Ninio ninio = new Ninio("Juan");
-		getNinios().put(ninio.getId(),ninio);
-		Ninio n2 = new Ninio("Maria");
-		getNinios().put(n2.getId(),n2);
-		Ninio n3 = new Ninio("Dario");
-		getNinios().put(n3.getId(),n3);		
-		Ninio n4 = new Ninio("Fernando");
-		getNinios().put(n4.getId(),n4);
-		Ninio n5 = new Ninio("Susana");
-		getNinios().put(n5.getId(),n5);
-		Ninio n6 = new Ninio("Roberto");
-		getNinios().put(n6.getId(),n6);
+//		
+//		Ninio ninio = new Ninio("Juan");
+//		getNinios().put(ninio.getId(),ninio);
+//		Ninio n2 = new Ninio("Maria");
+//		getNinios().put(n2.getId(),n2);
+//		Ninio n3 = new Ninio("Dario");
+//		getNinios().put(n3.getId(),n3);		
+//		Ninio n4 = new Ninio("Fernando");
+//		getNinios().put(n4.getId(),n4);
+//		Ninio n5 = new Ninio("Susana");
+//		getNinios().put(n5.getId(),n5);
+//		Ninio n6 = new Ninio("Roberto");
+//		getNinios().put(n6.getId(),n6);
 		
 		Categoria c1 = new Categoria("Categoria1");
 		getCategorias().put(c1.getId(),c1);
@@ -76,14 +76,14 @@ public class HermesDaoMockImpl implements HermesDao {
 		Etiqueta e4= new Etiqueta("Retroceso");
 		getEtiquetas().put(e4.getId(),e4);
 		
-		Notificacion nn1 = new Notificacion(mensaje1);
-		getNotificaciones().put(nn1.getId(),nn1);
-		Notificacion nn2 = new Notificacion(mensaje2);
-		getNotificaciones().put(nn2.getId(),nn2);
-		Notificacion nn3 = new Notificacion(mensaje3);
-		getNotificaciones().put(nn3.getId(),nn3);
-		Notificacion nn4 = new Notificacion(mensaje4);
-		getNotificaciones().put(nn4.getId(),nn4);
+//		Notificacion nn1 = new Notificacion(mensaje1);
+//		getNotificaciones().put(nn1.getId(),nn1);
+//		Notificacion nn2 = new Notificacion(mensaje2);
+//		getNotificaciones().put(nn2.getId(),nn2);
+//		Notificacion nn3 = new Notificacion(mensaje3);
+//		getNotificaciones().put(nn3.getId(),nn3);
+//		Notificacion nn4 = new Notificacion(mensaje4);
+//		getNotificaciones().put(nn4.getId(),nn4);
 	}
 
 	public List<TransferObject> getListaMensajes() {
@@ -272,8 +272,8 @@ public class HermesDaoMockImpl implements HermesDao {
 	@Override
 	public void nuevaNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
 			Date fechaEnviado, Date fechaRecibido) {
-		Notificacion n = new Notificacion();
-		n.setMensaje((Mensaje) getTransferObject(Mensaje.class, idMensaje));
+//		Notificacion n = new Notificacion();
+//		n.setMensaje((Mensaje) getTransferObject(Mensaje.class, idMensaje));
 		
 	}
 
