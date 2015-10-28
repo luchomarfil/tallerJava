@@ -49,7 +49,7 @@ public class ArchivoNotificacionListener implements IEventosExternosListener, Ru
 					Long idNinio = Long.parseLong(campos[CAMPO_NINIO_ID]);
 					Long idMensaje = Long.parseLong(campos[CAMPO_MENSAJE_ID]);
 					//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-					SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHss");
+					SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
 				    Date fecha = formatter.parse(campos[4]);
 				    Date fechaEnviado = formatter.parse(campos[5]);
 					procesarNotificacion(idCategoria, idContexto, idNinio, idMensaje, fecha, fechaEnviado);	

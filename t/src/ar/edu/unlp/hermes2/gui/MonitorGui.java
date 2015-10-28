@@ -28,7 +28,7 @@ public class MonitorGui extends JFrame {
 
 	public static void main(String[] args) {
 		new MonitorGui().setVisible(true);		
-		//new ArchivoNotificacionListener().run();
+		new ArchivoNotificacionListener().run();
 
 	}
 }

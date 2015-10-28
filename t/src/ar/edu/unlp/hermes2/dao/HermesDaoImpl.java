@@ -2,6 +2,7 @@ package ar.edu.unlp.hermes2.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -83,9 +84,9 @@ public class HermesDaoImpl implements HermesDao {
 		List<TransferObject> l = new ArrayList<TransferObject>();
 
 		String sql = "select id,nombre,descripcion, imagen from 'hermes.mensajes'";
-		Connection c = getConnection();
-		ResultSet resultSet = getResult(c,sql);
+		Connection c = getConnection();		
 		try {
+			ResultSet resultSet = getResult(c,sql);
 			while (resultSet.next())
 				l.add(new Mensaje(resultSet.getLong("id"), resultSet
 						.getString("nombre"), resultSet
@@ -116,6 +117,9 @@ public class HermesDaoImpl implements HermesDao {
 						.getString("descripcion")));
 		} catch (SQLException e) {
 			throw new HermesException("Error leyendo el conjunto de resultados de la query",e);
+		}
+		finally{
+			cerrarConexion(c);
 		}
 		return l;
 	}
@@ -186,12 +190,6 @@ public class HermesDaoImpl implements HermesDao {
 	public List<Notificacion> obtenerNotificacionesFiltradas(
 			FiltroNotificacion filtro) throws HermesException {
 
-		/*
-		 * 
-		 * No estaria mostrando bien los nombres de las tablas en la consulta ,
-		 * entonces cuando se las pido al resultSet dice que tal columna no
-		 * existe
-		 */
 		List<Notificacion> l = new ArrayList<Notificacion>();
 
 		String sql = "select n.id as n_id, n.fecha as n_fecha, ca.id as ca_id, ca.nombre as ca_nombre, co.id as co_id,"
@@ -203,7 +201,27 @@ public class HermesDaoImpl implements HermesDao {
 				+ "		inner join 'hermes.contextos' AS co on co.id= n.idContexto"
 				+ "		inner join 'hermes.categorias' AS ca on ca.id= n.idCategoria"
 				+ "		inner join 'hermes.mensajes' AS me on me.id= n.idMensaje;";
+		sql += "where 1=1";
+		List<Object> parameters = new ArrayList<Object>(); 
+		if(filtro.getCategoria()!=null){
+			sql += " and ca.id = ?";
+			parameters.add(filtro.getCategoria().getId());			
+		}
+		
+		
 		Connection c = getConnection();
+		
+		try {
+		PreparedStatement prepareStatement = c.prepareStatement(sql);
+		
+		int i = 0;
+		for (Object object : parameters) {			
+			prepareStatement.setObject(i, object);
+			i++;
+		}
+		
+		
+	
 		ResultSet resultSet = getResult(c,sql);
 		long id;
 		Date fecha;
@@ -215,7 +233,7 @@ public class HermesDaoImpl implements HermesDao {
 		Date fechaRecibido;
 		Date fechaEnviado;
 		SimpleDateFormat sd = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
-		try {
+		
 			while (resultSet.next()) {
 				id = resultSet.getLong("n_id");				
 				fecha = sd.parse(resultSet.getString("n_fecha"));
@@ -362,7 +380,7 @@ public class HermesDaoImpl implements HermesDao {
 		String sql = "INSERT INTO 'hermes.notificaciones' VALUES (null,'"
 				+ idCategoria + "','" + idContexto + "','" + idNinio + "','"
 				+ idMensaje + "','" + fecha + "','" + fechaEnviado + "','"
-				+ fechaRecibido + ";";
+				+ fechaRecibido + "');";
 		Connection c = getConnection();
 		try {
 			executeScript(c,sql);
