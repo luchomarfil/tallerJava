@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.management.monitor.Monitor;
+
 import ar.edu.unlp.hermes2.database.DatabaseUtil;
 import ar.edu.unlp.hermes2.gui.HermesException;
 import ar.edu.unlp.hermes2.model.Categoria;
@@ -24,6 +26,7 @@ import ar.edu.unlp.hermes2.model.Ninio;
 import ar.edu.unlp.hermes2.model.Notificacion;
 import ar.edu.unlp.hermes2.model.TransferObject;
 import ar.edu.unlp.hermes2.monitor.FiltroNotificacion;
+import ar.edu.unlp.hermes2.monitor.MonitorUtils;
 
 public class HermesDaoImpl implements HermesDao {
 	private static Logger logger = Logger.getLogger(HermesDaoImpl.class
@@ -197,10 +200,10 @@ public class HermesDaoImpl implements HermesDao {
 				+ "		me.descripcion as me_descripcion, me.imagen as me_imagen, ni.id as ni_id, ni.nombre as ni_nombre,"
 				+ "		ni.apellido as ni_apellido, n.fechaRecibido as n_fechaRecibido, n.fechaEnviado as n_fechaEnviado"	
 				+ "		from 'hermes.notificaciones'  AS n "
-				+ "		inner join 'hermes.ninios' AS ni on n.idNinio = ni.id"
-				+ "		inner join 'hermes.contextos' AS co on co.id= n.idContexto"
-				+ "		inner join 'hermes.categorias' AS ca on ca.id= n.idCategoria"
-				+ "		inner join 'hermes.mensajes' AS me on me.id= n.idMensaje;";
+				+ "		left join 'hermes.ninios' AS ni on n.idNinio = ni.id"
+				+ "		left join 'hermes.contextos' AS co on co.id= n.idContexto"
+				+ "		left join 'hermes.categorias' AS ca on ca.id= n.idCategoria"
+				+ "		left join 'hermes.mensajes' AS me on me.id= n.idMensaje;";
 		sql += "where 1=1";
 		List<Object> parameters = new ArrayList<Object>(); 
 		if(filtro.getCategoria()!=null){
@@ -232,7 +235,7 @@ public class HermesDaoImpl implements HermesDao {
 		Ninio ninio;
 		Date fechaRecibido;
 		Date fechaEnviado;
-		SimpleDateFormat sd = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
+		SimpleDateFormat sd = MonitorUtils.formatterFechaPersistencia;
 		
 			while (resultSet.next()) {
 				id = resultSet.getLong("n_id");				
@@ -377,10 +380,11 @@ public class HermesDaoImpl implements HermesDao {
 			Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado,
 			Date fechaRecibido) throws HermesException {
 
+		SimpleDateFormat formatterFecha = MonitorUtils.formatterFechaPersistencia;
 		String sql = "INSERT INTO 'hermes.notificaciones' VALUES (null,'"
 				+ idCategoria + "','" + idContexto + "','" + idNinio + "','"
-				+ idMensaje + "','" + fecha + "','" + fechaEnviado + "','"
-				+ fechaRecibido + "');";
+				+ idMensaje + "','" + formatterFecha.format(fecha) + "','" + formatterFecha.format(fechaEnviado) + "','"
+				+ formatterFecha.format(fechaRecibido) + "');";
 		Connection c = getConnection();
 		try {
 			executeScript(c,sql);

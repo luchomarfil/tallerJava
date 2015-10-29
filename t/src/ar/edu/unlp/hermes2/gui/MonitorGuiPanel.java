@@ -97,22 +97,24 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		panelContenedorNotificaciones.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Notificaciones",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addComponent(panelContenedorFiltros, GroupLayout.PREFERRED_SIZE, 508,
-								GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(panelContenedorEtiquetas, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE))
-				.addComponent(panelContenedorNotificaciones, GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addComponent(panelContenedorFiltros, GroupLayout.PREFERRED_SIZE, 508, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panelContenedorEtiquetas, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE))
+				.addComponent(panelContenedorNotificaciones, GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
-								.addComponent(panelContenedorFiltros, GroupLayout.PREFERRED_SIZE, 242,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(panelContenedorEtiquetas, GroupLayout.PREFERRED_SIZE, 242,
-										GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED).addComponent(panelContenedorNotificaciones,
-								GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)));
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
+						.addComponent(panelContenedorFiltros, GroupLayout.PREFERRED_SIZE, 254, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panelContenedorEtiquetas, GroupLayout.PREFERRED_SIZE, 254, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panelContenedorNotificaciones, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
 		panelContenedorNotificaciones.setLayout(new BorderLayout(0, 0));
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -120,15 +122,17 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 
 		tablaNotificaciones = new JXTable();
 		scrollPane.setViewportView(tablaNotificaciones);
+		tablaNotificaciones.setModel(new ModelTablaNotificaciones(new ArrayList<Notificacion>()));
+		
 		tablaNotificaciones.setVisibleColumnCount(1);
 		tablaNotificaciones.setColumnControlVisible(true);
-		tablaNotificaciones.setModel(new ModelTablaNotificaciones());
 		tablaNotificaciones.getColumnModel().getColumn(0).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(1).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(2).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(3).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(4).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(5).setPreferredWidth(78);
+		tablaNotificaciones.setDefaultRenderer(Object.class, new TablaNotificacionesCellRenderer());
 		panelContenedorEtiquetas.setLayout(new MigLayout("", "[][grow][]", "[][19.00][][14.00][][][][]"));
 
 		JLabel lblCrearEtiqueta = new JLabel("Crear Etiqueta:");
@@ -196,11 +200,11 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 
 		comboBoxContexto = new JComboBox();
 
-		JLabel lblCategoria = new JLabel("Categoría:");
+		JLabel lblCategoria = new JLabel("Categor\u00EDa:");
 
 		comboBoxCategoria = new JComboBox();
 
-		JLabel lblNinio = new JLabel("Niñ@:");
+		JLabel lblNinio = new JLabel("Ni\u00F1@:");
 
 		comboBoxNinios = new JComboBox();
 
@@ -228,92 +232,108 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 
 		btnFiltrar = new JButton("Filtrar");
 		GroupLayout gl_panelContenedorFiltros = new GroupLayout(panelContenedorFiltros);
-		gl_panelContenedorFiltros.setHorizontalGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
-						.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(6)
-										.addComponent(lblEtiqueta).addGap(21).addComponent(comboBoxEtiqueta,
-												GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
-								.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(92)
-												.addComponent(dateTimePickerDesde, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(6)
-										.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
-														.addComponent(lblFechahora).addGap(6).addComponent(lblDesde))
-												.addGroup(gl_panelContenedorFiltros
-														.createParallelGroup(Alignment.LEADING, false)
-														.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
-																.addComponent(lblNinio).addGap(46)
-																.addComponent(comboBoxNinios, 0, 0, Short.MAX_VALUE))
-														.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
-																.addComponent(lblContexto).addGap(17)
-																.addComponent(comboBoxContexto, 0, 0, Short.MAX_VALUE))
-														.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
-																.addComponent(lblContenido).addGap(8).addComponent(
-																		comboBoxContenido, GroupLayout.PREFERRED_SIZE,
-																		142, GroupLayout.PREFERRED_SIZE))))))
-								.addGap(18)
-								.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
-												.addComponent(lblCategoria).addGap(2)
-												.addComponent(comboBoxCategoria, 0, 123, Short.MAX_VALUE))
-										.addComponent(lblHasta).addComponent(dateTimePickerHasta,
-												GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(6).addComponent(btnFiltrar,
-								GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)))
-						.addContainerGap()));
-		gl_panelContenedorFiltros.setVerticalGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(6)
-						.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(11)
-										.addComponent(lblContenido))
-						.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(6).addComponent(
-								comboBoxContenido, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(5)
-										.addComponent(lblContexto))
-								.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.BASELINE)
-										.addComponent(comboBoxContexto, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblCategoria).addComponent(comboBoxCategoria,
-												GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(11)
-										.addComponent(lblNinio))
+		gl_panelContenedorFiltros.setHorizontalGroup(
+			gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panelContenedorFiltros.createSequentialGroup()
+					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.TRAILING)
+						.addGroup(Alignment.LEADING, gl_panelContenedorFiltros.createSequentialGroup()
+							.addGap(6)
+							.addComponent(btnFiltrar, GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE))
+						.addGroup(Alignment.LEADING, gl_panelContenedorFiltros.createSequentialGroup()
+							.addGap(6)
+							.addComponent(lblEtiqueta)
+							.addGap(21)
+							.addComponent(comboBoxEtiqueta, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE))
+						.addGroup(Alignment.LEADING, gl_panelContenedorFiltros.createSequentialGroup()
+							.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(comboBoxNinios,
-												GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblFechahora)
-								.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblDesde).addComponent(lblHasta)))
-						.addGap(13)
+									.addGap(92)
+									.addComponent(dateTimePickerDesde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+									.addGap(6)
+									.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+											.addComponent(lblFechahora)
+											.addGap(6)
+											.addComponent(lblDesde))
+										.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING, false)
+											.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+												.addComponent(lblNinio)
+												.addGap(46)
+												.addComponent(comboBoxNinios, 0, 0, Short.MAX_VALUE))
+											.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+												.addComponent(lblContexto)
+												.addGap(17)
+												.addComponent(comboBoxContexto, 0, 0, Short.MAX_VALUE))
+											.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+												.addComponent(lblContenido)
+												.addGap(8)
+												.addComponent(comboBoxContenido, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE))))))
+							.addGap(18)
+							.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+									.addComponent(lblCategoria)
+									.addGap(2)
+									.addComponent(comboBoxCategoria, 0, 190, Short.MAX_VALUE))
+								.addComponent(lblHasta)
+								.addComponent(dateTimePickerHasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap())
+		);
+		gl_panelContenedorFiltros.setVerticalGroup(
+			gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+					.addGap(6)
+					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+							.addGap(11)
+							.addComponent(lblContenido))
+						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+							.addGap(6)
+							.addComponent(comboBoxContenido, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblContexto))
 						.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.BASELINE)
-								.addComponent(dateTimePickerDesde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(dateTimePickerHasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(17)
-										.addComponent(lblEtiqueta))
-								.addGroup(gl_panelContenedorFiltros.createSequentialGroup().addGap(12).addComponent(
-										comboBoxEtiqueta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)))
-						.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnFiltrar).addContainerGap()));
+							.addComponent(comboBoxContexto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblCategoria)
+							.addComponent(comboBoxCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+							.addGap(11)
+							.addComponent(lblNinio))
+						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(comboBoxNinios, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblFechahora)
+						.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblDesde)
+							.addComponent(lblHasta)))
+					.addGap(13)
+					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.BASELINE)
+						.addComponent(dateTimePickerDesde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(dateTimePickerHasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+							.addGap(17)
+							.addComponent(lblEtiqueta))
+						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+							.addGap(12)
+							.addComponent(comboBoxEtiqueta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnFiltrar)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
 		panelContenedorFiltros.setLayout(gl_panelContenedorFiltros);
 		setLayout(groupLayout);
 
 		JSpinner timeSpinner = new JSpinner(new SpinnerDateModel());
 
+
+		
 		this.cargarDatosParaFiltros();
 		this.asignarEventoBotonFiltrar();
 		this.asignarEventoBotonesEtiquetas();
@@ -395,7 +415,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 			List<Notificacion> notificaciones = MonitorCore.instance().obtenerNotificacionesFiltradas(filtro);
 			
 			//actualizo la tabla
-			tablaNotificaciones.setModel(new ModelTablaNotificaciones(notificaciones));
+			((ModelTablaNotificaciones)tablaNotificaciones.getModel()).setTableData(notificaciones);
 		}catch (HermesException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
@@ -566,6 +586,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 //		MonitorCore.instance().obtenerNotificacionesFiltradas(obtenerFiltroDeLoSeleccionado());
-		this.filtrarNotificaciones(obtenerFiltroDeLoSeleccionado());
+//		this.filtrarNotificaciones(obtenerFiltroDeLoSeleccionado());
+		this.filtrarNotificaciones(new FiltroNotificacion());
 	}
 }

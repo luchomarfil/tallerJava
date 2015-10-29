@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import ar.edu.unlp.hermes2.gui.HermesException;
 import ar.edu.unlp.hermes2.monitor.MonitorCore;
+import ar.edu.unlp.hermes2.monitor.MonitorUtils;
 
 public class ArchivoNotificacionListener implements IEventosExternosListener, Runnable {
 	private static final Logger logger = Logger.getLogger(ArchivoNotificacionListener.class.getName());
@@ -20,16 +21,17 @@ public class ArchivoNotificacionListener implements IEventosExternosListener, Ru
 	private static final int CAMPO_NINIO_ID = 2;
 	private static final int CAMPO_CONTEXTO_ID = 1;
 	private static final int CAMPO_CATEGORIA_ID = 0;
+	
 	File repositorio;
 
 	public ArchivoNotificacionListener() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void run() {
 		String line = null;
 		FileReader fileReader;
+		SimpleDateFormat formatter = MonitorUtils.formatterFechaPersistencia;
 		try {
 			Thread.sleep(2000);
 			URL resource = getClass().getClassLoader().getResource("ar/edu/unlp/hermes2/resources/notificaciones.txt");
@@ -48,8 +50,6 @@ public class ArchivoNotificacionListener implements IEventosExternosListener, Ru
 					Long idContexto = Long.parseLong(campos[CAMPO_CONTEXTO_ID]);
 					Long idNinio = Long.parseLong(campos[CAMPO_NINIO_ID]);
 					Long idMensaje = Long.parseLong(campos[CAMPO_MENSAJE_ID]);
-					//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-					SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
 				    Date fecha = formatter.parse(campos[4]);
 				    Date fechaEnviado = formatter.parse(campos[5]);
 					procesarNotificacion(idCategoria, idContexto, idNinio, idMensaje, fecha, fechaEnviado);	

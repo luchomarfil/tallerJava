@@ -1,5 +1,6 @@
 package ar.edu.unlp.hermes2.monitor;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.ComboBoxModel;
@@ -11,6 +12,9 @@ import ar.edu.unlp.hermes2.model.TransferObject;
 
 public class MonitorUtils {
 
+	public static SimpleDateFormat formatterFechaPersistencia = new SimpleDateFormat("yyyyMMddHHmmss");
+	public static SimpleDateFormat formatterFechaVisual = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	
 	public static ComboBoxModel<TransferObject> crearModelCombobox(List<TransferObject> lista) {
 		DefaultComboBoxModel<TransferObject> defaultComboBoxModel = new DefaultComboBoxModel<TransferObject>();
 		for (TransferObject t : lista) {
@@ -37,4 +41,6 @@ public class MonitorUtils {
 		return null;
 	}
 
+	
+	
 }
