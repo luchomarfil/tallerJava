@@ -2,7 +2,6 @@ package ar.edu.unlp.hermes2.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -70,30 +69,30 @@ public class DatabaseUtil {
 		}
 	}
 
-	public static int[] executeBatch(Connection c, String sql) throws HermesException {
-		Connection connection = c;
-		try {
-			Statement statement = connection.createStatement();
-			statement.setQueryTimeout(130); // set timeout to 30 sec.
-			statement.addBatch(sql);
-			return statement.executeBatch();
-			
-		}
-		catch (SQLException e) {//if the error message is "out of memory", it probably means no database file is found
-			throw new HermesException("Error obteniendo el result set para la query " + sql, e);
-		}
-
-		finally {
-//			if (connection != null){
-//				try {
-//					connection.close();
-//				} catch (SQLException e) {
-//					throw new HermesException("Error intentando cerrar la conexion con la base de datos");
-//				}
-//			}
-			
-		}
-	}
+//	public static int[] executeBatch(Connection c, String sql) throws HermesException {
+//		Connection connection = c;
+//		try {
+//			Statement statement = connection.createStatement();
+//			statement.setQueryTimeout(130); // set timeout to 30 sec.
+//			statement.addBatch(sql);
+//			return statement.executeBatch();
+//			
+//		}
+//		catch (SQLException e) {//if the error message is "out of memory", it probably means no database file is found
+//			throw new HermesException("Error obteniendo el result set para la query " + sql, e);
+//		}
+//
+//		finally {
+////			if (connection != null){
+////				try {
+////					connection.close();
+////				} catch (SQLException e) {
+////					throw new HermesException("Error intentando cerrar la conexion con la base de datos");
+////				}
+////			}
+//			
+//		}
+//	}
 
 
 }

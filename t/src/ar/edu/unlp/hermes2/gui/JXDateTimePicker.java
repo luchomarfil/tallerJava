@@ -1,16 +1,24 @@
 package ar.edu.unlp.hermes2.gui;
 
-import org.jdesktop.swingx.calendar.SingleDaySelectionModel;
-import org.jdesktop.swingx.JXDatePicker;
-
-import javax.swing.*;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.DateFormatter;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.awt.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
+
+import org.jdesktop.swingx.JXDatePicker;
+import org.jdesktop.swingx.calendar.SingleDaySelectionModel;
 
 /**
  * This is licensed under LGPL.  License can be found here:  http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -18,7 +26,11 @@ import java.awt.*;
  * This is provided as is.  If you have questions please direct them to charlie.hubbard at gmail dot you know what.
  */
 public class JXDateTimePicker extends JXDatePicker {
-    private JSpinner timeSpinner;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JSpinner timeSpinner;
     private JPanel timePanel;
     private DateFormat timeFormat;
 

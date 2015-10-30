@@ -1,6 +1,5 @@
 package ar.edu.unlp.hermes2.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

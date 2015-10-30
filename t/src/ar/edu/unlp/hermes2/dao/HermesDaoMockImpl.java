@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import ar.edu.unlp.hermes2.model.Categoria;
@@ -176,6 +175,7 @@ public class HermesDaoMockImpl implements HermesDao {
 		return false;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public TransferObject getTransferObject(Class clazz, Long id){
 		String lista = armarNombreLista(clazz);
 		Field field;
@@ -191,6 +191,7 @@ public class HermesDaoMockImpl implements HermesDao {
 		
 	}
 
+	@SuppressWarnings("rawtypes")
 	private String armarNombreLista(Class clazz) {
 		//si termina en vocal, solo agregamos s
 		if(clazz.getSimpleName().matches("^.*[aeiou]$")){

@@ -1,13 +1,10 @@
 package ar.edu.unlp.hermes2.gui;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 import ar.edu.unlp.hermes2.model.Notificacion;
-import ar.edu.unlp.hermes2.monitor.MonitorUtils;
 
 public class ModelTablaNotificaciones extends AbstractTableModel {
 
@@ -19,7 +16,6 @@ public class ModelTablaNotificaciones extends AbstractTableModel {
 	private static final int COLUMNA_MENSAJE = 2;
 	private static final int COLUMNA_FECHA = 1;
 	private static final int COLUMNA_ID = 0;
-	private static final SimpleDateFormat formmater = MonitorUtils.formatterFechaVisual;
 	private Object[][] data = new Object[][] {};
 	private String[] columnNames = new String[] { "Id", "Fecha/Hora env\u00EDo", "Contenido", "Contexto",
 			"Categor\u00EDa", "Ni\u00F1@", "Etiquetas" };

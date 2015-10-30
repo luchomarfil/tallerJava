@@ -1,20 +1,15 @@
 package ar.edu.unlp.hermes2.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javax.management.monitor.Monitor;
 
 import ar.edu.unlp.hermes2.database.DatabaseUtil;
 import ar.edu.unlp.hermes2.gui.HermesException;
@@ -29,6 +24,7 @@ import ar.edu.unlp.hermes2.monitor.FiltroNotificacion;
 import ar.edu.unlp.hermes2.monitor.MonitorUtils;
 
 public class HermesDaoImpl implements HermesDao {
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(HermesDaoImpl.class
 			.getName());
 
@@ -44,28 +40,28 @@ public class HermesDaoImpl implements HermesDao {
 		return DatabaseUtil.ejecutarSelect(c,sql);		
 	}
 	
-	/**
-	 * Para sqls que modifican la base de datos: INSERT, UPDATE, DELETE
-	 * Retornan la cantidad de tuplas afectadas 
-	 * @param c 
-	 * @param sql
-	 * 
-	 * @throws HermesException
-	 */
-	private static int executeScript(Connection c, String sql) throws HermesException{		
-		return DatabaseUtil.executeScript(c,sql);
-	}
-
-	/**
-	 * Ejecuta una lista de comandos INSERT, DELETE Y UPDATE
-	 * 
-	 * @param sql
-	 * @return Retorna el numero de tuplas afectadas
-	 * @throws HermesException 
-	 */
-	private static int[] executeBatch(Connection c, String sql) throws HermesException{
-		return DatabaseUtil.executeBatch(c,  sql);
-	}
+//	/**
+//	 * Para sqls que modifican la base de datos: INSERT, UPDATE, DELETE
+//	 * Retornan la cantidad de tuplas afectadas 
+//	 * @param c 
+//	 * @param sql
+//	 * 
+//	 * @throws HermesException
+//	 */
+//	private static int executeScript(Connection c, String sql) throws HermesException{		
+//		return DatabaseUtil.executeScript(c,sql);
+//	}
+//
+//	/**
+//	 * Ejecuta una lista de comandos INSERT, DELETE Y UPDATE
+//	 * 
+//	 * @param sql
+//	 * @return Retorna el numero de tuplas afectadas
+//	 * @throws HermesException 
+//	 */
+//	private static int[] executeBatch(Connection c, String sql) throws HermesException{
+//		return DatabaseUtil.executeBatch(c,  sql);
+//	}
 	
 	private static Connection getConnection() throws HermesException{
 		return DatabaseUtil.getConnection();

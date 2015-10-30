@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.logging.Logger;
 
-import javax.swing.JTextField;
-
 import ar.edu.unlp.hermes2.dao.HermesDao;
 import ar.edu.unlp.hermes2.dao.HermesDaoImpl;
 //import ar.edu.unlp.hermes2.dao.HermesDaoMockImpl;

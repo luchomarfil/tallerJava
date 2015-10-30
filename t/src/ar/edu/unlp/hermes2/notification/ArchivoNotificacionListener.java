@@ -39,7 +39,6 @@ public class ArchivoNotificacionListener implements IEventosExternosListener, Ru
 			fileReader = new FileReader(repositorio);
 			BufferedReader br = new BufferedReader(fileReader);
 			
-			
 			// if no more lines the readLine() returns null
 			while ((line = br.readLine()) != null) {
 				// reading lines until the end of the file
