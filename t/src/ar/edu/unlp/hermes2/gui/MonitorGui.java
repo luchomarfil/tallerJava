@@ -1,12 +1,17 @@
 package ar.edu.unlp.hermes2.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.logging.LogManager;
+
 import javax.swing.JFrame;
 
 import ar.edu.unlp.hermes2.notification.ArchivoNotificacionListener;
-import ar.edu.unlp.hermes2.notification.IEventosExternosListener;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 public class MonitorGui extends JFrame {
 	
@@ -26,9 +31,20 @@ public class MonitorGui extends JFrame {
 		
 	}
 
-	public static void main(String[] args) {
-		new MonitorGui().setVisible(true);		
+	public static void main(String[] args) {		
+		MonitorGui monitorGui = new MonitorGui();
+		monitorGui.config();
+		monitorGui.setVisible(true);		
 		new ArchivoNotificacionListener().run();
 
+	}
+
+	private void config() {
+		try {
+			InputStream res = MonitorGui.class.getClassLoader().getResourceAsStream("ar/edu/unlp/hermes2/resources/logging.properties");			
+			LogManager.getLogManager().readConfiguration(res);
+		} catch (SecurityException | IOException e) {			
+			e.printStackTrace();
+		}
 	}
 }

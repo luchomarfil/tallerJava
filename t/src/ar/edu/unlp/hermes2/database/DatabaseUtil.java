@@ -25,7 +25,7 @@ public class DatabaseUtil {
 		// create a database connection
 		try {
 			Connection connection = DriverManager
-					.getConnection("jdbc:sqlite:t/hermes");
+					.getConnection("jdbc:sqlite:hermes");
 			return connection;
 		} catch (SQLException e) {
 			throw new HermesException("Error de conexion con la base de datos",	e);
