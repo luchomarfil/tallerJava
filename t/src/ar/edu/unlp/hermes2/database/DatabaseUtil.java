@@ -2,6 +2,7 @@ package ar.edu.unlp.hermes2.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,7 +25,7 @@ public class DatabaseUtil {
 		// create a database connection
 		try {
 			Connection connection = DriverManager
-					.getConnection("jdbc:sqlite:hermes");
+					.getConnection("jdbc:sqlite:t/hermes");
 			return connection;
 		} catch (SQLException e) {
 			throw new HermesException("Error de conexion con la base de datos",	e);
@@ -92,6 +93,7 @@ public class DatabaseUtil {
 //			}
 			
 		}
-	};
+	}
+
 
 }

@@ -72,6 +72,7 @@ public class HermesDaoImpl implements HermesDao {
 	}
 	
 
+
 	private static void cerrarConexion(Connection c) throws HermesException {
 		try {
 			if(c!=null && !c.isClosed()){				
@@ -192,7 +193,7 @@ public class HermesDaoImpl implements HermesDao {
 	@Override
 	public List<Notificacion> obtenerNotificacionesFiltradas(
 			FiltroNotificacion filtro) throws HermesException {
-
+		SimpleDateFormat sd = MonitorUtils.formatterFechaPersistencia;
 		List<Notificacion> l = new ArrayList<Notificacion>();
 
 		String sql = "select n.id as n_id, n.fecha as n_fecha, ca.id as ca_id, ca.nombre as ca_nombre, co.id as co_id,"
@@ -203,39 +204,82 @@ public class HermesDaoImpl implements HermesDao {
 				+ "		left join 'hermes.ninios' AS ni on n.idNinio = ni.id"
 				+ "		left join 'hermes.contextos' AS co on co.id= n.idContexto"
 				+ "		left join 'hermes.categorias' AS ca on ca.id= n.idCategoria"
-				+ "		left join 'hermes.mensajes' AS me on me.id= n.idMensaje;";
-		sql += "where 1=1";
-		List<Object> parameters = new ArrayList<Object>(); 
+				+ "		left join 'hermes.mensajes' AS me on me.id= n.idMensaje";
+		
+		sql += " where 1=1";
+
 		if(filtro.getCategoria()!=null){
-			sql += " and ca.id = ?";
-			parameters.add(filtro.getCategoria().getId());			
+			sql += " and ca.id = ?";		
+		}
+		if(filtro.getContexto()!=null){
+			sql += " and co.id = ?";		
+		}
+
+		if(filtro.getEtiqueta()!=null){
+			sql += " and n.id in (select idNotificacion from 'hermes.notificaciones.etiquetas' where idEtiqueta = ? )";	
 		}
 		
+		if(filtro.getMensaje()!=null){
+			sql += " and me.id = ?";		
+		}
+		if(filtro.getNinio()!=null){
+			sql += " and ni.id = ?";			
+		}
 		
+		if(filtro.getFechaDesde()!=null){
+			sql += " and CAST(n.fecha AS INTEGER) >=  ? ";
+		}
+		if(filtro.getFechaHasta()!=null){
+			sql += " and CAST(n.fecha AS INTEGER) <=  ? ";
+		}
+		
+		sql += " ;";
 		Connection c = getConnection();
-		
+		int i = 1;
 		try {
-		PreparedStatement prepareStatement = c.prepareStatement(sql);
+		PreparedStatement prep = c.prepareStatement(sql);
+
+		if(filtro.getCategoria()!=null){
+			prep.setLong(i, filtro.getCategoria().getId());
+			i++;
+		}
+		if(filtro.getContexto()!=null){
+			prep.setLong(i, filtro.getContexto().getId());
+			i++;
+		}
 		
-		int i = 0;
-		for (Object object : parameters) {			
-			prepareStatement.setObject(i, object);
+		if(filtro.getEtiqueta()!=null){
+			prep.setLong(i, filtro.getEtiqueta().getId());
+			i++;
+		}
+		
+		if(filtro.getMensaje()!=null){
+			prep.setLong(i, filtro.getMensaje().getId());
+			i++;
+		}
+		if(filtro.getNinio()!=null){
+			prep.setLong(i, filtro.getNinio().getId());
+			i++;
+		}
+		
+		if(filtro.getFechaDesde()!=null){
+			prep.setString(i, sd.format(filtro.getFechaDesde()));
+			i++;
+		}
+		if(filtro.getFechaHasta()!=null){
+			prep.setString(i, sd.format(filtro.getFechaHasta()));	
 			i++;
 		}
 		
 		
-	
-		ResultSet resultSet = getResult(c,sql);
-		long id;
-		Date fecha;
-		List<Etiqueta> etiquetas;
-		Categoria categoria;
-		Contexto contexto;
-		Mensaje mensaje;
-		Ninio ninio;
-		Date fechaRecibido;
-		Date fechaEnviado;
-		SimpleDateFormat sd = MonitorUtils.formatterFechaPersistencia;
+		
+		
+		ResultSet resultSet = prep.executeQuery();
+		//istanciamos todas las variables de notificaciones
+		long id;Date fecha;	List<Etiqueta> etiquetas;Categoria categoria;Contexto contexto;
+		Mensaje mensaje;Ninio ninio;Date fechaRecibido;	Date fechaEnviado;
+		
+		
 		
 			while (resultSet.next()) {
 				id = resultSet.getLong("n_id");				
@@ -252,6 +296,7 @@ public class HermesDaoImpl implements HermesDao {
 				ninio = new Ninio(resultSet.getLong("ni_id"),
 						resultSet.getString("ni_nombre"),
 						resultSet.getString("ni_apellido"));
+
 				fechaRecibido = sd.parse(resultSet.getString("n_fechaRecibido"));
 				//fechaRecibido = new Date(resultSet.getString("n_fechaRecibido"));
 				fechaEnviado = sd.parse(resultSet.getString("n_fechaEnviado"));
@@ -281,15 +326,15 @@ public class HermesDaoImpl implements HermesDao {
 		else{
 			etiquetaAux = etiqueta.getDescripcion();
 		}
-
-		String sql = "INSERT INTO 'hermes.etiquetas' VALUES (null,'"
-				+ etiqueta.getNombre() + "','" + etiquetaAux + "',0);";
-		
+		String sql = "INSERT INTO 'hermes.etiquetas' VALUES (null,?,?,0);";
 		Connection c = getConnection();
+		PreparedStatement prep;
+		
 		try {
-			executeScript(c,sql);
-		} catch (HermesException e){
-			throw e;
+		prep = c.prepareStatement(sql);			
+		prep.setString(1, etiqueta.getNombre());
+		prep.setString(2, etiquetaAux);
+		prep.executeUpdate();
 		} catch (Exception e) {
 			throw new HermesException("Error agregando la etiqueta");
 		}		
@@ -300,22 +345,37 @@ public class HermesDaoImpl implements HermesDao {
 	}
 
 	@Override
-	public Boolean existeEtiquetaPara(String nombreNuevaEtiqueta) {
+	public Boolean existeEtiquetaPara(String nombreNuevaEtiqueta) throws HermesException {
+		String sql = "select count(*) from 'hermes.etiquetas' where nombre = ? ;";
+		Connection c = getConnection();
+		PreparedStatement prep;
+		
+		try{
+			prep = c.prepareStatement(sql);
+			prep.setString(1, nombreNuevaEtiqueta);
+			prep.executeQuery();
+			if (prep.executeQuery().getInt(1) == 0) return false;
+		} catch (Exception e) {
+			throw new HermesException("Error agregando la etiqueta");
+		}		
+		finally{
+			cerrarConexion(c);
+		}
 		return true;
-		// TODO No la termino de entender !!!
+
 	}
 
 	@Override
 	public void eliminarEtiqueta(Etiqueta etiqueta) throws HermesException {
 
-		String sql = "DELETE FROM 'hermes.etiquetas' WHERE id = "
-				+ etiqueta.getId() + " ;";
-
+		String sql = "DELETE FROM 'hermes.etiquetas' WHERE id = ? ;";
+		PreparedStatement prep;
 		Connection c = getConnection();
 		try {
-			executeScript(c,sql);
-		} catch (HermesException e){
-			throw e;
+			prep = c.prepareStatement(sql);
+			prep.setLong(1, etiqueta.getId());
+			prep.executeUpdate();
+
 		} catch (Exception e) {
 			throw new HermesException("Error agregando la etiqueta");
 		}		
@@ -328,17 +388,21 @@ public class HermesDaoImpl implements HermesDao {
 	@Override
 	public void asignarEtiqueta(Etiqueta selectedItem,
 			List<Long> idsNotificaciones) throws HermesException {
-		String sql = "";
-		for (Long long1 : idsNotificaciones) {
-			sql = "INSERT INTO 'hermes.notificaciones.etiquetas' VALUES (null,'"
-					+ long1 + "','" + selectedItem.getId() + ";";
-			//getResult(sql);
-		}
+
+		String sql = "INSERT INTO 'hermes.notificaciones.etiquetas' VALUES (null,?,?);";
+
+		PreparedStatement prep;
 		Connection c = getConnection();
 		try {
-			executeBatch(c,sql);
-		} catch (HermesException e){
-			throw e;
+			
+			for (Long long1 : idsNotificaciones) {
+				prep = c.prepareStatement(sql);
+				prep.setLong(2, selectedItem.getId());
+				prep.setLong(1, long1);
+				prep.executeUpdate();
+			}			
+
+
 		} catch (Exception e) {
 			throw new HermesException("Error agregando la etiqueta");
 		}		
@@ -350,22 +414,41 @@ public class HermesDaoImpl implements HermesDao {
 
 	@Override
 	public Boolean existeEtiquetaPara(String nuevoNombre,
-			Etiqueta etiquetaARenombrar) {
+			Etiqueta etiquetaARenombrar) throws HermesException {
+		
+		String sql = "select count(*) from 'hermes.etiquetas' where nombre = ? and id <> ?;";
+		Connection c = getConnection();
+		PreparedStatement prep;
+		
+		try{
+			prep = c.prepareStatement(sql);
+			prep.setString(1, nuevoNombre);
+			prep.setLong(2, etiquetaARenombrar.getId());
+			prep.executeQuery();
+			if (prep.executeQuery().getInt(1) == 0) return false;
+		} catch (Exception e) {
+			throw new HermesException("Error agregando la etiqueta");
+		}		
+		finally{
+			cerrarConexion(c);
+		}
 		return true;
-		// TODO No la termino de entender !!!
+
 	}
 
 	@Override
 	public void renombrarEtiqueta(Etiqueta etiquetaARenombrar,
 			String nuevoNombre) throws HermesException {
 
-		String sql = "UPDATE 'hermes.etiquetas' SET nombre= " + nuevoNombre
-				+ "  WHERE id='" + etiquetaARenombrar.getId() + "';";
+		String sql = "UPDATE 'hermes.etiquetas' SET nombre= ?  WHERE id= ?;";
 		Connection c = getConnection();
+		PreparedStatement prep;
 		try {
-			executeScript(c,sql);
-		} catch (HermesException e){
-			throw e;
+			prep = c.prepareStatement(sql);
+			prep.setString(1, nuevoNombre);
+			prep.setLong(2,etiquetaARenombrar.getId());
+			prep.executeUpdate();
+
 		} catch (Exception e) {
 			throw new HermesException("Error agregando la etiqueta");
 		}		
@@ -379,17 +462,24 @@ public class HermesDaoImpl implements HermesDao {
 	public void nuevaNotificacion(Long idCategoria, Long idContexto,
 			Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado,
 			Date fechaRecibido) throws HermesException {
-
+		
 		SimpleDateFormat formatterFecha = MonitorUtils.formatterFechaPersistencia;
-		String sql = "INSERT INTO 'hermes.notificaciones' VALUES (null,'"
-				+ idCategoria + "','" + idContexto + "','" + idNinio + "','"
-				+ idMensaje + "','" + formatterFecha.format(fecha) + "','" + formatterFecha.format(fechaEnviado) + "','"
-				+ formatterFecha.format(fechaRecibido) + "');";
+		String sql = "INSERT INTO 'hermes.notificaciones' VALUES (null,?,?,?,?,?,?,?);";
 		Connection c = getConnection();
+		PreparedStatement prep;
+
 		try {
-			executeScript(c,sql);
-		} catch (HermesException e){
-			throw e;
+			prep = c.prepareStatement(sql);
+			prep.setLong(1, idCategoria);
+			prep.setLong(2, idContexto);
+			prep.setLong(3, idNinio);
+			prep.setLong(4, idMensaje);
+			prep.setString(5, formatterFecha.format(fecha));
+			prep.setString(6, formatterFecha.format(fechaEnviado));
+			prep.setString(7, formatterFecha.format(fechaEnviado));
+			prep.executeUpdate();
+			
+
 		} catch (Exception e) {
 			throw new HermesException("Error agregando la etiqueta");
 		}		
@@ -404,11 +494,16 @@ public class HermesDaoImpl implements HermesDao {
 
 		String sql = "select e.* From 'hermes.etiquetas' AS e"
 				+ "		inner join 'hermes.notificaciones.etiquetas' AS ne"
-				+ "		on e.id = ne.idEtiqueta" + "		where idNotificacion = '"
-				+ id + "';";
+				+ "		on e.id = ne.idEtiqueta" + "		where idNotificacion = ?;";
 		Connection c = getConnection();
+		PreparedStatement prep;
 		ResultSet resultSet = getResult(c,sql);
 		try {
+			prep = c.prepareStatement(sql);
+			prep.setLong(1, id);
+			resultSet = prep.executeQuery();
+						
+			
 			while (resultSet.next())
 				l.add(new Etiqueta(resultSet.getLong("id"), resultSet
 						.getString("nombre"), resultSet

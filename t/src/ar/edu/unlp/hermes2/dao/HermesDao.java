@@ -26,13 +26,13 @@ public interface HermesDao {
 
 	void agregarEtiqueta(Etiqueta etiqueta) throws HermesException;
 
-	Boolean existeEtiquetaPara(String nombreNuevaEtiqueta);
+	Boolean existeEtiquetaPara(String nombreNuevaEtiqueta) throws HermesException;
 
 	void eliminarEtiqueta(Etiqueta etiqueta) throws HermesException;
 
 	void asignarEtiqueta(Etiqueta selectedItem, List<Long> idsNotificaciones) throws HermesException;
 
-	Boolean existeEtiquetaPara(String nuevoNombre, Etiqueta etiquetaARenombrar);
+	Boolean existeEtiquetaPara(String nuevoNombre, Etiqueta etiquetaARenombrar) throws HermesException;
 
 	void renombrarEtiqueta(Etiqueta etiquetaARenombrar, String nuevoNombre) throws HermesException;
 
