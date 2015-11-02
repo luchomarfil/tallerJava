@@ -67,6 +67,9 @@ public class MonitorCore extends Observable{
 	public void agregarEtiqueta(String nombreNuevaEtiqueta) throws HermesException {
 		// realiza controles sobre la nueva etiqueta, por ejemplo que no este
 		// vacia
+		if(nombreNuevaEtiqueta.trim().equals("")){
+			throw new HermesException("Debe especificar un nombre para la etiqueta");
+		}
 		if (!getHermesDao().existeEtiquetaPara(nombreNuevaEtiqueta)) {
 			getHermesDao().agregarEtiqueta(new Etiqueta(nombreNuevaEtiqueta));
 		} else {
@@ -74,13 +77,19 @@ public class MonitorCore extends Observable{
 		}
 	}
 
-	public void eliminarEtiqueta(Etiqueta etiqueta) throws HermesException {
+	public void eliminarEtiqueta(Etiqueta etiqueta) throws HermesException {		
 		getHermesDao().eliminarEtiqueta(etiqueta);
 	}
 
-	public void asignarEtiqueta(Etiqueta etiqueta, List<Long> idsNotificaciones) throws HermesException {
-		getHermesDao().asignarEtiqueta(etiqueta,idsNotificaciones);
-		
+	/**
+	 * Este metodo asigna o desasigna la etiqueta a la lista de etiquetas que tiene 
+	 * cada una de las notificaciones
+	 * @param etiqueta
+	 * @param notificaciones
+	 * @throws HermesException
+	 */
+	public void asignarEtiqueta(Etiqueta etiqueta, List<Notificacion> notificaciones) throws HermesException {		
+		getHermesDao().asignarEtiqueta(etiqueta,notificaciones);		
 	}
 
 	public void renombrarEtiqueta(Etiqueta etiquetaARenombrar, String nuevoNombre) throws HermesException {
@@ -107,8 +116,13 @@ public class MonitorCore extends Observable{
 	public void recibirNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
 			Date fechaEnviado) throws HermesException {
 		Date fechaRecibido = new Date();
-		getHermesDao().nuevaNotificacion(idCategoria,idContexto,idNinio,idMensaje,fecha,fechaEnviado,fechaRecibido);
-		this.setChanged();
-		this.notifyObservers();
+		if(!getHermesDao().existeNotificacion(idNinio,idMensaje,fecha,fechaEnviado)){
+			getHermesDao().nuevaNotificacion(idCategoria,idContexto,idNinio,idMensaje,fecha,fechaEnviado,fechaRecibido);
+			this.setChanged();
+			this.notifyObservers();	
+		}
+		else{
+			throw new HermesException("Error, la notificacion ya existe en la base de datos");
+		}
 	}
 }

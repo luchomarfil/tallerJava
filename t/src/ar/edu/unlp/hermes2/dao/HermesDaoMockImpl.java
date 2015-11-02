@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import ar.edu.unlp.hermes2.gui.HermesException;
 import ar.edu.unlp.hermes2.model.Categoria;
 import ar.edu.unlp.hermes2.model.Contexto;
 import ar.edu.unlp.hermes2.model.Etiqueta;
@@ -208,11 +209,11 @@ public class HermesDaoMockImpl implements HermesDao {
 	}
 
 	@Override
-	public void asignarEtiqueta(Etiqueta etiqueta, List<Long> idsNotificaciones) {
-		for (Long id : idsNotificaciones) {
-			Notificacion n = (Notificacion) getTransferObject(Notificacion.class, id);
-			if(!n.getEtiquetas().contains(etiqueta)){
-				n.getEtiquetas().add(etiqueta);
+	public void asignarEtiqueta(Etiqueta etiqueta, List<Notificacion> notificaciones) {
+		for (Notificacion n : notificaciones) {
+			Notificacion n1 = (Notificacion) getTransferObject(Notificacion.class, n.getId());
+			if(!n1.getEtiquetas().contains(etiqueta)){
+				n1.getEtiquetas().add(etiqueta);
 			}
 		}
 	}
@@ -276,6 +277,13 @@ public class HermesDaoMockImpl implements HermesDao {
 //		Notificacion n = new Notificacion();
 //		n.setMensaje((Mensaje) getTransferObject(Mensaje.class, idMensaje));
 		
+	}
+
+	@Override
+	public Boolean existeNotificacion(Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado)
+			throws HermesException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

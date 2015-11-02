@@ -39,29 +39,7 @@ public class HermesDaoImpl implements HermesDao {
 	private static ResultSet getResult(Connection c, String sql) throws HermesException {
 		return DatabaseUtil.ejecutarSelect(c,sql);		
 	}
-	
-//	/**
-//	 * Para sqls que modifican la base de datos: INSERT, UPDATE, DELETE
-//	 * Retornan la cantidad de tuplas afectadas 
-//	 * @param c 
-//	 * @param sql
-//	 * 
-//	 * @throws HermesException
-//	 */
-//	private static int executeScript(Connection c, String sql) throws HermesException{		
-//		return DatabaseUtil.executeScript(c,sql);
-//	}
-//
-//	/**
-//	 * Ejecuta una lista de comandos INSERT, DELETE Y UPDATE
-//	 * 
-//	 * @param sql
-//	 * @return Retorna el numero de tuplas afectadas
-//	 * @throws HermesException 
-//	 */
-//	private static int[] executeBatch(Connection c, String sql) throws HermesException{
-//		return DatabaseUtil.executeBatch(c,  sql);
-//	}
+
 	
 	private static Connection getConnection() throws HermesException{
 		return DatabaseUtil.getConnection();
@@ -70,9 +48,16 @@ public class HermesDaoImpl implements HermesDao {
 
 
 	private static void cerrarConexion(Connection c) throws HermesException {
+		cerrarConexion(c,null);
+	}
+	
+	private static void cerrarConexion(Connection c, PreparedStatement prep) throws HermesException {
 		try {
+			if(prep!=null && !prep.isClosed()){
+				prep.close();
+			}
 			if(c!=null && !c.isClosed()){				
-					c.close();			
+				c.close();			
 			}			
 		} catch (SQLException e) {
 			throw new HermesException("Error cerrando la conexion",e);
@@ -342,7 +327,7 @@ public class HermesDaoImpl implements HermesDao {
 
 	@Override
 	public Boolean existeEtiquetaPara(String nombreNuevaEtiqueta) throws HermesException {
-		String sql = "select count(*) from 'hermes.etiquetas' where nombre = ? ;";
+		String sql = "select count(*) from 'hermes.etiquetas' where LOWER(nombre) = LOWER(?) ;";
 		Connection c = getConnection();
 		PreparedStatement prep;
 		
@@ -363,17 +348,32 @@ public class HermesDaoImpl implements HermesDao {
 
 	@Override
 	public void eliminarEtiqueta(Etiqueta etiqueta) throws HermesException {
-
-		String sql = "DELETE FROM 'hermes.etiquetas' WHERE id = ? ;";
+		//se debe eliminar la etiqueta pero tambien en la tabla intermedia
+		//entre notificacion_etiquetas
+		
 		PreparedStatement prep;
-		Connection c = getConnection();
+		Connection c = getConnection();		
 		try {
+			c.setAutoCommit(false);
+			String sql = "DELETE FROM 'hermes.etiquetas' WHERE id = ? ;";
 			prep = c.prepareStatement(sql);
 			prep.setLong(1, etiqueta.getId());
 			prep.executeUpdate();
-
+			sql = "DELETE FROM 'hermes.notificaciones.etiquetas' where idEtiqueta = ?";
+			prep = c.prepareStatement(sql);
+			prep.setLong(1, etiqueta.getId());
+			prep.executeUpdate();
+			c.commit();
 		} catch (Exception e) {
-			throw new HermesException("Error agregando la etiqueta");
+			if (c != null) {
+	            try {
+	                System.err.print("Transaction is being rolled back");
+	                c.rollback();
+	            } catch(SQLException excep) {
+	            	throw new HermesException("Error intentando hacer el rollback de la operacion",excep);
+	            }
+	        }
+			throw new HermesException("Error eliminando la etiqueta");
 		}		
 		finally{
 			cerrarConexion(c);
@@ -382,28 +382,48 @@ public class HermesDaoImpl implements HermesDao {
 	}
 
 	@Override
-	public void asignarEtiqueta(Etiqueta selectedItem,
-			List<Long> idsNotificaciones) throws HermesException {
-
-		String sql = "INSERT INTO 'hermes.notificaciones.etiquetas' VALUES (null,?,?);";
-
-		PreparedStatement prep;
+	public void asignarEtiqueta(Etiqueta etiqueta,
+			List<Notificacion> notificaciones) throws HermesException {
+		PreparedStatement prep = null;
 		Connection c = getConnection();
 		try {
+			c.setAutoCommit(false);
+			//estas operaciones o se realizan todas o no se realiza ninguna
 			
-			for (Long long1 : idsNotificaciones) {
+			for (Notificacion n : notificaciones) {
+				String sql = "";
+				//se analiza si se tiene que agregar la etiqueta o si se tiene que eliminar esa etiqueta.
+				//para eso...por cada notificacion, se analiza si la etiqueta esta contenida o no.
+				//si esta contenida, se elimina de la lista de etiquetas, sino se agrega
+				if(n.getEtiquetas().contains(etiqueta)){
+					n.getEtiquetas().remove(etiqueta);
+					sql += "DELETE from 'hermes.notificaciones.etiquetas' "
+						+ " where idNotificacion=? and idEtiqueta = ?;"; 
+				}
+				else{
+					n.getEtiquetas().add(etiqueta);
+					sql = "INSERT INTO 'hermes.notificaciones.etiquetas' VALUES (null,?,?);";	
+				}
 				prep = c.prepareStatement(sql);
-				prep.setLong(2, selectedItem.getId());
-				prep.setLong(1, long1);
-				prep.executeUpdate();
-			}			
-
+				prep.setLong(1, n.getId());
+				prep.setLong(2, etiqueta.getId());				
+				prep.executeUpdate();				
+			}
+			c.commit();
 
 		} catch (Exception e) {
-			throw new HermesException("Error agregando la etiqueta");
+			 if (c != null) {
+		            try {
+		                System.err.print("Transaction is being rolled back");
+		                c.rollback();
+		            } catch(SQLException excep) {
+		            	throw new HermesException("Error intentando hacer el rollback de la operacion",excep);
+		            }
+		        }
+			throw new HermesException("Error agregando la etiqueta",e);
 		}		
 		finally{
-			cerrarConexion(c);
+			cerrarConexion(c,prep);
 		}
 
 	}
@@ -485,7 +505,7 @@ public class HermesDaoImpl implements HermesDao {
 
 	}
 
-	private List<Etiqueta> getEtiquetas(long id) throws HermesException {
+	private List<Etiqueta> getEtiquetas(long idNotificacion) throws HermesException {
 		List<Etiqueta> l = new ArrayList<Etiqueta>();
 
 		String sql = "select e.* From 'hermes.etiquetas' AS e"
@@ -496,7 +516,7 @@ public class HermesDaoImpl implements HermesDao {
 		ResultSet resultSet = getResult(c,sql);
 		try {
 			prep = c.prepareStatement(sql);
-			prep.setLong(1, id);
+			prep.setLong(1, idNotificacion);
 			resultSet = prep.executeQuery();
 						
 			
@@ -512,4 +532,34 @@ public class HermesDaoImpl implements HermesDao {
 		}
 		return l;
 	}
+
+	@Override
+	public Boolean existeNotificacion(Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado)
+			throws HermesException {
+		SimpleDateFormat formatterFecha = MonitorUtils.formatterFechaPersistencia;
+
+		String sql = "select count(*) from 'hermes.notificaciones' where "
+				+ "idNinio = ? "
+				+ "and idMensaje = ?"
+				+ "and fecha = ?   "
+				+ "and fechaEnviado = ?;";
+		Connection c = getConnection();
+		PreparedStatement prep = null;
+		
+		try{
+			prep = c.prepareStatement(sql);
+			prep.setLong(1, idNinio);
+			prep.setLong(2, idMensaje);
+			prep.setString(3, formatterFecha.format(fecha));
+			prep.setString(4, formatterFecha.format(fechaEnviado));			
+			prep.executeQuery();
+			return !(prep.executeQuery().getInt(1) == 0);
+		} catch (Exception e) {
+			throw new HermesException("Error ejecutando la consulta para saber si existe notificacion",e);
+		}		
+		finally{			
+			cerrarConexion(c,prep);
+		}
+	}
+	
 }

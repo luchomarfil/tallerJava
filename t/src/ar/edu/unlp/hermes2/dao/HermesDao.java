@@ -30,7 +30,7 @@ public interface HermesDao {
 
 	void eliminarEtiqueta(Etiqueta etiqueta) throws HermesException;
 
-	void asignarEtiqueta(Etiqueta selectedItem, List<Long> idsNotificaciones) throws HermesException;
+	void asignarEtiqueta(Etiqueta selectedItem, List<Notificacion> notificaciones) throws HermesException;
 
 	Boolean existeEtiquetaPara(String nuevoNombre, Etiqueta etiquetaARenombrar) throws HermesException;
 
@@ -38,5 +38,7 @@ public interface HermesDao {
 
 	void nuevaNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
 			Date fechaEnviado, Date fechaRecibido) throws HermesException;
+
+	Boolean existeNotificacion(Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado) throws HermesException;
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import ar.edu.unlp.hermes2.model.Etiqueta;
 import ar.edu.unlp.hermes2.model.Notificacion;
 
 public class ModelTablaNotificaciones extends AbstractTableModel {
@@ -11,11 +12,17 @@ public class ModelTablaNotificaciones extends AbstractTableModel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private static final int COLUMNA_ETIQUETAS = 6;
-	private static final int COLUMNA_MENSAJE = 2;
-	private static final int COLUMNA_FECHA = 1;
-	private static final int COLUMNA_ID = 0;
+	public static final long serialVersionUID = 1L;
+	
+	public static final int COLUMNA_NOTIFICACION = 0;
+	public static final int COLUMNA_FECHA = 1;
+	public static final int COLUMNA_MENSAJE = 2;
+	public static final int COLUMNA_CONTEXTO = 3;
+	public static final int COLUMNA_CATEGORIA = 4;
+	public static final int COLUMNA_NINIO = 5;
+	public static final int COLUMNA_ETIQUETAS = 6;
+	
+	
 	private Object[][] data = new Object[][] {};
 	private String[] columnNames = new String[] { "Id", "Fecha/Hora env\u00EDo", "Contenido", "Contexto",
 			"Categor\u00EDa", "Ni\u00F1@", "Etiquetas" };
@@ -42,10 +49,13 @@ public class ModelTablaNotificaciones extends AbstractTableModel {
 			data = new Object[notificaciones.size()][columnNames.length];
 			fireTableDataChanged();
 			for (Notificacion notificacion : notificaciones) {			
-				this.setValueAt(notificacion.getId(), i, COLUMNA_ID);
+				this.setValueAt(notificacion, i, COLUMNA_NOTIFICACION);
 				this.setValueAt(notificacion.getFecha(), i, COLUMNA_FECHA);
 				this.setValueAt(notificacion.getMensaje(), i, COLUMNA_MENSAJE);
-				this.setValueAt(notificacion.getEtiquetas().toString(), i, COLUMNA_ETIQUETAS);
+				this.setValueAt(notificacion.getContexto(), i, COLUMNA_CONTEXTO);
+				this.setValueAt(notificacion.getCategoria(), i, COLUMNA_CATEGORIA);
+				this.setValueAt(notificacion.getNinio(), i, COLUMNA_NINIO);
+				this.setValueAt(notificacion.getEtiquetas(), i, COLUMNA_ETIQUETAS);
 				i++;
 			}
 		}
@@ -53,6 +63,7 @@ public class ModelTablaNotificaciones extends AbstractTableModel {
 
 	public void setTableData(List<Notificacion> tableData) {
 		//this.setRowCount(notificaciones.size());
+		this.notificaciones = tableData;
 		iniciarConLista(tableData);
 		fireTableDataChanged();
 	}
@@ -80,6 +91,13 @@ public class ModelTablaNotificaciones extends AbstractTableModel {
 	public void setValueAt(Object value, int row, int col) {
 		data[row][col] = value;
 		fireTableCellUpdated(row, col);
+	}
+
+	public void eliminarEtiqueta(Etiqueta etiqueta) {
+		for (Notificacion n : notificaciones) {
+			n.getEtiquetas().remove(etiqueta);
+		}
+		fireTableDataChanged();
 	}
 
 }

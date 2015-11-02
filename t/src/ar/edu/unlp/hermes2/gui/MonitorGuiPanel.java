@@ -133,6 +133,9 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		tablaNotificaciones.getColumnModel().getColumn(4).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(5).setPreferredWidth(78);
 		tablaNotificaciones.setDefaultRenderer(Object.class, new TablaNotificacionesCellRenderer());
+		tablaNotificaciones.getColumnModel().removeColumn(
+				tablaNotificaciones.getColumnModel().getColumn(0)
+				);
 		panelContenedorEtiquetas.setLayout(new MigLayout("", "[][grow][]", "[][19.00][][14.00][][][][]"));
 
 		JLabel lblCrearEtiqueta = new JLabel("Crear Etiqueta:");
@@ -168,7 +171,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		comboBoxEtiquetaAsignar = new JComboBox();
 		panelContenedorEtiquetas.add(comboBoxEtiquetaAsignar, "cell 1 4,growx");
 
-		btnAsignar = new JButton("Asignar");
+		btnAsignar = new JButton("Asignar/Desasig.");
 		panelContenedorEtiquetas.add(btnAsignar, "cell 2 4,growx");
 
 		JSeparator separator_2 = new JSeparator();
@@ -361,6 +364,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 			//seteo de manera predeterminada para el filtro de fechas para el periodo de una semana hacia atras
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.DAY_OF_MONTH, -7);
+			cal.add(Calendar.YEAR, -5);
 			cal.set(Calendar.HOUR_OF_DAY, 0);
 			cal.set(Calendar.MINUTE, 0);
 			cal.set(Calendar.SECOND, 0);
@@ -433,8 +437,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				agregarEtiqueta(textFieldEtiquetaNueva.getText());
-				cargarCombosPanelEtiquetas();
-				textFieldEtiquetaNueva.setText("");
+				
 			}
 		});
 		
@@ -526,8 +529,14 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	protected void agregarEtiqueta(String nombreNuevaEtiqueta) {
 		try {
 			MonitorCore.instance().agregarEtiqueta(nombreNuevaEtiqueta);
+			cargarCombosPanelEtiquetas();
+			textFieldEtiquetaNueva.setText("");
 		} catch (HermesException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			JOptionPane.showMessageDialog(this,
+				    e.getMessage(),
+				    "Error en Agregar etiqueta",
+				    JOptionPane.ERROR_MESSAGE);
+			logger.log(Level.SEVERE, e.getMessage(), e);			
 		}
 	}
 	
@@ -535,6 +544,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	protected void eliminarEtiqueta(Etiqueta etiqueta) {
 		try {
 			MonitorCore.instance().eliminarEtiqueta(etiqueta);
+			((ModelTablaNotificaciones)tablaNotificaciones.getModel()).eliminarEtiqueta(etiqueta);			
 		} catch (HermesException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}		
@@ -544,14 +554,28 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		try {
 			int selectedRowCount = tablaNotificaciones.getSelectedRowCount();
 			if(selectedRowCount>0){
-				List<Long> idsNotificaciones = obtenerIdsSeleccionados();
+				List<Notificacion> idsNotificaciones = obtenerNotificacionesSeleccionados();
 				MonitorCore.instance().asignarEtiqueta(selectedItem,idsNotificaciones);
+				ModelTablaNotificaciones m = (ModelTablaNotificaciones)tablaNotificaciones.getModel();
+				int[] selectedRows = tablaNotificaciones.getSelectedRows();
+				if(selectedRows.length==1){
+					m.fireTableRowsUpdated(selectedRows[0],selectedRows[0]);	
+				}
+				else{
+					m.fireTableRowsUpdated(selectedRows[0],selectedRows[selectedRows.length-1]);
+				}
+				m.fireTableDataChanged();
+				
 			}
 			else{
+				JOptionPane.showMessageDialog(this,
+					    "Debe seleccionar una o mas notificaciones.",
+					    "Error en Asignacion/Desasig.",
+					    JOptionPane.ERROR_MESSAGE);
 				throw new HermesException("Debe seleccionar una o mas notificaciones");
 			}	
 		} catch (Exception | HermesException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			logger.log(Level.SEVERE, e.getMessage(), e);			
 		}
 		
 		
@@ -568,12 +592,12 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 
 
 
-	private List<Long> obtenerIdsSeleccionados() {
-		List<Long> lista = new ArrayList<Long>();
+	private List<Notificacion> obtenerNotificacionesSeleccionados() {
+		List<Notificacion> lista = new ArrayList<Notificacion>();
 		int[] selectedRows = tablaNotificaciones.getSelectedRows();
 		for (int actual : selectedRows) {
-			Long id = (Long) tablaNotificaciones.getModel().getValueAt(actual,0);
-			lista.add(id);			
+			Notificacion n = (Notificacion) tablaNotificaciones.getModel().getValueAt(actual,ModelTablaNotificaciones.COLUMNA_NOTIFICACION);
+			lista.add(n);			
 		}
 		return lista;
 	}
