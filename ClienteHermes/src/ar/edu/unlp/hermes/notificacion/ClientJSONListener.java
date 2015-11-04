@@ -23,26 +23,31 @@ public class ClientJSONListener
 {
   public static void main(String[] args) throws IOException
   {
-	 if ((args.length != 2) || (Integer.valueOf(args[1]) <= 0) )
-	    {
-	      System.out.println("2 arguments needed: serverhostname port");
-	      System.exit(1);
-	    }
+	 final String HOST = "localhost";
+	 final String PORT = "55555";
+	  
+	 Integer valueOf = Integer.valueOf(PORT);
+	 
+//	 if ((args.length != 2) || (valueOf.intValue()<=0) )
+//	 {
+//	      System.out.println("2 arguments needed: serverhostname port");
+//	      System.exit(1);
+//	  }
 	 ClientJSONListener objetct = new ClientJSONListener();
 	 
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 1, 1, 1, 1));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 2, 2, 2, 2));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 3, 3, 3, 3));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 3, 3, 3, 3));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 3, 3, 3, 3));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 1, 2, 3, 1));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 2, 1, 2, 1));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 2, 3, 3, 2));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 3, 3, 1, 1));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 1, 2, 2, 1));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 3, 1, 3, 1));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 2, 3, 3, 1));
-	 objetct.enviarNotificacion(args[0],args[1],new Notificacion(new Date(), 3, 1, 1, 2));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 1, 1, 1, 1));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 2, 2, 2, 2));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 3, 3, 3, 3));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 3, 3, 3, 3));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 3, 3, 3, 3));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 1, 2, 3, 1));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 2, 1, 2, 1));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 2, 3, 3, 2));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 3, 3, 1, 1));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 1, 2, 2, 1));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 3, 1, 3, 1));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 2, 3, 3, 1));
+	 objetct.enviarNotificacion(HOST,PORT,new Notificacion(new Date(), 3, 1, 1, 2));
   }
   
   public void test(Notificacion notificacion){
@@ -93,8 +98,7 @@ public class ClientJSONListener
 
     /* Streams for I/O through the connected socket */
     try {
-		fromserver = new DataInputStream(socketwithserver.getInputStream());
-		toserver   = new DataOutputStream(socketwithserver.getOutputStream());
+
 	
 
 		
@@ -126,7 +130,8 @@ public class ClientJSONListener
 
     /* Get the bytes... */
     buffer = inputline.getBytes();
-
+	fromserver = new DataInputStream(socketwithserver.getInputStream());
+	toserver   = new DataOutputStream(socketwithserver.getOutputStream());
     /* Send read data to server */
     toserver.write(buffer, 0, buffer.length);
     

@@ -18,6 +18,7 @@ import ar.edu.unlp.hermes2.monitor.MonitorUtils;
 
 public class JSONNotificacionListener implements IEventosExternosListener, Runnable {
 
+	private static final int tamanioBuffer = 256;
 	private static final Logger logger = Logger.getLogger(JSONNotificacionListener.class.getName());
 	private static final int portNo = 55555;
 
@@ -35,24 +36,27 @@ public class JSONNotificacionListener implements IEventosExternosListener, Runna
 		try {
 			serverSocket = new ServerSocket(portNo);
 		} catch (IOException e) {
-			System.err.println("No se pude abrir el puerto : " + portNo + " para escuchar.");
+			//System.err.println("No se pude abrir el puerto : " + portNo + " para escuchar.");
+			logger.severe("No se pude abrir el puerto : " + portNo + " para escuchar.");
 			System.exit(1);
 		}
 		DataInputStream fromclient;
 		DataOutputStream toclient;
 		Socket clientSocket = null;
 		try {
-
+			
 			/* Buffer to use with communications (and its length) */
 			byte[] buffer;
 
 			while (true) {
-				buffer = new byte[256];
+				Thread.sleep(6000);
+				buffer = new byte[tamanioBuffer];
 
 				clientSocket = serverSocket.accept();
 
-				if (clientSocket != null)
-					System.out.println("Connected");
+				if (clientSocket != null){
+					logger.info("Cliente se ha conectado al servidor");
+				}
 
 				fromclient = new DataInputStream(clientSocket.getInputStream());
 				toclient = new DataOutputStream(clientSocket.getOutputStream());
@@ -75,11 +79,13 @@ public class JSONNotificacionListener implements IEventosExternosListener, Runna
 					idCategoria = 1;
 				}
 
-				procesarNotificacion(idCategoria, jsonObj.getJSONObject("notificacion").getLong("idContexto"),
-						jsonObj.getJSONObject("notificacion").getLong("idNinio"),
-						jsonObj.getJSONObject("notificacion").getLong("idMensaje"),
-						formatter.parse(jsonObj.getJSONObject("notificacion").getString("fecha")),
-						formatter.parse(jsonObj.getJSONObject("notificacion").getString("fechaEnviado")));
+				long idContexto = jsonObj.getJSONObject("notificacion").getLong("idContexto");
+				long idNinio = jsonObj.getJSONObject("notificacion").getLong("idNinio");				
+				long idMensaje = jsonObj.getJSONObject("notificacion").getLong("idMensaje");				
+				Date fecha = formatter.parse(jsonObj.getJSONObject("notificacion").getString("fecha"));				
+				Date fechaEnviado = formatter.parse(jsonObj.getJSONObject("notificacion").getString("fechaEnviado"));
+				
+				procesarNotificacion(idCategoria, idContexto, idNinio,	idMensaje, fecha, fechaEnviado);
 
 				/* Respuesta al cliente */
 				String strresp = "recibido !";
@@ -92,20 +98,22 @@ public class JSONNotificacionListener implements IEventosExternosListener, Runna
 				clientSocket.close();
 			}
 		} catch (IOException e) {
-			System.err.println("Hubo algún problema en aceptar la conexión.");
-			System.exit(1);
+			//System.err.println("Hubo algun problema en aceptar la conexion.");
+			//System.exit(1);
+			logger.log(Level.SEVERE,"Hubo algun problema en aceptar la conexion",e);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE,"Error al armar el objeto json",e);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE,"Error parseando la informacion",e);
+		} catch (InterruptedException e1) {
+			logger.log(Level.SEVERE,"Error ejecutando el sleep",e1);
 		} finally {
 			try {
-				serverSocket.close();
+				if(serverSocket!=null && !serverSocket.isClosed()){
+					serverSocket.close();
+				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.log(Level.SEVERE,"Error cerrando el socket",e);				
 			}
 		}
 
