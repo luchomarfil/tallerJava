@@ -9,6 +9,7 @@ import java.util.logging.LogManager;
 import javax.swing.JFrame;
 
 import ar.edu.unlp.hermes2.notification.ArchivoNotificacionListener;
+import ar.edu.unlp.hermes2.notification.JSONNotificacionListener;
 
 public class MonitorGui extends JFrame {
 	
@@ -32,7 +33,8 @@ public class MonitorGui extends JFrame {
 		MonitorGui monitorGui = new MonitorGui();
 		monitorGui.config();
 		monitorGui.setVisible(true);		
-		new ArchivoNotificacionListener().run();
+		//new ArchivoNotificacionListener().run();
+		new JSONNotificacionListener().run();
 
 	}
 
