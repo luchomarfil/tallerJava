@@ -2,21 +2,26 @@ package ar.edu.unlp.hermes2.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ServerSocket;
 import java.util.logging.LogManager;
 
 import javax.swing.JFrame;
 
 import ar.edu.unlp.hermes2.notification.ArchivoNotificacionListener;
+import ar.edu.unlp.hermes2.notification.IEventosExternosListener;
 import ar.edu.unlp.hermes2.notification.JSONNotificacionListener;
 
-public class MonitorGui extends JFrame {
+public class MonitorGui extends JFrame implements WindowListener  {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8242603121100243154L;
+	private IEventosExternosListener threadListener;
 
 	public MonitorGui() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -25,7 +30,9 @@ public class MonitorGui extends JFrame {
 		setPreferredSize(new Dimension(970, 600));
 
 		MonitorGuiPanel monitorGuiPanel = new MonitorGuiPanel();
-		getContentPane().add(monitorGuiPanel, BorderLayout.CENTER);
+		getContentPane().add(monitorGuiPanel, BorderLayout.CENTER);		
+		
+		
 		
 	}
 
@@ -33,8 +40,10 @@ public class MonitorGui extends JFrame {
 		MonitorGui monitorGui = new MonitorGui();
 		monitorGui.config();
 		monitorGui.setVisible(true);		
-		//new ArchivoNotificacionListener().run();
-		new JSONNotificacionListener().run();
+		monitorGui.setThreadListener(new ArchivoNotificacionListener());
+		//monitorGui.setThreadListener(new JSONNotificacionListener());
+		monitorGui.getThreadListener().run();
+
 
 	}
 
@@ -45,5 +54,45 @@ public class MonitorGui extends JFrame {
 		} catch (SecurityException | IOException e) {			
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		if(getThreadListener()!=null){
+			getThreadListener().cerrarConexion();
+		}
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+	
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+	}
+
+	public IEventosExternosListener getThreadListener() {
+		return threadListener;
+	}
+
+	public void setThreadListener(IEventosExternosListener threadListener) {
+		this.threadListener = threadListener;
 	}
 }

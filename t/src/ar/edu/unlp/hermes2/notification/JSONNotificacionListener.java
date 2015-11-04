@@ -21,6 +21,7 @@ public class JSONNotificacionListener implements IEventosExternosListener, Runna
 	private static final int tamanioBuffer = 256;
 	private static final Logger logger = Logger.getLogger(JSONNotificacionListener.class.getName());
 	private static final int portNo = 55555;
+	private ServerSocket serverSocket;
 
 	public JSONNotificacionListener() {
 	}
@@ -31,7 +32,7 @@ public class JSONNotificacionListener implements IEventosExternosListener, Runna
 
 	public void run() {
 
-		ServerSocket serverSocket = null;
+		serverSocket = null;
 		SimpleDateFormat formatter = MonitorUtils.formatterFechaPersistencia;
 		try {
 			serverSocket = new ServerSocket(portNo);
@@ -63,10 +64,10 @@ public class JSONNotificacionListener implements IEventosExternosListener, Runna
 
 				/* Recv data from client */
 				fromclient.read(buffer);
-
+				
 				/* Convert to string */
 				String str = new String(buffer);
-
+				logger.info("String recibido desde el cliente : "+ str);
 				long idCategoria;
 				JSONObject jsonObj = new JSONObject(str);
 				try {
@@ -129,6 +130,16 @@ public class JSONNotificacionListener implements IEventosExternosListener, Runna
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
+	}
+
+	@Override
+	public void cerrarConexion() {
+		logger.info("Cerrando conexion");
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			logger.log(Level.SEVERE,"Error cerrando el socket",e);
+		}
 	}
 
 }

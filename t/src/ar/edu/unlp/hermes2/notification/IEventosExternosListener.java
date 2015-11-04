@@ -7,4 +7,6 @@ public interface IEventosExternosListener {
 	void procesarNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
 			Date fechaEnviado);
 	
+	void run();
+	void cerrarConexion();
 }

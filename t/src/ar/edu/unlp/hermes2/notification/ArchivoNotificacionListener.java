@@ -30,8 +30,7 @@ public class ArchivoNotificacionListener implements IEventosExternosListener, Ru
 
 	@Override
 	public void run() {
-		String line = null;
-		FileReader fileReader;
+		String line = null;		
 		SimpleDateFormat formatter = MonitorUtils.formatterFechaPersistencia;
 		try {
 			Thread.sleep(2000);
@@ -82,6 +81,11 @@ public class ArchivoNotificacionListener implements IEventosExternosListener, Ru
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 
+	}
+
+	@Override
+	public void cerrarConexion() {
+			
 	}
 
 }
