@@ -47,7 +47,7 @@ public class ArchivoNotificacionListener implements IEventosExternosListener, Ru
 			while ((line = br.readLine()) != null) {
 				// reading lines until the end of the file
 				try {
-					System.out.println(line);
+					logger.info("Linea a procesar:"+line);
 					String[] campos = line.split(",");
 					Long idCategoria = Long.parseLong(campos[CAMPO_CATEGORIA_ID]);
 					Long idContexto = Long.parseLong(campos[CAMPO_CONTEXTO_ID]);

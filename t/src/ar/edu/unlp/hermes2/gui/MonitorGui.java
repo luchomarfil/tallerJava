@@ -23,16 +23,7 @@ public class MonitorGui extends JFrame implements WindowListener  {
 	private static final long serialVersionUID = 8242603121100243154L;
 	private IEventosExternosListener threadListener;
 
-	public MonitorGui() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		setSize(new Dimension(970, 600));
-		setPreferredSize(new Dimension(970, 600));
-
-		MonitorGuiPanel monitorGuiPanel = new MonitorGuiPanel();
-		getContentPane().add(monitorGuiPanel, BorderLayout.CENTER);		
-		
-		
+	public MonitorGui() {		
 		
 	}
 
@@ -40,8 +31,8 @@ public class MonitorGui extends JFrame implements WindowListener  {
 		MonitorGui monitorGui = new MonitorGui();
 		monitorGui.config();
 		monitorGui.setVisible(true);		
-		monitorGui.setThreadListener(new ArchivoNotificacionListener());
-		//monitorGui.setThreadListener(new JSONNotificacionListener());
+		//monitorGui.setThreadListener(new ArchivoNotificacionListener());
+		monitorGui.setThreadListener(new JSONNotificacionListener());
 		monitorGui.getThreadListener().run();
 
 
@@ -51,6 +42,17 @@ public class MonitorGui extends JFrame implements WindowListener  {
 		try {
 			InputStream res = MonitorGui.class.getClassLoader().getResourceAsStream("ar/edu/unlp/hermes2/resources/logging.properties");			
 			LogManager.getLogManager().readConfiguration(res);
+			
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			
+			setSize(new Dimension(970, 600));
+			setPreferredSize(new Dimension(970, 600));
+
+			MonitorGuiPanel monitorGuiPanel = new MonitorGuiPanel();
+			getContentPane().add(monitorGuiPanel, BorderLayout.CENTER);		
+			
+			setTitle("Monitor");
+			
 		} catch (SecurityException | IOException e) {			
 			e.printStackTrace();
 		}
