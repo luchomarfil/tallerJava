@@ -12,6 +12,7 @@ import java.util.logging.LogManager;
 import javax.swing.JFrame;
 
 import ar.edu.unlp.hermes2.notification.ArchivoNotificacionListener;
+import ar.edu.unlp.hermes2.notification.HttpServerNotificacionListener;
 import ar.edu.unlp.hermes2.notification.IEventosExternosListener;
 import ar.edu.unlp.hermes2.notification.JSONNotificacionListener;
 
@@ -32,7 +33,9 @@ public class MonitorGui extends JFrame implements WindowListener  {
 		monitorGui.config();
 		monitorGui.setVisible(true);		
 		//monitorGui.setThreadListener(new ArchivoNotificacionListener());
-		monitorGui.setThreadListener(new JSONNotificacionListener());
+		//monitorGui.setThreadListener(new JSONNotificacionListener());
+		monitorGui.setThreadListener(new HttpServerNotificacionListener());
+
 		monitorGui.getThreadListener().run();
 
 
