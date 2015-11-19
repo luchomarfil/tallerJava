@@ -7,6 +7,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import ar.edu.unlp.hermes.model.Notificacion;
 
 public class ClientHTTPJSONListener {
 
@@ -18,8 +23,27 @@ public class ClientHTTPJSONListener {
 			con.setDoInput(true);
 			con.setRequestMethod("POST");
 			con.setUseCaches(false);
-			String test = "{notificacion:{'idCategoria':'2','idContexto':'2','idMensaje':'2','idNinio':'2','fecha':'20151117192105','fechaEnviado':'20151117192054'}}";
-			byte[] bytes = test.getBytes();
+			
+			
+			//String JSONArray = "[{'idCategoria':'1','idContexto':'2','idMensaje':'2','idNinio':'2','fecha':'20171117192105','fechaEnviado':'20171117192054'},{'idCategoria':'2','idContexto':'3','idMensaje':'2','idNinio':'2','fecha':'20171218192105','fechaEnviado':'20171218192054'}]";
+			List<Notificacion> notificaciones = new ArrayList<Notificacion>();
+			//Acá debería pedir las notificaciones !
+			notificaciones.add(new Notificacion(new Date(), 1, 1, 1, 1));
+			notificaciones.add(new Notificacion(new Date(), 3, 3, 3, 3));
+			notificaciones.add(new Notificacion(new Date(), 1, 2, 1, 2));
+			notificaciones.add(new Notificacion(new Date(), 1, 3, 2, 3));
+			//acá las tranformamos en un arreglo JSON en forma de string.
+			String jSONArray = "[";
+			int i = 0;
+			for (Notificacion notificacion : notificaciones) {
+				jSONArray = jSONArray + notificacion.toJson();
+				i++;
+				if (i != notificaciones.size())
+				{jSONArray +=",";}
+			}
+			jSONArray += "]";
+			
+			byte[] bytes = jSONArray.getBytes();
 			con.setRequestProperty("Content-length",
 					String.valueOf(bytes.length));
 			con.setRequestProperty("Content-type", "text/html");

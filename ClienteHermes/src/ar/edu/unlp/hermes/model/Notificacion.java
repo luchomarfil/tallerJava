@@ -77,6 +77,10 @@ public class Notificacion {
 	public void setIdNinio(long idNinio) {
 		this.idNinio = idNinio;
 	}
+	
+	public String toJson(){
+		return "{'idCategoria':'"+ getIdCategoria() +"','idContexto':'"+ getIdContexto() +"','idMensaje':'"+getIdMensaje() +"','idNinio':'"+ getIdNinio()+"','fecha':'"+getFecha() +"','fechaEnviado':'"+(new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date()) +"'}";
+	}
 }
 
 
