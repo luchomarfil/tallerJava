@@ -6,14 +6,15 @@ import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+import ar.edu.unlp.hermes2.config.PropertiesHandler;
 import ar.edu.unlp.hermes2.gui.HermesException;
 
 import com.sun.net.httpserver.HttpServer;
 
 public class HttpServerNotificacionListener implements Runnable, IEventosExternosListener {
 	
-	private static final Logger logger = Logger.getLogger(JSONNotificacionListener.class.getName());
-	private static final int portNo = 55555;
+	private static final Logger logger = Logger.getLogger(HttpServerNotificacionListener.class.getName());
+	private static final int portNo = new Integer(PropertiesHandler.getInstance().getProperties().getProperty("portNo"));
 	
 	
 		  
