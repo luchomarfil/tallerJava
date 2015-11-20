@@ -1,86 +1,122 @@
 package ar.edu.unlp.hermes.model;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import ar.edu.unlp.hermes.annotations.Mock;
+import ar.edu.unlp.hermes.annotations.MockStringAttribute;
+import ar.edu.unlp.hermes.annotations.MockTodayAttribute;
+
+@Mock
 public class Notificacion {
 	
+
+	private static final String CATEGORIA_PREDETERMINADA = "Predeterminada";
+	@MockTodayAttribute
+	private Date fecha;
 	
-	public Notificacion(long fecha, long idCategoria, long idContexto, long idCensaje, long idNinio) {
-		this.fecha = fecha;
-		this.idCategoria = idCategoria;
-		this.idContexto = idContexto;
-		this.idMensaje = idCensaje;
-		this.idNinio = idNinio;
+	@MockStringAttribute ({"Predeterminada", "Emociones", "Alimentos","Actividades y Paseos"})
+	private String categoria;
+	
+	@MockStringAttribute ({"Establo­Terapia", "Pista", "Hogar"})  
+	private String contexto;
+	
+	@MockStringAttribute ({"descriptivo1", "descriptivo2", "descriptivo3"})  
+	private String mensaje;
+	
+	@MockStringAttribute({"Juan", "Pedro", "Juana", "Manuela"})  
+	private String ninio;
+
+	public Notificacion() {
 	}
 	
-	public Notificacion(long fecha, long idContexto, long idCensaje, long idNinio) {
+	public Notificacion(Date fecha, String categoria, String contexto,
+			String mensaje, String ninio) {
+		this.fecha = fecha;
+		this.categoria = categoria;
+		this.contexto = contexto;
+		this.mensaje = mensaje;
+		this.ninio = ninio;
+	}
+
+	public Notificacion(Date fecha, String contexto, String mensaje,
+			String ninio) {
 
 		this.fecha = fecha;
-		this.idCategoria = 1;
-		this.idContexto = idContexto;
-		this.idMensaje = idCensaje;
-		this.idNinio = idNinio;
+		this.categoria = CATEGORIA_PREDETERMINADA;
+		this.contexto = contexto;
+		this.mensaje = mensaje;
+		this.ninio = ninio;
 	}
-	
-	public Notificacion(Date fecha, long idCategoria, long idContexto, long idCensaje, long idNinio) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-		this.fecha = Long.parseLong(formatter.format(fecha));
-		this.idCategoria = idCategoria;
-		this.idContexto = idContexto;
-		this.idMensaje = idCensaje;
-		this.idNinio = idNinio;
-	}
-	 
-	public Notificacion(Date fecha, long idContexto, long idCensaje, long idNinio) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-		this.fecha = Long.parseLong(formatter.format(fecha));
-		this.idCategoria = 1;
-		this.idContexto = idContexto;
-		this.idMensaje = idCensaje;
-		this.idNinio = idNinio;
-	}
-	 
-	private long fecha;
-	private long idCategoria;
-	private long idContexto;
-	private long idMensaje;
-	private long idNinio;
-	public long getFecha() {
+
+//	public Notificacion(Date fecha, String categoria, String contexto,
+//			String mensaje, String ninio) {
+//		//SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+//		//this.fecha = Long.parseLong(formatter.format(fecha));
+//		this.fecha = fecha;
+//		this.categoria = categoria;
+//		this.contexto = contexto;
+//		this.mensaje = mensaje;
+//		this.ninio = ninio;
+//	}
+//
+//	public Notificacion(Date fecha, String contexto,
+//			String mensaje, String ninio) {
+//		//SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+//		this.fecha = fecha;
+//		//this.fecha = Long.parseLong(formatter.format(fecha));
+//		this.categoria = CATEGORIA_PREDETERMINADA;
+//		this.contexto = contexto;
+//		this.mensaje = mensaje;
+//		this.ninio = ninio;
+//	}
+
+	public Date getFecha() {
 		return fecha;
 	}
-	public void setFecha(long fecha) {
+
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-	public long getIdCategoria() {
-		return idCategoria;
+
+	public String getCategoria() {
+		return categoria;
 	}
-	public void setIdCategoria(long idCategoria) {
-		this.idCategoria = idCategoria;
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
-	public long getIdContexto() {
-		return idContexto;
+
+	public String getContexto() {
+		return contexto;
 	}
-	public void setIdContexto(long idContexto) {
-		this.idContexto = idContexto;
+
+	public void setContexto(String contexto) {
+		this.contexto = contexto;
 	}
-	public long getIdMensaje() {
-		return idMensaje;
+
+	public String getMensaje() {
+		return mensaje;
 	}
-	public void setIdMensaje(long idCensaje) {
-		this.idMensaje = idCensaje;
+
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
 	}
-	public long getIdNinio() {
-		return idNinio;
+
+	public String getNinio() {
+		return ninio;
 	}
-	public void setIdNinio(long idNinio) {
-		this.idNinio = idNinio;
+
+	public void setNinio(String ninio) {
+		this.ninio = ninio;
 	}
 	
-	public String toJson(){
-		return "{'idCategoria':'"+ getIdCategoria() +"','idContexto':'"+ getIdContexto() +"','idMensaje':'"+getIdMensaje() +"','idNinio':'"+ getIdNinio()+"','fecha':'"+getFecha() +"','fechaEnviado':'"+(new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date()) +"'}";
+	public String toJson() {
+		return "{'categoria':'" + getCategoria() + "','idContexto':'"
+				+ getContexto() + "','idMensaje':'" + getMensaje()
+				+ "','idNinio':'" + getNinio() + "','fecha':'" + getFecha()
+				+ "','fechaEnviado':'"
+				+ (new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())
+				+ "'}";
 	}
 }
-
-

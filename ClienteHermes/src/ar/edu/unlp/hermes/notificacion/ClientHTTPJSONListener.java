@@ -17,6 +17,8 @@ public class ClientHTTPJSONListener {
 
 	public static void main(String[] args) {
 		try {
+			List<Notificacion> notificaciones = MockGenerator.createMockInstances(Notificacion.class, 40);
+			
 			URL url = new URL("http://localhost:55555/applications/myapp");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
@@ -26,13 +28,14 @@ public class ClientHTTPJSONListener {
 			
 			
 			//String JSONArray = "[{'idCategoria':'1','idContexto':'2','idMensaje':'2','idNinio':'2','fecha':'20171117192105','fechaEnviado':'20171117192054'},{'idCategoria':'2','idContexto':'3','idMensaje':'2','idNinio':'2','fecha':'20171218192105','fechaEnviado':'20171218192054'}]";
-			List<Notificacion> notificaciones = new ArrayList<Notificacion>();
-			//Acá debería pedir las notificaciones !
-			notificaciones.add(new Notificacion(new Date(), 1, 1, 1, 1));
-			notificaciones.add(new Notificacion(new Date(), 3, 3, 3, 3));
-			notificaciones.add(new Notificacion(new Date(), 1, 2, 1, 2));
-			notificaciones.add(new Notificacion(new Date(), 1, 3, 2, 3));
-			//acá las tranformamos en un arreglo JSON en forma de string.
+			
+			//Aca deberia pedir las notificaciones !
+//			notificaciones.add(new Notificacion(new Date(), "uno", "uno", "uno", "uno"));
+//			notificaciones.add(new Notificacion(new Date(), "tres", "tres", "tres", "tres"));
+//			notificaciones.add(new Notificacion(new Date(), "uno", "dos", "uno", "dos"));
+//			notificaciones.add(new Notificacion(new Date(), "uno", "tres", "dos", "tres"));
+			
+			//aca las tranformamos en un arreglo JSON en forma de string.
 			String jSONArray = "[";
 			int i = 0;
 			for (Notificacion notificacion : notificaciones) {
