@@ -31,8 +31,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerDateModel;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTable;
@@ -47,7 +50,10 @@ import ar.edu.unlp.hermes2.model.TransferObject;
 import ar.edu.unlp.hermes2.monitor.FiltroNotificacion;
 import ar.edu.unlp.hermes2.monitor.MonitorCore;
 import ar.edu.unlp.hermes2.monitor.MonitorUtils;
-import net.miginfocom.swing.MigLayout;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
+import javax.swing.SwingConstants;
+import java.awt.Component;
 
 public class MonitorGuiPanel extends JPanel implements Observer {
 
@@ -56,6 +62,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	 */
 	private static final long serialVersionUID = 8242603121100243154L;
 	private static Logger logger = Logger.getLogger(MonitorGuiPanel.class.getName());
+	private EstadoGui estado;
 	private JXPanel panelContenedorFiltros;
 	private JXPanel panelContenedorNotificaciones;
 	private JXPanel panelContenedorEtiquetas;
@@ -78,9 +85,15 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	private JComboBox<TransferObject> comboBoxEtiquetaAsignar;
 	private JComboBox<TransferObject> comboBoxEtiquetaRenombrar;
 	protected Etiqueta etiquetaARenombrar;
+	private JLabel lblTituloEstado;
+	private JLabel lblEstadoActual;
+	private JSeparator separator_3;
+	private JLabel lblTituloNotificaciones;
+	private JLabel lblCantidadNotificaciones;
+	private JSeparator separator_4;
 
 	public MonitorGuiPanel() {
-		setPreferredSize(new Dimension(1024, 600));
+		setPreferredSize(new Dimension(1024, 632));
 
 		panelContenedorFiltros = new JXPanel();
 		panelContenedorFiltros.setBackground(Color.LIGHT_GRAY);
@@ -112,8 +125,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 						.addComponent(panelContenedorFiltros, GroupLayout.PREFERRED_SIZE, 254, GroupLayout.PREFERRED_SIZE)
 						.addComponent(panelContenedorEtiquetas, GroupLayout.PREFERRED_SIZE, 254, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panelContenedorNotificaciones, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addComponent(panelContenedorNotificaciones, GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE))
 		);
 		panelContenedorNotificaciones.setLayout(new BorderLayout(0, 0));
 
@@ -126,6 +138,35 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		
 		tablaNotificaciones.setVisibleColumnCount(1);
 		tablaNotificaciones.setColumnControlVisible(true);
+		
+		
+		JPanel statusPanel = new JPanel();
+		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));		
+		panelContenedorNotificaciones.add(statusPanel,BorderLayout.SOUTH);
+		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+		
+		lblTituloEstado = new JLabel("Estado:");
+		statusPanel.add(lblTituloEstado);
+		
+		lblEstadoActual = new JLabel("");
+		statusPanel.add(lblEstadoActual);
+		
+		separator_3 = new JSeparator();
+		separator_3.setMaximumSize(new Dimension(10, 10));
+		separator_3.setOrientation(SwingConstants.VERTICAL);
+		statusPanel.add(separator_3);
+		
+		lblTituloNotificaciones = new JLabel("Notificaciones:");
+		statusPanel.add(lblTituloNotificaciones);
+		
+		lblCantidadNotificaciones = new JLabel("");
+		lblCantidadNotificaciones.setAlignmentX(Component.CENTER_ALIGNMENT);
+		statusPanel.add(lblCantidadNotificaciones);
+		
+		separator_4 = new JSeparator();
+		separator_4.setOrientation(SwingConstants.VERTICAL);
+		separator_4.setMaximumSize(new Dimension(10, 10));
+		statusPanel.add(separator_4);
 		tablaNotificaciones.getColumnModel().getColumn(0).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(1).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(2).setPreferredWidth(78);
@@ -383,6 +424,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		btnFiltrar.addActionListener(new ActionListener() {				
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setEstado(EstadoGui.FILTRADO);
 				filtrarNotificaciones();
 			}			
 		});
@@ -392,10 +434,8 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	 * 
 	 */
 	private void filtrarNotificaciones() {
-			FiltroNotificacion filtro = obtenerFiltroDeLoSeleccionado();
-			
-			filtrarNotificaciones(filtro);
-		
+			FiltroNotificacion filtro = obtenerFiltroDeLoSeleccionado();			
+			filtrarNotificaciones(filtro);		
 	}
 
 
@@ -611,6 +651,26 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	public void update(Observable o, Object arg) {
 //		MonitorCore.instance().obtenerNotificacionesFiltradas(obtenerFiltroDeLoSeleccionado());
 //		this.filtrarNotificaciones(obtenerFiltroDeLoSeleccionado());
-		this.filtrarNotificaciones(new FiltroNotificacion());
+		//2 casos a manejar
+		logger.info("Estado actual del GUI" + getEstado());
+		if(this.getEstado()==EstadoGui.DEFAULT){
+			this.filtrarNotificaciones(new FiltroNotificacion());			
+		}
+		else if(this.getEstado()==EstadoGui.FILTRADO){
+			logger.info("Se ha recibido una nueva notificacion");			
+		}
+			
+	}
+
+
+
+	public EstadoGui getEstado() {
+		return estado;
+	}
+
+
+
+	public void setEstado(EstadoGui estado) {
+		this.estado = estado;
 	}
 }
