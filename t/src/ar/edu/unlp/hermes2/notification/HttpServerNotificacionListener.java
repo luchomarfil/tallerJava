@@ -13,6 +13,7 @@ import com.sun.net.httpserver.HttpServer;
 
 public class HttpServerNotificacionListener implements Runnable, IEventosExternosListener {
 	
+	private static final String APPLICATIONS_CONTEXT = "/applications/hermes";
 	private static final Logger logger = Logger.getLogger(HttpServerNotificacionListener.class.getName());
 	private static final int portNo = new Integer(PropertiesHandler.getInstance().getProperties().getProperty("portNo"));
 	
@@ -32,9 +33,12 @@ public class HttpServerNotificacionListener implements Runnable, IEventosExterno
 		private void start(){
 			try {
 				HttpServer server = HttpServer.create(new InetSocketAddress(portNo), 10);
-				server.createContext("/applications/myapp",	new ManejadorPedidosHandler());				
+				server.createContext(APPLICATIONS_CONTEXT,	new ManejadorPedidosHandler());				
 				server.setExecutor(Executors.newCachedThreadPool()); // creates a default executor
+				logger.info("Iniciando http server...");
 				server.start();
+				logger.info("Server iniciado en http://localhost:" + server.getAddress().getPort() + APPLICATIONS_CONTEXT);
+				
 			   	}
 			
 				 catch (IOException e) {
@@ -42,22 +46,18 @@ public class HttpServerNotificacionListener implements Runnable, IEventosExterno
 				}	
 		}
 
-		@Override
-		public void procesarNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
-				Date fechaEnviado) throws HermesException {
-//			try {
-//				MonitorCore.instance().recibirNotificacion(idCategoria, idContexto, idNinio, idMensaje, fecha,
-//						fechaEnviado);
-//			} catch (HermesException e) {
-//				logger.log(Level.SEVERE, e.getMessage(), e);
-//				throw e;
-//			}
-//
-//			
-		}
-
+		
 		@Override
 		public void cerrarConexion() {
+			
+		}
+
+
+		@Override
+		public void procesarNotificacion(String categoria, String contexto,
+				String ninio, String mensaje, Date fecha, Date fechaEnviado)
+				throws HermesException {
+			// TODO Auto-generated method stub
 			
 		}
 }

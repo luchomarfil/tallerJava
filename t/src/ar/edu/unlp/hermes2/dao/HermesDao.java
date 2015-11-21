@@ -39,6 +39,21 @@ public interface HermesDao {
 	void nuevaNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
 			Date fechaEnviado, Date fechaRecibido) throws HermesException;
 
-	Boolean existeNotificacion(Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado) throws HermesException;
+	Boolean existeNotificacion(Long idNinio, Long idMensaje, Long idCategoria, Long idContexto, Date fecha, Date fechaEnviado) throws HermesException;
+	
+	/**
+	 * Obtiene la categoria con nombreCategoria, sino existe la crea y devuelve el id que le corresponde a su creacion
+	 * 
+	 * @param categoria
+	 * @return
+	 * @throws HermesException 
+	 */
+	Long obtenerOCrearCategoria(String categoria) throws HermesException;
+
+	Long obtenerOCrearContexto(String nombreContexto) throws HermesException;
+
+	Long obtenerOCrearNinio(String nombreNinio) throws HermesException;
+
+	Long obtenerOCrearMensaje(String nombreMensaje) throws HermesException;
 
 }

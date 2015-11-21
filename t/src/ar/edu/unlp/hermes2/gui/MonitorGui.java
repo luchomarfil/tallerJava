@@ -51,7 +51,7 @@ public class MonitorGui extends JFrame implements WindowListener  {
 			setPreferredSize(new Dimension(970, 600));
 
 			MonitorGuiPanel monitorGuiPanel = new MonitorGuiPanel();
-			monitorGuiPanel.setEstado(EstadoGui.DEFAULT);
+			monitorGuiPanel.actualizarEstadoDefault();
 			getContentPane().add(monitorGuiPanel, BorderLayout.CENTER);		
 			
 			setTitle("Monitor");

@@ -91,6 +91,11 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	private JLabel lblTituloNotificaciones;
 	private JLabel lblCantidadNotificaciones;
 	private JSeparator separator_4;
+	private List<Notificacion> notificacionesMostradas;
+	private JButton btnMostrarTodos;
+	private JLabel lblNotificacionRecibida;
+	private int notificacionesRecibidas;
+	private JPanel panel;
 
 	public MonitorGuiPanel() {
 		setPreferredSize(new Dimension(1024, 632));
@@ -133,6 +138,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		panelContenedorNotificaciones.add(scrollPane);
 
 		tablaNotificaciones = new JXTable();
+		tablaNotificaciones.setSortable(false);
 		scrollPane.setViewportView(tablaNotificaciones);
 		tablaNotificaciones.setModel(new ModelTablaNotificaciones(new ArrayList<Notificacion>()));
 		
@@ -149,6 +155,7 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		statusPanel.add(lblTituloEstado);
 		
 		lblEstadoActual = new JLabel("");
+		lblEstadoActual.setAlignmentX(Component.CENTER_ALIGNMENT);
 		statusPanel.add(lblEstadoActual);
 		
 		separator_3 = new JSeparator();
@@ -167,6 +174,15 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		separator_4.setOrientation(SwingConstants.VERTICAL);
 		separator_4.setMaximumSize(new Dimension(10, 10));
 		statusPanel.add(separator_4);
+		
+		panel = new JPanel();
+		statusPanel.add(panel);
+		panel.setLayout(new FlowLayout(FlowLayout.RIGHT, 1, 1));
+		
+		lblNotificacionRecibida = new JLabel("adsf");
+		lblNotificacionRecibida.setHorizontalAlignment(SwingConstants.RIGHT);
+		panel.add(lblNotificacionRecibida);
+		lblNotificacionRecibida.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		tablaNotificaciones.getColumnModel().getColumn(0).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(1).setPreferredWidth(78);
 		tablaNotificaciones.getColumnModel().getColumn(2).setPreferredWidth(78);
@@ -275,20 +291,20 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		comboBoxEtiqueta = new JComboBox();
 
 		btnFiltrar = new JButton("Filtrar");
+		
+		btnMostrarTodos = new JButton("Mostrar todos");
+
 		GroupLayout gl_panelContenedorFiltros = new GroupLayout(panelContenedorFiltros);
 		gl_panelContenedorFiltros.setHorizontalGroup(
-			gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panelContenedorFiltros.createSequentialGroup()
-					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.TRAILING)
-						.addGroup(Alignment.LEADING, gl_panelContenedorFiltros.createSequentialGroup()
-							.addGap(6)
-							.addComponent(btnFiltrar, GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE))
-						.addGroup(Alignment.LEADING, gl_panelContenedorFiltros.createSequentialGroup()
+			gl_panelContenedorFiltros.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
 							.addGap(6)
 							.addComponent(lblEtiqueta)
 							.addGap(21)
 							.addComponent(comboBoxEtiqueta, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.LEADING, gl_panelContenedorFiltros.createSequentialGroup()
+						.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
 							.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
 									.addGap(92)
@@ -312,15 +328,23 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 											.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
 												.addComponent(lblContenido)
 												.addGap(8)
-												.addComponent(comboBoxContenido, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE))))))
-							.addGap(18)
-							.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+												.addComponent(comboBoxContenido, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)))))
 								.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
-									.addComponent(lblCategoria)
-									.addGap(2)
-									.addComponent(comboBoxCategoria, 0, 190, Short.MAX_VALUE))
-								.addComponent(lblHasta)
-								.addComponent(dateTimePickerHasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+									.addGap(6)
+									.addComponent(btnFiltrar, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+									.addGap(18)
+									.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+											.addComponent(lblCategoria)
+											.addGap(2)
+											.addComponent(comboBoxCategoria, 0, 115, Short.MAX_VALUE))
+										.addComponent(lblHasta)
+										.addComponent(dateTimePickerHasta, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)))
+								.addGroup(gl_panelContenedorFiltros.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnMostrarTodos, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)))))
 					.addContainerGap())
 		);
 		gl_panelContenedorFiltros.setVerticalGroup(
@@ -368,7 +392,9 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 							.addGap(12)
 							.addComponent(comboBoxEtiqueta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnFiltrar)
+					.addGroup(gl_panelContenedorFiltros.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnFiltrar)
+						.addComponent(btnMostrarTodos))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		panelContenedorFiltros.setLayout(gl_panelContenedorFiltros);
@@ -424,12 +450,34 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		btnFiltrar.addActionListener(new ActionListener() {				
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setEstado(EstadoGui.FILTRADO);
+				actualizarEstadoFiltrado();
 				filtrarNotificaciones();
 			}			
 		});
+		
+		btnMostrarTodos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actualizarEstadoDefault();
+				filtrarNotificaciones(new FiltroNotificacion());
+			}
+		});
 	}
 	
+	protected void actualizarEstadoDefault() {
+		setEstado(EstadoGui.DEFAULT);
+		cargarDatosParaFiltros();
+		this.lblEstadoActual.setText(getEstado().toString()+"  ");
+		this.lblNotificacionRecibida.setText("");
+	}
+
+	protected void actualizarEstadoFiltrado() {
+		setEstado(EstadoGui.FILTRADO);
+		this.lblEstadoActual.setText("   "+getEstado().toString());
+		this.notificacionesRecibidas = 0;
+	}
+
+
+
 	/**
 	 * 
 	 */
@@ -456,10 +504,11 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 	private void filtrarNotificaciones(FiltroNotificacion filtro){
 		try{
 			//realizo la accion de filtrar
-			List<Notificacion> notificaciones = MonitorCore.instance().obtenerNotificacionesFiltradas(filtro);
-			
+			notificacionesMostradas = MonitorCore.instance().obtenerNotificacionesFiltradas(filtro);			
 			//actualizo la tabla
-			((ModelTablaNotificaciones)tablaNotificaciones.getModel()).setTableData(notificaciones);
+			((ModelTablaNotificaciones)tablaNotificaciones.getModel()).setTableData(notificacionesMostradas);
+			//actualizo el status bar con la cantidad de notificaciones resultado
+			lblCantidadNotificaciones.setText(String.valueOf(notificacionesMostradas.size()));
 		}catch (HermesException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
@@ -654,10 +703,13 @@ public class MonitorGuiPanel extends JPanel implements Observer {
 		//2 casos a manejar
 		logger.info("Estado actual del GUI" + getEstado());
 		if(this.getEstado()==EstadoGui.DEFAULT){
+			cargarDatosParaFiltros();
 			this.filtrarNotificaciones(new FiltroNotificacion());			
 		}
 		else if(this.getEstado()==EstadoGui.FILTRADO){
-			logger.info("Se ha recibido una nueva notificacion");			
+			logger.info("Se ha recibido una nueva notificacion");
+			notificacionesRecibidas ++;
+			lblNotificacionRecibida.setText("Notificaciones recibidas: "+notificacionesRecibidas);
 		}
 			
 	}

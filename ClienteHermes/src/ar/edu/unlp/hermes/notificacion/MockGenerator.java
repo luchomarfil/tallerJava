@@ -29,20 +29,21 @@ public class MockGenerator {
 			for (int i = 0; i < cant; i++) {
 				// debo crear una nueva instancia del objeto de tipo T
 				try {
+					Thread.sleep(300);
 					T instancia = elClass.newInstance();
 					//analizo todos los campos declarados, para ver si tienen presente anotaciones					
 					Field[] declaredFields = elClass.getDeclaredFields();
 					for (Field field : declaredFields) {
 						MockTodayAttribute anotacionToday = field.getAnnotation(MockTodayAttribute.class);
 						if(anotacionToday!=null){//el field tiene anotacion today
-							logger.info("el field " + field.getName() + " esta anotado con MockTodayAttribute");
+							logger.finest("el field " + field.getName() + " esta anotado con MockTodayAttribute");
 							Method m = getSetMethodParaField(field,elClass);
 							m.invoke(instancia, new Object[]{new Date()});
 						}
 						else{
 							MockStringAttribute anotacionString = field.getAnnotation(MockStringAttribute.class);
 							if(anotacionString!=null){
-								logger.info("el field " + field.getName() + " esta anotado con MockStringAttribute con los valores "+anotacionString.value());
+								logger.finest("el field " + field.getName() + " esta anotado con MockStringAttribute con los valores "+anotacionString.value());
 								Method m = getSetMethodParaField(field,elClass);
 								m.invoke(instancia, new Object[]{valorAleatorio(anotacionString.value())});
 							}
@@ -63,6 +64,9 @@ public class MockGenerator {
 				} catch (InvocationTargetException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
 				

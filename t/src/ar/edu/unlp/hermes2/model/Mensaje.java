@@ -20,6 +20,10 @@ public class Mensaje extends TransferObject {
 	}
 
 
+	public Mensaje(String nombreMensaje) {
+		nombre=nombreMensaje;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}

@@ -171,6 +171,7 @@ public class HermesDaoImpl implements HermesDao {
 		return l;
 	}
 
+
 	@Override
 	public List<Notificacion> obtenerNotificacionesFiltradas(
 			FiltroNotificacion filtro) throws HermesException {
@@ -213,6 +214,8 @@ public class HermesDaoImpl implements HermesDao {
 		if(filtro.getFechaHasta()!=null){
 			sql += " and CAST(n.fecha AS INTEGER) <=  ? ";
 		}
+		
+		sql += " Order by n_fecha desc";
 		
 		sql += " ;";
 		Connection c = getConnection();
@@ -307,15 +310,9 @@ public class HermesDaoImpl implements HermesDao {
 		else{
 			etiquetaAux = etiqueta.getDescripcion();
 		}
-		String sql = "INSERT INTO 'hermes.etiquetas' VALUES (null,?,?,0);";
 		Connection c = getConnection();
-		PreparedStatement prep;
-		
-		try {
-		prep = c.prepareStatement(sql);			
-		prep.setString(1, etiqueta.getNombre());
-		prep.setString(2, etiquetaAux);
-		prep.executeUpdate();
+		try{
+		  agregarEtiqueta(etiqueta);		
 		} catch (Exception e) {
 			throw new HermesException("Error agregando la etiqueta");
 		}		
@@ -323,6 +320,19 @@ public class HermesDaoImpl implements HermesDao {
 			cerrarConexion(c);
 		}
 
+	}
+	
+	private void agregarEtiqueta(Etiqueta etiqueta, Connection c) throws HermesException{
+		String sql = "INSERT INTO 'hermes.etiquetas' VALUES (null,?,?,0);";		
+		PreparedStatement prep;		
+		try {
+			prep = c.prepareStatement(sql);			
+			prep.setString(1, etiqueta.getNombre());
+			prep.setString(2, null);
+			prep.executeUpdate();
+		} catch (Exception e) {
+			throw new HermesException("Error agregando la etiqueta");
+		}
 	}
 
 	@Override
@@ -534,15 +544,17 @@ public class HermesDaoImpl implements HermesDao {
 	}
 
 	@Override
-	public Boolean existeNotificacion(Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado)
+	public Boolean existeNotificacion(Long idNinio, Long idMensaje, Long idCategoria, Long idContexto, Date fecha, Date fechaEnviado)
 			throws HermesException {
 		SimpleDateFormat formatterFecha = MonitorUtils.formatterFechaPersistencia;
 
 		String sql = "select count(*) from 'hermes.notificaciones' where "
-				+ "idNinio = ? "
+				+ "idNinio = ? "				
 				+ "and idMensaje = ?"
 				+ "and fecha = ?   "
-				+ "and fechaEnviado = ?;";
+				+ "and fechaEnviado = ?"
+				+ "and idCategoria = ?"
+				+ "and idContexto = ?;";
 		Connection c = getConnection();
 		PreparedStatement prep = null;
 		
@@ -552,6 +564,8 @@ public class HermesDaoImpl implements HermesDao {
 			prep.setLong(2, idMensaje);
 			prep.setString(3, formatterFecha.format(fecha));
 			prep.setString(4, formatterFecha.format(fechaEnviado));			
+			prep.setLong(5, idCategoria);
+			prep.setLong(6, idContexto);
 			prep.executeQuery();
 			return !(prep.executeQuery().getInt(1) == 0);
 		} catch (Exception e) {
@@ -559,6 +573,197 @@ public class HermesDaoImpl implements HermesDao {
 		}		
 		finally{			
 			cerrarConexion(c,prep);
+		}
+	}
+
+	
+	
+	
+	@Override
+	public Long obtenerOCrearCategoria(String nombreCategoria) throws HermesException {
+		
+		String sql = "SELECT id from 'hermes.Categorias' where nombre = ?;";
+		Connection c = getConnection();
+		PreparedStatement prep;
+		
+		try {
+			prep = c.prepareStatement(sql);			
+			prep.setString(1, nombreCategoria);
+			ResultSet resultSet = prep.executeQuery();
+			if(resultSet.next()){
+				return resultSet.getLong(1);
+			}
+			
+			//si no existe, la creo
+			Categoria aCrear = new Categoria(nombreCategoria);			
+			String sqlCreacion = "INSERT INTO 'hermes.Categorias' VALUES (null,?);";					
+			try {
+				prep = c.prepareStatement(sqlCreacion);			
+				prep.setString(1, aCrear.getNombre());				
+				prep.executeUpdate();
+			} catch (Exception e) {
+				throw new HermesException("Error agregando la categoria",e);
+			}
+			
+			//una vez creada obtenemos la el id de la etiqueta
+			prep = c.prepareStatement(sql);			
+			prep.setString(1, nombreCategoria);
+			resultSet = prep.executeQuery();
+			if(resultSet.next()){
+				return resultSet.getLong(1);
+			}
+			throw new HermesException("La categoria no se pudo crear exitosamente");
+			
+		}catch (HermesException e) {
+			throw e;
+		}			
+		catch (Exception e) {
+			throw new HermesException("Error agregando la categoria");
+		}		
+		finally{
+			cerrarConexion(c);
+		}
+	}
+	
+	@Override
+	public Long obtenerOCrearContexto(String nombreContexto) throws HermesException {
+		
+		String sql = "SELECT id from 'hermes.Contextos' where nombre = ?;";
+		Connection c = getConnection();
+		PreparedStatement prep;
+		
+		try {
+			prep = c.prepareStatement(sql);			
+			prep.setString(1, nombreContexto);
+			ResultSet resultSet = prep.executeQuery();
+			if(resultSet.next()){
+				return resultSet.getLong(1);
+			}
+			
+			//si no existe, la creo
+			Contexto aCrear = new Contexto(nombreContexto);			
+			String sqlCreacion = "INSERT INTO 'hermes.Contextos' VALUES (null,?,?);";					
+			try {
+				prep = c.prepareStatement(sqlCreacion);			
+				prep.setString(1, aCrear.getNombre());
+				prep.setString(2, "");
+				prep.executeUpdate();
+			} catch (Exception e) {
+				throw new HermesException("Error agregando el contexto",e);
+			}
+			
+			//una vez creada obtenemos la el id de la etiqueta
+			prep = c.prepareStatement(sql);			
+			prep.setString(1, nombreContexto);
+			resultSet = prep.executeQuery();
+			if(resultSet.next()){
+				return resultSet.getLong(1);
+			}
+			throw new HermesException("El contexto no se pudo crear exitosamente");
+			
+		}catch (HermesException e) {
+			throw e;
+		}			
+		catch (Exception e) {
+			throw new HermesException("Error agregando el contexto",e);
+		}		
+		finally{
+			cerrarConexion(c);
+		}
+	}
+	
+	@Override
+	public Long obtenerOCrearNinio(String nombreNinio) throws HermesException {
+		
+		String sql = "SELECT id from 'hermes.Ninios' where nombre = ?;";
+		Connection c = getConnection();
+		PreparedStatement prep;
+		
+		try {
+			prep = c.prepareStatement(sql);			
+			prep.setString(1, nombreNinio);
+			ResultSet resultSet = prep.executeQuery();
+			if(resultSet.next()){
+				return resultSet.getLong(1);
+			}
+			
+			//si no existe, la creo
+			Ninio aCrear = new Ninio(nombreNinio);			
+			String sqlCreacion = "INSERT INTO 'hermes.Ninios' VALUES (null,?,?);";					
+			try {
+				prep = c.prepareStatement(sqlCreacion);			
+				prep.setString(1, aCrear.getNombre());
+				prep.setString(2, "");
+				prep.executeUpdate();
+			} catch (Exception e) {
+				throw new HermesException("Error agregando el Ninio",e);
+			}
+			
+			//una vez creada obtenemos la el id de la etiqueta
+			prep = c.prepareStatement(sql);			
+			prep.setString(1, nombreNinio);
+			resultSet = prep.executeQuery();
+			if(resultSet.next()){
+				return resultSet.getLong(1);
+			}
+			throw new HermesException("El Ninio no se pudo crear exitosamente");
+			
+		}catch (HermesException e) {
+			throw e;
+		}			
+		catch (Exception e) {
+			throw new HermesException("Error agregando el ninio",e);
+		}		
+		finally{
+			cerrarConexion(c);
+		}
+	}
+	
+	@Override
+	public Long obtenerOCrearMensaje(String nombreMensaje) throws HermesException {
+		
+		String sql = "SELECT id from 'hermes.Mensajes' where nombre = ?;";
+		Connection c = getConnection();
+		PreparedStatement prep;
+		
+		try {
+			prep = c.prepareStatement(sql);			
+			prep.setString(1, nombreMensaje);
+			ResultSet resultSet = prep.executeQuery();
+			if(resultSet.next()){
+				return resultSet.getLong(1);
+			}
+			
+			//si no existe, la creo
+			Mensaje aCrear = new Mensaje(nombreMensaje);			
+			String sqlCreacion = "INSERT INTO 'hermes.Mensajes' VALUES (null,?,?,?);";					
+			try {
+				prep = c.prepareStatement(sqlCreacion);			
+				prep.setString(1, aCrear.getNombre());
+				prep.setString(2, "");
+				prep.setString(3, "");				
+				prep.executeUpdate();
+			} catch (Exception e) {
+				throw new HermesException("Error agregando el Mensaje",e);
+			}
+			
+			//una vez creada obtenemos la el id de la etiqueta
+			prep = c.prepareStatement(sql);			
+			prep.setString(1, nombreMensaje);
+			resultSet = prep.executeQuery();
+			if(resultSet.next()){
+				return resultSet.getLong(1);
+			}
+			throw new HermesException("El Mensaje no se pudo crear exitosamente");
+			
+		}catch (HermesException e) {
+			throw e;
+		}			
+		catch (Exception e) {
+			throw new HermesException("Error agregando el Mensaje",e);
+		}		
+		finally{
+			cerrarConexion(c);
 		}
 	}
 	

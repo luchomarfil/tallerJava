@@ -278,9 +278,43 @@ public class HermesDaoMockImpl implements HermesDao {
 //		n.setMensaje((Mensaje) getTransferObject(Mensaje.class, idMensaje));
 		
 	}
+//
+//	@Override
+//	public Boolean existeNotificacion(Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado)
+//			throws HermesException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
-	public Boolean existeNotificacion(Long idNinio, Long idMensaje, Date fecha, Date fechaEnviado)
+	public Long obtenerOCrearCategoria(String categoria) throws HermesException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Long obtenerOCrearContexto(String nombreContexto)
+			throws HermesException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Long obtenerOCrearNinio(String nombreNinio) throws HermesException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Long obtenerOCrearMensaje(String nombreMensaje)
+			throws HermesException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean existeNotificacion(Long idNinio, Long idMensaje,
+			Long idCategoria, Long idContexto, Date fecha, Date fechaEnviado)
 			throws HermesException {
 		// TODO Auto-generated method stub
 		return null;

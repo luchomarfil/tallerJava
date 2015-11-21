@@ -105,18 +105,22 @@ public class MonitorCore extends Observable{
 	
 	/**
 	 * Metodo que recibe desde los listeners nuevos datos a transformar en notificacion
-	 * @param idCategoria
-	 * @param idContexto
-	 * @param idNinio
-	 * @param idMensaje
+	 * @param categoria
+	 * @param contexto
+	 * @param ninio
+	 * @param mensaje
 	 * @param fecha
 	 * @param fechaEnviado
-	 * @throws HermesException 
+	 * @throws HermesException
 	 */
-	public void recibirNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
+	public void recibirNotificacion(String categoria, String contexto, String ninio, String mensaje, Date fecha,
 			Date fechaEnviado) throws HermesException {
 		Date fechaRecibido = new Date();
-		if(!getHermesDao().existeNotificacion(idNinio,idMensaje,fecha,fechaEnviado)){
+		long idCategoria = getHermesDao().obtenerOCrearCategoria(categoria);
+		long idContexto = getHermesDao().obtenerOCrearContexto(contexto);
+		long idNinio = getHermesDao().obtenerOCrearNinio(ninio);
+		long idMensaje = getHermesDao().obtenerOCrearMensaje(mensaje);
+		if(!getHermesDao().existeNotificacion(idNinio,idMensaje,idCategoria,idContexto,fecha,fechaEnviado)){
 			getHermesDao().nuevaNotificacion(idCategoria,idContexto,idNinio,idMensaje,fecha,fechaEnviado,fechaRecibido);
 			this.setChanged();
 			this.notifyObservers();	

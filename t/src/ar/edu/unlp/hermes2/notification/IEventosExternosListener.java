@@ -6,7 +6,7 @@ import ar.edu.unlp.hermes2.gui.HermesException;
 
 public interface IEventosExternosListener {
 
-	void procesarNotificacion(Long idCategoria, Long idContexto, Long idNinio, Long idMensaje, Date fecha,
+	void procesarNotificacion(String categoria, String contexto, String ninio, String mensaje, Date fecha,
 			Date fechaEnviado) throws HermesException;
 	
 	void run();

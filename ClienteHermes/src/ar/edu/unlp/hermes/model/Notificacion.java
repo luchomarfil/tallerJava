@@ -3,13 +3,15 @@ package ar.edu.unlp.hermes.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.management.monitor.Monitor;
+
 import ar.edu.unlp.hermes.annotations.Mock;
 import ar.edu.unlp.hermes.annotations.MockStringAttribute;
 import ar.edu.unlp.hermes.annotations.MockTodayAttribute;
 
 @Mock
 public class Notificacion {
-	
+	private static SimpleDateFormat formatter= new SimpleDateFormat("yyyyMMddHHmmss");
 
 	private static final String CATEGORIA_PREDETERMINADA = "Predeterminada";
 	@MockTodayAttribute
@@ -18,13 +20,15 @@ public class Notificacion {
 	@MockStringAttribute ({"Predeterminada", "Emociones", "Alimentos","Actividades y Paseos"})
 	private String categoria;
 	
-	@MockStringAttribute ({"Establo­Terapia", "Pista", "Hogar"})  
+	@MockStringAttribute ({"Establo-­Terapia", "Pista", "Hogar", "Casa-Juegos"})  
 	private String contexto;
 	
-	@MockStringAttribute ({"descriptivo1", "descriptivo2", "descriptivo3"})  
+	@MockStringAttribute ({"Contento", "Hambre", "Feliz", "Enojado", "Cansado", "Jugar", "Caballo", 
+						   "Papa", "Mama", "Casa", "Miedo"})  
 	private String mensaje;
 	
-	@MockStringAttribute({"Juan", "Pedro", "Juana", "Manuela"})  
+	@MockStringAttribute({"Rodrigo","Susana","Juan", "Pedro", "Juana", "Manuela", "Eduardo", 
+						  "Jose", "Roberto", "Marcelo", "Veronica", "Rosa", "Clara"})  
 	private String ninio;
 
 	public Notificacion() {
@@ -112,11 +116,12 @@ public class Notificacion {
 	}
 	
 	public String toJson() {
-		return "{'categoria':'" + getCategoria() + "','idContexto':'"
-				+ getContexto() + "','idMensaje':'" + getMensaje()
-				+ "','idNinio':'" + getNinio() + "','fecha':'" + getFecha()
+		return "{'categoria':'" + getCategoria() + "','contexto':'"
+				+ getContexto() + "','mensaje':'" + getMensaje()
+				+ "','ninio':'" + getNinio() + "','fecha':'" + formatter.format(getFecha())
 				+ "','fechaEnviado':'"
-				+ (new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())
+				+ formatter.format(new Date())
 				+ "'}";
+		
 	}
 }

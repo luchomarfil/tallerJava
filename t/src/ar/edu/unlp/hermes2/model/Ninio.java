@@ -5,6 +5,10 @@ public class Ninio extends TransferObject {
 	private String nombre;
 	private String apellido;
 	
+	public Ninio(String nombre) {		
+		this.nombre = nombre;	
+	}
+	
 	public Ninio(String nombre, String apellido) {		
 		this.nombre = nombre;
 		this.setApellido(apellido);
