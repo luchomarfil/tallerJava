@@ -56,6 +56,8 @@ public class MonitorGui extends JFrame implements WindowListener  {
 			
 			setTitle("Monitor");
 			
+			this.addWindowListener(this);
+			
 		} catch (SecurityException | IOException e) {			
 			e.printStackTrace();
 		}

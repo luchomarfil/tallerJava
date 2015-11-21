@@ -16,12 +16,13 @@ public class HttpServerNotificacionListener implements Runnable, IEventosExterno
 	private static final String APPLICATIONS_CONTEXT = "/applications/hermes";
 	private static final Logger logger = Logger.getLogger(HttpServerNotificacionListener.class.getName());
 	private static final int portNo = new Integer(PropertiesHandler.getInstance().getProperties().getProperty("portNo"));
+	private HttpServer server;
 	
 	
 		  
 		@Override
 		public void run() {
-			new HttpServerNotificacionListener().start();
+			this.start();
 		}
 
 		
@@ -32,7 +33,7 @@ public class HttpServerNotificacionListener implements Runnable, IEventosExterno
 		
 		private void start(){
 			try {
-				HttpServer server = HttpServer.create(new InetSocketAddress(portNo), 10);
+				server = HttpServer.create(new InetSocketAddress(portNo), 0);
 				server.createContext(APPLICATIONS_CONTEXT,	new ManejadorPedidosHandler());				
 				server.setExecutor(Executors.newCachedThreadPool()); // creates a default executor
 				logger.info("Iniciando http server...");
@@ -49,7 +50,9 @@ public class HttpServerNotificacionListener implements Runnable, IEventosExterno
 		
 		@Override
 		public void cerrarConexion() {
-			
+			logger.info("Finalizando servidor...");
+			server.stop(1);
+			logger.info("Servidor finalizado");
 		}
 
 

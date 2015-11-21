@@ -20,7 +20,7 @@ public class Notificacion {
 	@MockStringAttribute ({"Predeterminada", "Emociones", "Alimentos","Actividades y Paseos"})
 	private String categoria;
 	
-	@MockStringAttribute ({"Establo-­Terapia", "Pista", "Hogar", "Casa-Juegos"})  
+	@MockStringAttribute ({"Establo-Terapia", "Pista", "Hogar", "Casa-Juegos"})  
 	private String contexto;
 	
 	@MockStringAttribute ({"Contento", "Hambre", "Feliz", "Enojado", "Cansado", "Jugar", "Caballo", 
