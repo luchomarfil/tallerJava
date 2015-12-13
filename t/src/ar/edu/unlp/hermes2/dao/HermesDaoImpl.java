@@ -68,7 +68,7 @@ public class HermesDaoImpl implements HermesDao {
 	public List<TransferObject> getListaMensajes() throws HermesException {
 		List<TransferObject> l = new ArrayList<TransferObject>();
 
-		String sql = "select id,nombre,descripcion, imagen from 'hermes.mensajes'";
+		String sql = "select id,nombre,descripcion, imagen from 'hermes.mensajes' order by nombre asc;";
 		Connection c = getConnection();		
 		try {
 			ResultSet resultSet = getResult(c,sql);
@@ -92,7 +92,7 @@ public class HermesDaoImpl implements HermesDao {
 	public List<TransferObject> getListaContextos() throws HermesException {
 		List<TransferObject> l = new ArrayList<TransferObject>();
 
-		String sql = "select id,nombre,descripcion from 'hermes.contextos'";
+		String sql = "select id,nombre,descripcion from 'hermes.contextos' order by nombre asc;";
 		Connection c = getConnection();
 		ResultSet resultSet = getResult(c,sql);
 		try {
@@ -113,7 +113,7 @@ public class HermesDaoImpl implements HermesDao {
 	public List<TransferObject> getListaCategorias() throws HermesException {
 		List<TransferObject> l = new ArrayList<TransferObject>();
 
-		String sql = "select id,nombre from 'hermes.categorias'";
+		String sql = "select id,nombre from 'hermes.categorias' order by nombre asc;";
 		Connection c = getConnection();
 		ResultSet resultSet = getResult(c,sql);
 		try {
@@ -133,7 +133,7 @@ public class HermesDaoImpl implements HermesDao {
 	public List<TransferObject> getListaNinios() throws HermesException {
 		List<TransferObject> l = new ArrayList<TransferObject>();
 
-		String sql = "select id, nombre, apellido from 'hermes.ninios'";
+		String sql = "select id, nombre, apellido from 'hermes.ninios' order by nombre asc;";
 		Connection c = getConnection();
 		ResultSet resultSet = getResult(c,sql);
 		try {
@@ -153,7 +153,7 @@ public class HermesDaoImpl implements HermesDao {
 	public List<TransferObject> getListaEtiquetas() throws HermesException {
 		List<TransferObject> l = new ArrayList<TransferObject>();
 
-		String sql = "select id, nombre, descripcion from 'hermes.etiquetas'";
+		String sql = "select id, nombre, descripcion from 'hermes.etiquetas' order by nombre asc;";
 		Connection c = getConnection();
 
 		ResultSet resultSet = getResult(c,sql);
@@ -282,9 +282,7 @@ public class HermesDaoImpl implements HermesDao {
 						resultSet.getString("ni_apellido"));
 
 				fechaRecibido = sd.parse(resultSet.getString("n_fechaRecibido"));
-				//fechaRecibido = new Date(resultSet.getString("n_fechaRecibido"));
 				fechaEnviado = sd.parse(resultSet.getString("n_fechaEnviado"));
-				//fechaEnviado = new Date(resultSet.getString("n_fechaEnviado"));
 				etiquetas = getEtiquetas(id);
 
 				l.add(new Notificacion(id, fecha, etiquetas, categoria,
@@ -303,16 +301,9 @@ public class HermesDaoImpl implements HermesDao {
 
 	@Override
 	public void agregarEtiqueta(Etiqueta etiqueta) throws HermesException {
-		String etiquetaAux;
-		if (etiqueta.getDescripcion() == null){
-			etiquetaAux = null;
-		}
-		else{
-			etiquetaAux = etiqueta.getDescripcion();
-		}
 		Connection c = getConnection();
 		try{
-		  agregarEtiqueta(etiqueta);		
+		  agregarEtiqueta(etiqueta,c);		
 		} catch (Exception e) {
 			throw new HermesException("Error agregando la etiqueta");
 		}		
@@ -502,7 +493,7 @@ public class HermesDaoImpl implements HermesDao {
 			prep.setLong(4, idMensaje);
 			prep.setString(5, formatterFecha.format(fecha));
 			prep.setString(6, formatterFecha.format(fechaEnviado));
-			prep.setString(7, formatterFecha.format(fechaEnviado));
+			prep.setString(7, formatterFecha.format(fechaRecibido));
 			prep.executeUpdate();
 			
 
@@ -520,7 +511,8 @@ public class HermesDaoImpl implements HermesDao {
 
 		String sql = "select e.* From 'hermes.etiquetas' AS e"
 				+ "		inner join 'hermes.notificaciones.etiquetas' AS ne"
-				+ "		on e.id = ne.idEtiqueta" + "		where idNotificacion = ?;";
+				+ "		on e.id = ne.idEtiqueta" 
+				+ "		where idNotificacion = ?;";
 		Connection c = getConnection();
 		PreparedStatement prep;
 		ResultSet resultSet = getResult(c,sql);
@@ -566,7 +558,7 @@ public class HermesDaoImpl implements HermesDao {
 			prep.setString(4, formatterFecha.format(fechaEnviado));			
 			prep.setLong(5, idCategoria);
 			prep.setLong(6, idContexto);
-			prep.executeQuery();
+//s			prep.executeQuery();
 			return !(prep.executeQuery().getInt(1) == 0);
 		} catch (Exception e) {
 			throw new HermesException("Error ejecutando la consulta para saber si existe notificacion",e);
