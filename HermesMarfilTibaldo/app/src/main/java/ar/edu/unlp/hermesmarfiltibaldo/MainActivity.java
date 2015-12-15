@@ -1,5 +1,6 @@
 package ar.edu.unlp.hermesmarfiltibaldo;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,16 +35,20 @@ public class MainActivity extends AppCompatActivity {
         lv.setAdapter(arrayAdapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                      @Override
-                                      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                          ListView lv = (ListView) findViewById(R.id.listView);
-                                          Alumno a = (Alumno) lv.getSelectedItem();
-                                      }
-                                  }
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                clickAlumno(position);
+            }
+        });
 
 
-        );
+    }
 
-
+    private void clickAlumno(int position) {
+        ListView lv = (ListView) findViewById(R.id.listView);
+        Alumno a = (Alumno) lv.getItemAtPosition(position);
+        Intent i = new Intent(this, AlumnoActivity.class);
+        i.putExtra("idAlumno", a.getId());
+        startActivity(i);
     }
 }
