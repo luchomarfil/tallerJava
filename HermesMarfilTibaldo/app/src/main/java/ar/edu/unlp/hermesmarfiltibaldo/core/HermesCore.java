@@ -5,6 +5,7 @@ import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 
 /**
  * Created by luciano on 14/12/15.
@@ -28,5 +29,14 @@ public class HermesCore {
 
     public List<Alumno> getAlumnos(){
         return HermesDao.instancia().getAlumnos();
+    }
+
+    /**
+     * Obtiene las categorias habilitadas para el alumno pasado como parametro
+     * @param alumno
+     * @return
+     */
+    public List<Categoria> getCategorias(Alumno alumno){
+        return HermesDao.instancia().getCategorias(alumno);
     }
 }
