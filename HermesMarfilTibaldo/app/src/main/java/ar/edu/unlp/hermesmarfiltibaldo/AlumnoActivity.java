@@ -17,7 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AlumnoActivity extends AppCompatActivity {
 
@@ -55,14 +58,9 @@ public class AlumnoActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+
+
 
     }
 
@@ -81,8 +79,12 @@ public class AlumnoActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        //Acá tenemos que configurar qué pasa cuando hacemos click en los botones del menue
+        if (id == R.id.modo_edicion) {
+            return true;
+        }
+
+        if (id == R.id.ajustes) {
             return true;
         }
 
@@ -117,10 +119,21 @@ public class AlumnoActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_alumno, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
+
+
+            View view = inflater.inflate(R.layout.fragment_alumno,container,false);
+            GridView gridView = (GridView) view.findViewById(R.id.gridView);
+            gridView.setAdapter(new ImageAdapter(view.getContext())); // uses the view to get the context instead of getActivity().
+/*
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    Toast.makeText(, "" + position,
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+            */
+            return view;
         }
     }
 
