@@ -7,16 +7,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="ar.edu.unlp.hermesmarfiltibaldo.MainActivity">
+    tools:context="ar.edu.unlp.hermesmarfiltibaldo.MainActivity"
+    android:background="#23201c">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:src="@drawable/cedica"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -25,32 +26,40 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageView"
         android:layout_alignBottom="@+id/imageView"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:weightSum="1">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="ALUMN@S"
-            android:id="@+id/textView" />
+            android:id="@+id/textView"
+            android:textColor="#f9f9f9" />
 
         <ListView
             android:layout_width="wrap_content"
-            android:layout_height="514dp"
+            android:layout_height="100dp"
             android:id="@+id/listView"
-             />
+            android:layout_weight="0.68"
+            android:layout_gravity="top"
+            android:choiceMode="singleChoice" />
+
+        <TextView
+            android:layout_width="221dp"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="+ NUEV@ ALUMN@"
+            android:id="@+id/textView3"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/linearLayout"
+            android:layout_alignStart="@+id/linearLayout"
+            android:textSize="20dp"
+            android:layout_weight="0.27"
+            android:gravity="center_vertical"
+            android:layout_gravity="bottom"
+            android:textColor="#f9f9f9" />
 
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="+ NUEV@ ALUMN@"
-        android:id="@+id/textView3"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/linearLayout"
-        android:layout_alignStart="@+id/linearLayout"
-        android:layout_marginBottom="72dp" />
 
 </RelativeLayout>

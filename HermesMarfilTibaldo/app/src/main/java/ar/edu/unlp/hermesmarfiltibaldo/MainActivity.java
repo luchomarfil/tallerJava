@@ -3,10 +3,12 @@ package ar.edu.unlp.hermesmarfiltibaldo;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        TextView textViewNuevoAlumno = (TextView) findViewById(R.id.textView3);
         ListView lv = (ListView) findViewById(R.id.listView);
 
 
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         // array as a third parameter.
         ArrayAdapter<Alumno> arrayAdapter = new ArrayAdapter<Alumno>(
                 this,
-                android.R.layout.simple_list_item_1,
+                R.layout.list_item_2,
                 HermesCore.instancia().getAlumnos());
 
         lv.setAdapter(arrayAdapter);
@@ -40,10 +42,23 @@ public class MainActivity extends AppCompatActivity {
                 clickAlumno(position);
             }
         });
+        textViewNuevoAlumno.setOnTouchListener(new AdapterView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                crearAlumno();
+                return true;
+            }
+        });
+
 
 
     }
 
+
+    private void crearAlumno(){
+
+
+    }
     private void clickAlumno(int position) {
         ListView lv = (ListView) findViewById(R.id.listView);
         Alumno a = (Alumno) lv.getItemAtPosition(position);
