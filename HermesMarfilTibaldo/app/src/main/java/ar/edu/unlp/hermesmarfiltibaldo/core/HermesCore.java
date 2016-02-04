@@ -13,7 +13,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 public class HermesCore {
 
     private static HermesCore instance;
-
+    private Alumno alumnoActual;
     public static synchronized HermesCore instancia(){
         if(instance==null){
             instance = new HermesCore();
@@ -38,5 +38,13 @@ public class HermesCore {
      */
     public List<Categoria> getCategorias(Alumno alumno){
         return HermesDao.instancia().getCategorias(alumno);
+    }
+
+    public void setAlumnoActual(Alumno alumno){
+        alumnoActual = alumno;
+    }
+
+    public Alumno getAlumnoActual(){
+        return alumnoActual;
     }
 }

@@ -22,6 +22,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
+
 public class AlumnoActivity extends AppCompatActivity {
 
     /**
@@ -45,6 +47,10 @@ public class AlumnoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alumno);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //toolbar.setSubtitle(HermesCore.instancia().getAlumnoActual().toString());
+        toolbar.setTitle("HERMES                                      "+ HermesCore.instancia().getAlumnoActual().toString());
+
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Create the adapter that will return a fragment for each of the three
@@ -52,17 +58,13 @@ public class AlumnoActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
+
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
-
-
-
-
-    }
+            tabLayout.setupWithViewPager(mViewPager);
+            }
 
 
     @Override
@@ -99,9 +101,11 @@ public class AlumnoActivity extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
+        protected int number;
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
+
         }
 
         /**
@@ -110,6 +114,7 @@ public class AlumnoActivity extends AppCompatActivity {
          */
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
+            fragment.number = sectionNumber;
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
@@ -123,16 +128,9 @@ public class AlumnoActivity extends AppCompatActivity {
 
             View view = inflater.inflate(R.layout.fragment_alumno,container,false);
             GridView gridView = (GridView) view.findViewById(R.id.gridView);
-            gridView.setAdapter(new ImageAdapter(view.getContext())); // uses the view to get the context instead of getActivity().
-/*
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v,
-                                        int position, long id) {
-                    Toast.makeText(, "" + position,
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
-            */
+
+            gridView.setAdapter(new ImageAdapter(view.getContext(),number)); // uses the view to get the context instead of getActivity().
+
             return view;
         }
     }
@@ -151,24 +149,29 @@ public class AlumnoActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+
             return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 1 total pages.
+            return 5;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Pista";
                 case 1:
-                    return "SECTION 2";
+                    return "Establo";
                 case 2:
-                    return "SECTION 3";
+                    return "Necesidad";
+                case 3:
+                    return "Emociones";
+                case 4:
+                    return HermesCore.instancia().getAlumnoActual().getNombre();
             }
             return null;
         }
