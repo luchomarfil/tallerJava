@@ -14,8 +14,6 @@ public class Alumno {
     private String sexo;
     private String tamanioPictograma;
 
-
-
     public Alumno(String nombre, String apellido, String sexo) {
         this.setNombre(nombre);
         this.setApellido(apellido);

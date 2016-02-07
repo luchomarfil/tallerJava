@@ -13,4 +13,28 @@ public class Pictograma {
         this.audioFilename = audio;
         this.imageFilename = image;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getAudioFilename() {
+        return audioFilename;
+    }
+
+    public void setAudioFilename(String audioFilename) {
+        this.audioFilename = audioFilename;
+    }
+
+    public String getImageFilename() {
+        return imageFilename;
+    }
+
+    public void setImageFilename(String imageFilename) {
+        this.imageFilename = imageFilename;
+    }
 }

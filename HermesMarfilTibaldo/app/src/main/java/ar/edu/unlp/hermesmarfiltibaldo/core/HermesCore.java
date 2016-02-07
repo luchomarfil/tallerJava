@@ -3,9 +3,13 @@ package ar.edu.unlp.hermesmarfiltibaldo.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.unlp.hermesmarfiltibaldo.comunicadorjson.ClientHTTPJSONListener;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
+import ar.edu.unlp.hermesmarfiltibaldo.exception.ComunicarNotificacionException;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Notificacion;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 /**
  * Created by luciano on 14/12/15.
@@ -47,4 +51,33 @@ public class HermesCore {
     public Alumno getAlumnoActual(){
         return alumnoActual;
     }
+
+    public int getPortComunicadorJSON() {
+        return HermesDao.instancia().getPortComunicadorJSON();
+    }
+
+    public String getIP() {
+        return HermesDao.instancia().getIP();
+    }
+
+
+    public List<Pictograma> getPictogramas(Categoria cat){
+        return HermesDao.instancia().getPictogramas(cat);
+    }
+
+    public List<Pictograma> getPictogramas(Alumno alumno){
+        return HermesDao.instancia().getPictogramas(alumno);
+    }
+
+    public void comunicarNotificacion(Notificacion n){
+        try {
+            ClientHTTPJSONListener.comunicarNotificacion(n);
+           // HermesCore.instancia().marcarNotificacionComoRecibida(n);
+        } catch (ComunicarNotificacionException e) {
+           // HermesCore.instancia().marcarNotificacionComoPendiente(n);
+            e.printStackTrace();
+        }
+
+    }
+
 }

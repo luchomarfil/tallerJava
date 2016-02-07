@@ -79,7 +79,10 @@ public class ImageAdapter extends BaseAdapter {
         File path = new File(Environment.getExternalStorageDirectory(),"establo/Casco.png").getParentFile();
         String[] fileNames;
 
-            fileNames = path.list();
+        fileNames = path.list();
+        if(fileNames==null){
+            return;
+        }
 
         for(int i = 0; i < fileNames.length; i++)
         {

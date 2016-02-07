@@ -11,10 +11,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
  * Created by luciano on 14/12/15.
  */
 public class HermesDao {
-    private static final Long ID_CATEGORIA_EMOCIONES =  1L;
-    private static final Long ID_CATEGORIA_ESTABLO = 2L;
-    private static final Long ID_CATEGORIA_NECESIDADES = 3L;
-    private static final Long ID_CATEGORIA_PISTA = 4L;
+
     private static final String SEXO_MASCULINO = "M";
     private static final String SEXO_FEMENINO = "F";
 
@@ -50,16 +47,16 @@ public class HermesDao {
 
     public List<Categoria> getCategorias(Alumno alumno) {
         List<Categoria> cats = new ArrayList<>();
-        cats.add(new Categoria(1L,"Emociones"));
-        cats.add(new Categoria(2L,"Establo"));
-        cats.add(new Categoria(3L,"Necesidades"));
-        cats.add(new Categoria(4L,"Pista"));
+        cats.add(Categoria.getCategoriaEmociones());
+        cats.add(Categoria.getCategoriaEstablo());
+        cats.add(Categoria.getCategoriaNecesidades());
+        cats.add(Categoria.getCategoriaPista());
         return cats;
     }
 
     public List<Pictograma> getPictogramas(Categoria cat){
         List<Pictograma> pictogramas = new ArrayList<>();
-        if(cat.getId()==ID_CATEGORIA_EMOCIONES){
+        if(cat.getId()==Categoria.ID_CATEGORIA_EMOCIONES){
             pictogramas.add(new Pictograma("emociones/Asustada.m4a","emociones/Asustada.png"));
             pictogramas.add(new Pictograma("emociones/Asustado.m4a","emociones/Asustado.png"));
             pictogramas.add(new Pictograma("emociones/Cansada.m4a","emociones/Cansada.png"));
@@ -77,7 +74,7 @@ public class HermesDao {
             pictogramas.add(new Pictograma("emociones/Triste.m4a","emociones/Triste Hombre.png"));
             pictogramas.add(new Pictograma("emociones/Triste.m4a","emociones/Triste Mujer.png"));
         }
-        else if(cat.getId()==ID_CATEGORIA_ESTABLO){
+        else if(cat.getId()==Categoria.ID_CATEGORIA_ESTABLO){
             pictogramas.add(new Pictograma("establo/Casco.m4a","establo/Casco.png"));
             pictogramas.add(new Pictograma("establo/Cepillo.m4a","establo/Cepillo.png"));
             pictogramas.add(new Pictograma("establo/Escarba Vasos.m4a","establo/Escarba Vasos.png"));
@@ -92,13 +89,13 @@ public class HermesDao {
             pictogramas.add(new Pictograma("establo/Zanahoria.m4a","establo/Zanahoria.png"));
 
         }
-        else if(cat.getId()==ID_CATEGORIA_NECESIDADES){
+        else if(cat.getId()==Categoria.ID_CATEGORIA_NECESIDADES){
             pictogramas.add(new Pictograma("necesidades/Banio.m4a","necesidades/Banio.png"));
             pictogramas.add(new Pictograma("necesidades/Sed Hombre.m4a","necesidades/Sed Hombre.png"));
             pictogramas.add(new Pictograma("necesidades/Sed Mujer.m4a","necesidades/Sed Mujer.png"));
 
         }
-        else if(cat.getId()==ID_CATEGORIA_PISTA){
+        else if(cat.getId()==Categoria.ID_CATEGORIA_PISTA){
             pictogramas.add(new Pictograma("pista/Aro.m4a","pista/Aro.png"));
             pictogramas.add(new Pictograma("pista/Broches.m4a","pista/Broches.png"));
             pictogramas.add(new Pictograma("pista/Burbujas.m4a","pista/Burbujas.png"));
@@ -175,5 +172,13 @@ public class HermesDao {
 
         return pictogramas;
 
+    }
+
+    public Integer getPortComunicadorJSON(){
+        return 50;
+    }
+
+    public String getIP(){
+        return "localhost";
     }
 }

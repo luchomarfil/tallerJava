@@ -6,6 +6,10 @@ package ar.edu.unlp.hermesmarfiltibaldo.model;
 public class Categoria {
     private Long id;
     private String nombre;
+    public static final Long ID_CATEGORIA_EMOCIONES =  1L;
+    public static final Long ID_CATEGORIA_ESTABLO = 2L;
+    public static final Long ID_CATEGORIA_NECESIDADES = 3L;
+    public static final Long ID_CATEGORIA_PISTA = 4L;
 
     public Categoria(long l, String n) {
         setId(l);
@@ -26,5 +30,21 @@ public class Categoria {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public static Categoria getCategoriaEmociones() {
+        return new Categoria(Categoria.ID_CATEGORIA_EMOCIONES,"Emociones");
+    }
+
+    public static Categoria getCategoriaEstablo() {
+        return new Categoria(Categoria.ID_CATEGORIA_ESTABLO,"Establo");
+    }
+
+    public static Categoria getCategoriaNecesidades() {
+        return new Categoria(Categoria.ID_CATEGORIA_NECESIDADES,"Necesidades");
+    }
+
+    public static Categoria getCategoriaPista() {
+        return new Categoria(Categoria.ID_CATEGORIA_PISTA,"Pista");
     }
 }
