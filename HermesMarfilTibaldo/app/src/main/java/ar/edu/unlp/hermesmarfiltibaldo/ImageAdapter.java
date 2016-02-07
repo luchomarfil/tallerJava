@@ -18,14 +18,19 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
+import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
+
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private int number;
-    private List<String> mThumbIds;
+    private List<Pictograma> mThumbIds;
     public ImageAdapter(Context c,int number) {
         mContext = c;
         this.number = number;
-        mThumbIds = new LinkedList<String>();
+        mThumbIds = new LinkedList<Pictograma>();
         getImages();
     }
 
@@ -60,12 +65,12 @@ public class ImageAdapter extends BaseAdapter {
 
 
 
-        File imgFile = new  File(mThumbIds.get(position));
+        File imgFile = new  File(mThumbIds.get(position).getImageFilename());
+
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             imageView.setImageBitmap(myBitmap);
         }
-
         return imageView;
     }
 
@@ -75,21 +80,23 @@ public class ImageAdapter extends BaseAdapter {
     {
 // references to our images
 
-
-        File path = new File(Environment.getExternalStorageDirectory(),"establo/Casco.png").getParentFile();
-        String[] fileNames;
-
-        fileNames = path.list();
-        if(fileNames==null){
-            return;
+        switch (this.number) {
+            case 0:
+                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaEmociones());
+                break;
+            case 1:
+                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaEstablo());
+                break;
+            case 2:
+                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaNecesidades());
+                break;
+            case 3:
+                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaPista());
+                break;
+            case 4:
+                mThumbIds = HermesDao.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                break;
         }
 
-        for(int i = 0; i < fileNames.length; i++)
-        {
-            if (fileNames[i].toString().endsWith(".png"))
-                {mThumbIds.add(fileNames[i].toString());}
-        ///Now set this bitmap on imageview
-
-        }
     }
 }
