@@ -1,56 +1,133 @@
 package ar.edu.unlp.hermesmarfiltibaldo.dao;
+import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDBHelper;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
+import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDBHelper.*;
+
+
 /**
  * Created by luciano on 14/12/15.
  */
-public class HermesDao {
+public class HermesDaoDB {
 
     private static final String SEXO_MASCULINO = "M";
     private static final String SEXO_FEMENINO = "F";
+    private HermesDBHelper hermesDBHelper;
 
-    private static HermesDao instance;
 
-    public static synchronized HermesDao instancia(){
+    private static HermesDaoDB instance;
+
+    public static synchronized HermesDaoDB instancia(Context context){
         if(instance==null){
-            instance = new HermesDao();
+            instance = new HermesDaoDB(context);
         }
         return instance;
     }
 
-    private HermesDao(){
+    private HermesDaoDB(Context context){
+        hermesDBHelper = new HermesDBHelper(context);
+    }
+
+    private void beforeRead(){
+
     }
 
     public List<Alumno> getAlumnos(){
+        SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                HermesContract.Alumno._ID,
+                HermesContract.Alumno.COLUMN_ALUMNO_ID,
+                HermesContract.Alumno.COLUMN_NAME_NOMBRE,
+                HermesContract.Alumno.COLUMN_NAME_APELLIDO,
+                HermesContract.Alumno.COLUMN_NAME_SEXO,
+                HermesContract.Alumno.COLUMN_NAME_TAMANIO
+        };
+
+// How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                HermesContract.Alumno.COLUMN_ALUMNO_ID + " DESC";
+        String selection = "";
+        String selectionArgs[] = {};
+
+        Cursor cursor = db.query(
+                HermesContract.Alumno.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        cursor.moveToFirst();
+        long itemId = cursor.getLong(
+                cursor.getColumnIndexOrThrow(HermesContract.Alumno._ID)
+        );
         List<Alumno> l = new ArrayList<Alumno>();
-        l.add(new Alumno("Roberto","Perez",    SEXO_MASCULINO));
-        l.add(new Alumno("Guillote","Coppola", SEXO_MASCULINO));
-        l.add(new Alumno("Diego","Maradona",   SEXO_MASCULINO));
-        l.add(new Alumno("Dalma","Maradona",   SEXO_FEMENINO));
-        l.add(new Alumno("Gianina","Maradona", SEXO_FEMENINO));
-        l.add(new Alumno("Laura", "Ubfal",     SEXO_FEMENINO));
-        l.add(new Alumno("Marcelo", "Polino",  SEXO_MASCULINO));
-        l.add(new Alumno("Carolina", "Ardohain", SEXO_FEMENINO));
-        l.add(new Alumno("Matias", "Ale",        SEXO_MASCULINO));
-        l.add(new Alumno("Mariana", "Fabiani",   SEXO_FEMENINO));
-        l.add(new Alumno("Moria", "Casán",       SEXO_FEMENINO));
-        l.add(new Alumno("Guillermo", "Andino",  SEXO_MASCULINO));
+        l.add( new Alumno(cursor.getString(1),cursor.getString(2),cursor.getString(3)));
+        while (cursor.moveToNext())
+        {
+            l.add(new Alumno(cursor.getString(1),cursor.getString(2),cursor.getString(3)));
+        }
+        cursor.close();
+        db.close();
         return l;
     }
 
     public List<Categoria> getCategorias(Alumno alumno) {
-        List<Categoria> cats = new ArrayList<>();
-        cats.add(Categoria.getCategoriaEmociones());
-        cats.add(Categoria.getCategoriaEstablo());
-        cats.add(Categoria.getCategoriaNecesidades());
-        cats.add(Categoria.getCategoriaPista());
-        return cats;
+        SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                HermesContract.Categoria._ID,
+                HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID,
+                HermesContract.Categoria.COLUMN_NAME_NOMBRE,
+        };
+
+// How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID + " DESC";
+        String selection = "";
+        String selectionArgs[] = {};
+
+        Cursor cursor = db.query(
+                HermesContract.Categoria.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        cursor.moveToFirst();
+        long itemId = cursor.getLong(
+                cursor.getColumnIndexOrThrow(HermesContract.Categoria._ID)
+        );
+        List<Categoria> l = new ArrayList<Categoria>();
+        l.add( new Categoria(cursor.getLong(1),cursor.getString(2)));
+        while (cursor.moveToNext())
+        {
+            l.add( new Categoria(cursor.getLong(1),cursor.getString(2)));
+        }
+        cursor.close();
+        db.close();
+        return l;
     }
 
     public List<Pictograma> getPictogramas(Categoria cat){
@@ -159,7 +236,7 @@ public class HermesDao {
         pictogramas.add(new Pictograma("pista/Burbujas.m4a","pista/Burbujas.png"));
         pictogramas.add(new Pictograma("pista/Caballo.m4a","pista/Caballo.png"));
         pictogramas.add(new Pictograma("pista/Caballo 2.m4a","pista/Caballo 2.png"));
-        pictogramas.add(new Pictograma("pista/Caballo 3.m4a","pista/Caballo 3.png"));
+        pictogramas.add(new Pictograma("pista/Caballo 3.m4a", "pista/Caballo 3.png"));
         pictogramas.add(new Pictograma("pista/Chapas.m4a","pista/Chapas.png"));
         pictogramas.add(new Pictograma("pista/Cubos.m4a","pista/Cubos.png"));
         pictogramas.add(new Pictograma("pista/Letras.m4a","pista/Letras.png"));

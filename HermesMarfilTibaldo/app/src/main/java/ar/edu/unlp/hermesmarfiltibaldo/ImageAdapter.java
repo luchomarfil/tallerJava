@@ -65,11 +65,12 @@ public class ImageAdapter extends BaseAdapter {
 
 
 
-        File imgFile = new  File(mThumbIds.get(position).getImageFilename());
+        File imgFile = new  File(Environment.getExternalStorageDirectory(),mThumbIds.get(position).getImageFilename());
 
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             imageView.setImageBitmap(myBitmap);
+
         }
         return imageView;
     }
