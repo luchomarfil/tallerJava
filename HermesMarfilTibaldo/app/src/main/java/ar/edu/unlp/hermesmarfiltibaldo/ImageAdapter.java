@@ -5,6 +5,7 @@ package ar.edu.unlp.hermesmarfiltibaldo;
  */
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.view.ViewGroup;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,25 +56,36 @@ public class ImageAdapter extends BaseAdapter {
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(300, 250));
+         //   imageView.setLayoutParams(new GridView.LayoutParams(300, 250));
+         //   imageView.setLayoutParams(new GridView.LayoutParams(800,600));
             imageView.setAdjustViewBounds(true);
 
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            imageView.setPadding(8, 8, 8, 8);
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
+            //imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
         }
 
-
-
-
         File imgFile = new  File(mThumbIds.get(position).getImageFilename());
+        Bitmap bitmapFromAsset = getBitmapFromAsset(imgFile.getPath());
+        // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+        imageView.setImageBitmap(bitmapFromAsset);
 
-        if(imgFile.exists()){
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            imageView.setImageBitmap(myBitmap);
-        }
         return imageView;
+    }
+
+    private Bitmap getBitmapFromAsset(String strName)
+    {
+
+        AssetManager assetManager = mContext.getResources().getAssets();
+        InputStream istr = null;
+        try {
+            istr = assetManager.open(strName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Bitmap bitmap = BitmapFactory.decodeStream(istr);
+        return bitmap;
     }
 
 
