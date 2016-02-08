@@ -76,7 +76,6 @@ public class ImageAdapter extends BaseAdapter {
 
     private Bitmap getBitmapFromAsset(String strName)
     {
-
         AssetManager assetManager = mContext.getResources().getAssets();
         InputStream istr = null;
         try {
