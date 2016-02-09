@@ -31,7 +31,7 @@
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
-                android:id="@+id/editText"
+                android:id="@+id/inputNombre"
                 android:editable="true"
                 android:text="nombre"
                 android:inputType="text"
@@ -48,13 +48,13 @@
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
-                android:id="@+id/editText2"
+                android:id="@+id/inputApellido"
                 android:text="apellido"
                 android:textSize="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="12dp"
+                android:layout_height="13dp"
                 android:text="Sexo"
                 android:id="@+id/textView5"
                 android:textSize="12dp" />
@@ -62,7 +62,7 @@
             <Spinner
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
-                android:id="@+id/spinner"
+                android:id="@+id/spinnerSexo"
                 android:spinnerMode="dropdown"
                 android:focusable="false"
                 android:focusableInTouchMode="false" />
@@ -78,7 +78,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="12dp"
+                android:layout_height="13dp"
                 android:text="Tamaño de Pictograma"
                 android:id="@+id/textView6"
                 android:textSize="12dp" />
@@ -86,7 +86,7 @@
             <Spinner
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
-                android:id="@+id/spinner2"
+                android:id="@+id/spinnerPictograma"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
@@ -113,14 +113,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="pista"
-                    android:id="@+id/checkBox"
-                    android:textSize="11dp" />
+                    android:id="@+id/checkBoxPista"
+                    android:textSize="11dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="establo"
-                    android:id="@+id/checkBox2"
+                    android:id="@+id/checkBoxEstablo"
                     android:textSize="11dp"
                     android:checked="false" />
 
@@ -128,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="emociones"
-                    android:id="@+id/checkBox3"
+                    android:id="@+id/checkBoxEmociones"
                     android:textSize="11dp"
                     android:checked="false" />
 
@@ -136,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="necesidades"
-                    android:id="@+id/checkBox4"
+                    android:id="@+id/checkBoxNecesidades"
                     android:textSize="11dp"
                     android:checked="false" />
             </LinearLayout>
@@ -154,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Eliminar Alumn@"
-                android:id="@+id/textView8" />
+                android:id="@+id/elimAlumno" />
         </LinearLayout>
 
     </LinearLayout>
@@ -188,7 +189,7 @@
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText3"
+                android:id="@+id/inputIP"
                 android:text="192.168.100.1"
                 android:textSize="10dp" />
         </LinearLayout>
@@ -207,8 +208,8 @@
 
             <EditText
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText4"
+                android:layout_height="30dp"
+                android:id="@+id/inputPuerto"
                 android:text="8080"
                 android:textSize="10dp" />
         </LinearLayout>

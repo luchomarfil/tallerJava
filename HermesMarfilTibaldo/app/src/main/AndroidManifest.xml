@@ -23,7 +23,16 @@
             android:name=".AlumnoActivity"
             android:label="@string/title_activity_alumno"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.edu.unlp.hermesmarfiltibaldo.MainActivity" />
+        </activity>
+        <activity
+            android:name=".AjustesActivity"
+            android:label="@string/title_activity_ajustes"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ar.edu.unlp.hermesmarfiltibaldo.MainActivity" />

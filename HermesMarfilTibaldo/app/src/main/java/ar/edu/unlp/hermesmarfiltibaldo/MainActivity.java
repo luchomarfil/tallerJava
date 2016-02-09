@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView textViewNuevoAlumno = (TextView) findViewById(R.id.textView3);
+
         ListView lv = (ListView) findViewById(R.id.listView);
 
         // This is the array adapter, it takes the context of the activity as a
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 clickAlumno(position);
             }
         });
+        TextView textViewNuevoAlumno = (TextView) findViewById(R.id.textView3);
         textViewNuevoAlumno.setOnTouchListener(new AdapterView.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -61,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void crearAlumno(){
-
-
+        Intent i = new Intent(this, AjustesActivity.class);
+        startActivity(i);
     }
+
     private void clickAlumno(int position) {
         ListView lv = (ListView) findViewById(R.id.listView);
         HermesCore.instancia().setAlumnoActual((Alumno) lv.getItemAtPosition(position));

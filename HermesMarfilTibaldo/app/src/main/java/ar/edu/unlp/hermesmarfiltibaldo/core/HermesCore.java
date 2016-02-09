@@ -80,4 +80,9 @@ public class HermesCore {
 
     }
 
+    public boolean deleteAlumnoActual() {
+        return true;
+    }
+
+
 }

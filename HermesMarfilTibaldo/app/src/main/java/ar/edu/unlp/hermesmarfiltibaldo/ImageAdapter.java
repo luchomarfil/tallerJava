@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -68,9 +69,10 @@ public class ImageAdapter extends BaseAdapter {
 
         File imgFile = new  File(mThumbIds.get(position).getImageFilename());
         Bitmap bitmapFromAsset = getBitmapFromAsset(imgFile.getPath());
+        BitmapDrawable bmd = new BitmapDrawable(bitmapFromAsset);
         // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        imageView.setImageBitmap(bitmapFromAsset);
-
+        //imageView.setImageBitmap(bitmapFromAsset);
+        imageView.setImageDrawable(bmd);
         return imageView;
     }
 
@@ -95,7 +97,7 @@ public class ImageAdapter extends BaseAdapter {
 
         switch (this.number) {
             case 0:
-                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaEmociones());
+                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaPista());
                 break;
             case 1:
                 mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaEstablo());
@@ -104,7 +106,7 @@ public class ImageAdapter extends BaseAdapter {
                 mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaNecesidades());
                 break;
             case 3:
-                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaPista());
+                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaEmociones());
                 break;
             case 4:
                 mThumbIds = HermesDao.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
