@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="10dp">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="fill_parent"
         android:layout_height="30dp"
-        android:id="@+id/toolbar" />
+        android:id="@+id/toolbar"
 
+        android:theme="@style/ToolBarStyle">
+    />
+    </android.support.v7.widget.Toolbar>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -35,7 +40,8 @@
                 android:editable="true"
                 android:text="nombre"
                 android:inputType="text"
-                android:textSize="10dp" />
+                android:textSize="9dp"
+                android:textColor="#ffffff" />
 
             <TextView
                 android:layout_width="fill_parent"
@@ -50,7 +56,8 @@
                 android:layout_height="30dp"
                 android:id="@+id/inputApellido"
                 android:text="apellido"
-                android:textSize="10dp" />
+                android:textSize="9dp"
+                android:textColor="#ffffff" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,7 +72,8 @@
                 android:id="@+id/spinnerSexo"
                 android:spinnerMode="dropdown"
                 android:focusable="false"
-                android:focusableInTouchMode="false" />
+                android:focusableInTouchMode="false"
+                android:theme="@style/AppTheme" />
 
         </LinearLayout>
 
@@ -87,7 +95,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
                 android:id="@+id/spinnerPictograma"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                android:theme="@style/AppTheme" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,7 +124,9 @@
                     android:text="pista"
                     android:id="@+id/checkBoxPista"
                     android:textSize="11dp"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:textColor="#ffffff"
+                    style="@style/AppTheme" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -123,7 +134,9 @@
                     android:text="establo"
                     android:id="@+id/checkBoxEstablo"
                     android:textSize="11dp"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:theme="@style/AppTheme"
+                    android:textColor="#ffffff" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -131,7 +144,9 @@
                     android:text="emociones"
                     android:id="@+id/checkBoxEmociones"
                     android:textSize="11dp"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:theme="@style/AppTheme"
+                    android:textColor="#ffffff" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -139,7 +154,9 @@
                     android:text="necesidades"
                     android:id="@+id/checkBoxNecesidades"
                     android:textSize="11dp"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:theme="@style/AppTheme"
+                    android:textColor="#ffffff" />
             </LinearLayout>
 
         </LinearLayout>
@@ -191,7 +208,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/inputIP"
                 android:text="192.168.100.1"
-                android:textSize="10dp" />
+                android:textSize="9dp"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
         <LinearLayout
@@ -211,7 +229,8 @@
                 android:layout_height="30dp"
                 android:id="@+id/inputPuerto"
                 android:text="8080"
-                android:textSize="10dp" />
+                android:textSize="9dp"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
     </LinearLayout>

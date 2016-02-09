@@ -174,10 +174,10 @@ public class HermesDao {
     }
 
     public Integer getPortComunicadorJSON(){
-        return 50;
+        return 8080;
     }
 
     public String getIP(){
-        return "localhost";
+        return "192.167.100.1";
     }
 }

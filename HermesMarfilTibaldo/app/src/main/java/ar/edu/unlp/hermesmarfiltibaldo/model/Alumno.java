@@ -7,7 +7,10 @@ import java.util.List;
  * Created by luciano on 14/12/15.
  */
 public class Alumno {
-
+    public static final String GRANDE = "grande";
+    public static final String NORMAL = "normal";
+    public static String MASCULINO = "M";
+    public static String FEMENINO = "F";
     private Long id;
     private String nombre;
     private String apellido;

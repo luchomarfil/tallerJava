@@ -47,7 +47,6 @@ public class AlumnoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alumno);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //toolbar.setSubtitle(HermesCore.instancia().getAlumnoActual().toString());
         toolbar.setTitle("HERMES                                      "+ HermesCore.instancia().getAlumnoActual().toString());
 
 
