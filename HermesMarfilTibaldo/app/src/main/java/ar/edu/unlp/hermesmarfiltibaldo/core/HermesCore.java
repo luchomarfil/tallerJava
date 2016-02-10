@@ -15,7 +15,9 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
  * Created by luciano on 14/12/15.
  */
 public class HermesCore {
-
+    public static boolean MODO_ALUMNO = false;
+    public static boolean MODO_AJUSTE = true;
+    private boolean modoAjuste = false;
     private static HermesCore instance;
     private Alumno alumnoActual;
     public static synchronized HermesCore instancia(){
@@ -79,6 +81,18 @@ public class HermesCore {
         }
 
     }
+
+
+    public boolean isModoAjuste()
+    {return this.modoAjuste;}
+
+    public void setModoAlumno()
+    {this.modoAjuste = this.MODO_ALUMNO;}
+
+    public void setModoAjuste()
+    {this.modoAjuste = this.MODO_AJUSTE;}
+
+
 
     public boolean deleteAlumnoActual() {
         return true;

@@ -1,5 +1,6 @@
 package ar.edu.unlp.hermesmarfiltibaldo;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -62,8 +63,9 @@ public class AlumnoActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-            tabLayout.setupWithViewPager(mViewPager);
-            }
+        tabLayout.setupWithViewPager(mViewPager);
+    }
+
 
 
     @Override
@@ -82,11 +84,12 @@ public class AlumnoActivity extends AppCompatActivity {
 
         //Acá tenemos que configurar qué pasa cuando hacemos click en los botones del menue
         if (id == R.id.modo_edicion) {
-            return true;
+            HermesCore.instancia().setModoAjuste();
         }
 
         if (id == R.id.ajustes) {
-            return true;
+            Intent i = new Intent(this, AjustesActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
