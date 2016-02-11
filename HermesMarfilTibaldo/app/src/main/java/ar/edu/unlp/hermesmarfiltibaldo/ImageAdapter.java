@@ -19,8 +19,10 @@ import android.view.ViewGroup;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
@@ -61,7 +63,7 @@ public class ImageAdapter extends BaseAdapter {
          //   imageView.setLayoutParams(new GridView.LayoutParams(800,600));
             imageView.setAdjustViewBounds(true);
 
-            imageView.setScaleType(ImageView.ScaleType.CENTER);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             //imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
@@ -93,8 +95,9 @@ public class ImageAdapter extends BaseAdapter {
 
     public void getImages()
     {
-// references to our images
-
+        // references to our images
+        Logger l = Logger.getLogger(ImageAdapter.class.getName());
+        l.info("Numero "+this.number);
         switch (this.number) {
             case 0:
                 mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaPista());
@@ -109,7 +112,8 @@ public class ImageAdapter extends BaseAdapter {
                 mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaEmociones());
                 break;
             case 4:
-                mThumbIds = HermesDao.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                //mThumbIds = HermesDao.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                mThumbIds = new ArrayList<Pictograma>();
                 break;
         }
 

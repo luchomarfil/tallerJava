@@ -59,13 +59,11 @@ public class HermesDao {
             pictogramas.add(new Pictograma("emociones/Asustada.m4a","emociones/Asustada.png"));
             pictogramas.add(new Pictograma("emociones/Asustado.m4a","emociones/Asustado.png"));
             pictogramas.add(new Pictograma("emociones/Cansada.m4a","emociones/Cansada.png"));
-            pictogramas.add(new Pictograma("emociones/Cansado.m4a","emociones/Cansdao.png"));
+            pictogramas.add(new Pictograma("emociones/Cansado.m4a","emociones/Cansado.png"));
             pictogramas.add(new Pictograma("emociones/Contenta.m4a","emociones/Contenta.png"));
             pictogramas.add(new Pictograma("emociones/Contento.m4a","emociones/Contento.png"));
             pictogramas.add(new Pictograma("emociones/Dolorida.m4a","emociones/Dolorida.png"));
             pictogramas.add(new Pictograma("emociones/Dolorido.m4a","emociones/Dolorido.png"));
-            pictogramas.add(new Pictograma("emociones/Enojada.m4a","emociones/Enojada.png"));
-            pictogramas.add(new Pictograma("emociones/Enojado.m4a","emociones/Enojado.png"));
             pictogramas.add(new Pictograma("emociones/Enojada.m4a","emociones/Enojada.png"));
             pictogramas.add(new Pictograma("emociones/Enojado.m4a","emociones/Enojado.png"));
             pictogramas.add(new Pictograma("emociones/Sorprendida.m4a","emociones/Sorprendida.png"));
@@ -81,7 +79,6 @@ public class HermesDao {
             pictogramas.add(new Pictograma("establo/Matra.m4a","establo/Matra.png"));
             pictogramas.add(new Pictograma("establo/Montura.m4a","establo/Montura.png"));
             pictogramas.add(new Pictograma("establo/Pasto.m4a","establo/Pasto.png"));
-            pictogramas.add(new Pictograma("establo/Dolorido.m4a","establo/Dolorido.png"));
             pictogramas.add(new Pictograma("establo/Rasqueta Blanda.m4a","establo/Rasqueta Blanda.png"));
             pictogramas.add(new Pictograma("establo/Rasqueta Dura.m4a","establo/Rasqueta Dura.png"));
             pictogramas.add(new Pictograma("establo/Riendas.m4a","establo/Riendas.png"));
@@ -99,8 +96,8 @@ public class HermesDao {
             pictogramas.add(new Pictograma("pista/Broches.m4a","pista/Broches.png"));
             pictogramas.add(new Pictograma("pista/Burbujas.m4a","pista/Burbujas.png"));
             pictogramas.add(new Pictograma("pista/Caballo.m4a","pista/Caballo.png"));
-            pictogramas.add(new Pictograma("pista/Caballo 2.m4a","pista/Caballo 2.png"));
-            pictogramas.add(new Pictograma("pista/Caballo 3.m4a","pista/Caballo 3.png"));
+            pictogramas.add(new Pictograma("pista/Caballo.m4a","pista/Caballo 2.png"));
+            pictogramas.add(new Pictograma("pista/Caballo.m4a","pista/Caballo 3.png"));
             pictogramas.add(new Pictograma("pista/Chapas.m4a","pista/Chapas.png"));
             pictogramas.add(new Pictograma("pista/Cubos.m4a","pista/Cubos.png"));
             pictogramas.add(new Pictograma("pista/Letras.m4a","pista/Letras.png"));

@@ -15,7 +15,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="center"
+            android:scaleType="centerInside"
             android:id="@+id/imageView"
             android:src="@drawable/cedica"
             android:layout_alignParentLeft="true"
@@ -41,7 +41,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 android:text="ALUMN@S"
                 android:id="@+id/textView"
                 android:textColor="#f9f9f9" />
@@ -69,7 +69,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:text="+ NUEV@ ALUMN@"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 android:id="@+id/textView3"
                 android:gravity="center_vertical"
                 android:layout_gravity="bottom"
