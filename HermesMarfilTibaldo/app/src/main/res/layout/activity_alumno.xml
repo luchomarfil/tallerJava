@@ -47,8 +47,8 @@
             android:layout_gravity="right">
             <android.support.v4.view.ViewPager
                 android:id="@+id/container"
-                android:layout_width="530dp"
-                android:layout_height="match_parent"
+                android:layout_width="1160dp"
+                android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_gravity="right">
 
