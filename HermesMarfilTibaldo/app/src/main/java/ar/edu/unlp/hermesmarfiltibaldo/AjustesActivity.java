@@ -96,7 +96,8 @@ public class AjustesActivity extends AppCompatActivity {
                 sItemsS.setSelection(((actual.getSexo() == Alumno.MASCULINO) ? 1 : 0));
                 sItemsT.setSelection(((actual.getTamanioPictograma() == Alumno.GRANDE) ? 0 : 1));
 
-                listC = HermesDao.instancia().getCategorias(actual);
+                listC = HermesCore.instancia().getCategorias(actual);
+
                 if (listC.contains(Categoria.getCategoriaEmociones())) {
                     ((CheckBox) findViewById(R.id.checkBoxEmociones)).setChecked(true);
                 }
@@ -110,10 +111,10 @@ public class AjustesActivity extends AppCompatActivity {
                     ((CheckBox) findViewById(R.id.checkBoxPista)).setChecked(true);
                 }
             }
-            editTextIp.setText(HermesCore.instancia().getIP());
 
+            editTextIp.setText(HermesCore.instancia().getIP());
             editTextPort.setText(HermesCore.instancia().getPortComunicadorJSON());
-        };
+    };
 
     @Override
     public void onBackPressed() {

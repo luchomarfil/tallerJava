@@ -1,5 +1,6 @@
 package ar.edu.unlp.hermesmarfiltibaldo.core;
 
+import android.content.Context;
 import android.text.Editable;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class HermesCore {
     private boolean modoAjuste = false;
     private static HermesCore instance;
     private Alumno alumnoActual;
+    private HermesDaoDB hermesDaoDB;
+
     public static synchronized HermesCore instancia(){
         if(instance==null){
             instance = new HermesCore();
@@ -49,7 +52,7 @@ public class HermesCore {
      * @return
      */
     public List<Categoria> getCategorias(Alumno alumno){
-        return HermesDao.instancia().getCategorias(alumno);
+        return this.getHermesDaoDB().getCategorias(alumno);
     }
 
     public void setAlumnoActual(Alumno alumno){
@@ -61,20 +64,26 @@ public class HermesCore {
     }
 
     public String getPortComunicadorJSON() {
-        return HermesDao.instancia().getPortComunicadorJSON();
+        return this.getHermesDaoDB().getPortComunicadorJSON();
     }
 
     public String getIP() {
-        return HermesDao.instancia().getIP();
+        return this.getHermesDaoDB().getIP();
     }
 
 
     public List<Pictograma> getPictogramas(Categoria cat){
-        return HermesDao.instancia().getPictogramas(cat);
+        return this.getHermesDaoDB().getPictogramas(cat);
     }
 
+    //TODO hacer!!!
     public List<Pictograma> getPictogramas(Alumno alumno){
-        return HermesDao.instancia().getPictogramas(alumno);
+        try {
+            return this.getHermesDaoDB().getPictogramas(alumno);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void comunicarNotificacion(Notificacion n){
@@ -106,15 +115,23 @@ public class HermesCore {
 
 
     public void updateAlumno(Alumno alumnoActual) {
-        HermesDaoDB.instancia(null).updateAlumno(alumnoActual);
+        this.getHermesDaoDB().updateAlumno(alumnoActual);
     }
 
     public void createNewAlumno(Alumno alumnoActual) {
-        HermesDaoDB.instancia(null).createNewAlumno(HermesCore.instancia().getAlumnoActual());
+        this.getHermesDaoDB().createNewAlumno(HermesCore.instancia().getAlumnoActual());
     }
 
     public void updateConfiguracion(String ip, String puerto) {
-        HermesDaoDB.instancia(null).updateConfig(CONFIG_KEY_IP,ip);
-        HermesDaoDB.instancia(null).updateConfig(CONFIG_KEY_PORT,puerto);
+        this.getHermesDaoDB().updateConfig(CONFIG_KEY_IP,ip);
+        this.getHermesDaoDB().updateConfig(CONFIG_KEY_PORT, puerto);
+    }
+
+    public void setHermesDaoDB(HermesDaoDB h) {
+        this.hermesDaoDB = h;
+    }
+
+    public HermesDaoDB getHermesDaoDB() {
+        return hermesDaoDB;
     }
 }

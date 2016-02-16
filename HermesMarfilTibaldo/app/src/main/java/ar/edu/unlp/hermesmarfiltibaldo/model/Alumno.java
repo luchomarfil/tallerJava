@@ -11,24 +11,25 @@ import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 public class Alumno {
     public static final String GRANDE = "grande";
     public static final String NORMAL = "normal";
-    public static String MASCULINO = "M";
-    public static String FEMENINO = "F";
+    public static final String MASCULINO = "M";
+    public static final String FEMENINO = "F";
     private Long id;
     private String nombre;
     private String apellido;
     private String sexo;
     private String tamanioPictograma;
-
     private List<Categoria> categorias;
 
     public Alumno(){
 
     }
 
-    public Alumno(String nombre, String apellido, String sexo) {
+    public Alumno(long id, String nombre, String apellido, String sexo, String tamanioPictograma ) {
+        this.setId(id);
         this.setNombre(nombre);
         this.setApellido(apellido);
         this.setSexo(sexo);
+        this.setTamanioPictograma(tamanioPictograma);
     }
 
     public String getNombre() {
