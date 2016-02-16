@@ -18,6 +18,7 @@ import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
+import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoDB;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
@@ -86,7 +87,7 @@ public class AjustesActivity extends AppCompatActivity {
                 sItemsS.setSelection(((actual.getSexo() == Alumno.MASCULINO) ? 1 : 0));
                 sItemsT.setSelection(((actual.getTamanioPictograma() == Alumno.GRANDE) ? 0 : 1));
 
-                List<Categoria> listC = HermesDao.instancia().getCategorias(actual);
+                List<Categoria> listC = HermesDaoDB.instancia(this).getCategorias(actual);
                 if (listC.contains(Categoria.getCategoriaEmociones())) {
                     ((CheckBox) findViewById(R.id.checkBoxEmociones)).setChecked(true);
                 }
@@ -100,8 +101,8 @@ public class AjustesActivity extends AppCompatActivity {
                     ((CheckBox) findViewById(R.id.checkBoxPista)).setChecked(true);
                 }
             }
-            ((EditText)findViewById(R.id.inputIP)).setText(HermesDao.instancia().getIP());
-            ((EditText)findViewById(R.id.inputPuerto)).setText(HermesDao.instancia().getPortComunicadorJSON().toString());
+            ((EditText)findViewById(R.id.inputIP)).setText(HermesDaoDB.instancia(this).getIP());
+            ((EditText)findViewById(R.id.inputPuerto)).setText(HermesDaoDB.instancia(this).getPortComunicadorJSON().toString());
         };
 
 

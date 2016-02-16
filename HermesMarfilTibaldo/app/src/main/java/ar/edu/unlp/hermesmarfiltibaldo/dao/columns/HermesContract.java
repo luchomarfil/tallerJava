@@ -17,7 +17,7 @@ public final class HermesContract {
         public static final String COLUMN_NAME_IMAGEN = "imagen";
         public static final String COLUMN_NAME_CATEOGRIA_ID = "categoriaid";
         public static final String COLUMN_NAME_AUDIO = "audio";
-        public static final String COLUMN_NAME_SEXO = "audio";
+        public static final String COLUMN_NAME_SEXO = "sexo";
     }
 
     /* Inner class that defines the table contents */

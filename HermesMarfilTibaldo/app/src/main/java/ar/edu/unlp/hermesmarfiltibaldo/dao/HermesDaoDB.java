@@ -24,7 +24,7 @@ public class HermesDaoDB {
 
     private static final String SEXO_MASCULINO = "M";
     private static final String SEXO_FEMENINO = "F";
-    private HermesDBHelper hermesDBHelper;
+    private static HermesDBHelper hermesDBHelper;
 
 
     private static HermesDaoDB instance;
@@ -39,7 +39,6 @@ public class HermesDaoDB {
     private HermesDaoDB(Context context){
         hermesDBHelper = new HermesDBHelper(context);
     }
-
     private void beforeRead(){
 
     }
@@ -81,16 +80,9 @@ public class HermesDaoDB {
         List<Alumno> l = new ArrayList<Alumno>();
         if (cursor.moveToFirst()) {
             do {
-                l.add(new Alumno(cursor.getString(1),cursor.getString(2),cursor.getString(3)));
+                l.add(new Alumno(cursor.getLong(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5)));
             }
             while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        while (cursor.moveToNext())
-        {
-            l.add(new Alumno(cursor.getString(1),cursor.getString(2),cursor.getString(3)));
         }
         cursor.close();
         db.close();
@@ -118,22 +110,43 @@ public class HermesDaoDB {
         db.close();
     }
 
-
     public void createNewPictograma(Pictograma pictograma){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+
+        ContentValues values = new ContentValues();
+
+        values.put(HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID, pictograma.getId());
+        values.put(HermesContract.Categoria.COLUMN_NAME_NOMBRE, pictograma.getImageFilename());
+        values.put(HermesContract.Categoria.COLUMN_NAME_NOMBRE, pictograma.getAudioFilename());
+        values.put(HermesContract.Categoria.COLUMN_NAME_NOMBRE, pictograma.getSexo());
+        values.put(HermesContract.Categoria.COLUMN_NAME_NOMBRE, pictograma.getCategoriaID());
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                HermesContract.Categoria.TABLE_NAME,
+                null,
+                values);
+        db.close();
+    }
+
+    public void createNewCategoria(Categoria categoria){
         // Gets the data repository in write mode
         SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
 
 // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
 
-        values.put(HermesContract.Alumno.COLUMN_NAME_NOMBRE, pictograma.getId());
-        values.put(HermesContract.Alumno.COLUMN_NAME_APELLIDO, pictograma.getAudioFilename());
-        values.put(HermesContract.Alumno.COLUMN_NAME_SEXO, pictograma.getImageFilename());
+        values.put(HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID, categoria.getId());
+        values.put(HermesContract.Categoria.COLUMN_NAME_NOMBRE, categoria.getNombre());
+
 
 // Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId = db.insert(
-                HermesContract.Alumno.TABLE_NAME,
+                HermesContract.Categoria.TABLE_NAME,
                 null,
                 values);
         db.close();
@@ -159,8 +172,7 @@ public class HermesDaoDB {
         db.close();
     }
 
-
-/*    public List<Categoria> getCategorias(Alumno alumno) {
+   public List<Categoria> getCategorias() {
         SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
 
 // Define a projection that specifies which columns from the database
@@ -192,7 +204,7 @@ public class HermesDaoDB {
                 cursor.getColumnIndexOrThrow(HermesContract.Categoria._ID)
         );
         List<Categoria> l = new ArrayList<Categoria>();
-        l.add( new Categoria(cursor.getLong(1),cursor.getString(2)));
+        l.add(new Categoria(cursor.getLong(1), cursor.getString(2)));
         while (cursor.moveToNext())
         {
             l.add( new Categoria(cursor.getLong(1),cursor.getString(2)));
@@ -201,79 +213,46 @@ public class HermesDaoDB {
         db.close();
         return l;
     }
-*/
 
-    public List<Categoria> getCategorias(Alumno alumno) {
-        List<Categoria> cats = new ArrayList<>();
-        cats.add(Categoria.getCategoriaEmociones());
-        cats.add(Categoria.getCategoriaEstablo());
-        cats.add(Categoria.getCategoriaNecesidades());
-        cats.add(Categoria.getCategoriaPista());
-        return cats;
+    public List<Categoria> getCategorias(Alumno alumno)  {
+        SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID,
+                HermesContract.Categoria.COLUMN_NAME_NOMBRE,
+        };
+
+        String getPictogramasAlumno = "SELECT C.* FROM "+
+                HermesContract.CategoriaAlumno.TABLE_NAME + " as CA " +
+                " INNER JOIN " + HermesContract.Categoria.TABLE_NAME + " as C on "+
+                " CA." + HermesContract.CategoriaAlumno.COLUMN_NAME_CATEGORIA_ID + " = " +
+                HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID +
+                " WHERE CA" + HermesContract.CategoriaAlumno.COLUMN_NAME_ALUMNO_ID + " = ? ";
+
+        Cursor cursor = db.rawQuery(getPictogramasAlumno, new String[]{String.valueOf(alumno.getId().toString())});
+        List<Categoria> l = new ArrayList<Categoria>();
+        if (cursor.moveToFirst()) {
+            do {
+                l.add(new Categoria(cursor.getLong(1),cursor.getString(2)));
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return l;
     }
 
     public List<Pictograma> getPictogramas(Categoria cat){
         List<Pictograma> pictogramas = new ArrayList<>();
-        if(cat.getId()==Categoria.ID_CATEGORIA_EMOCIONES){
-            pictogramas.add(new Pictograma("emociones/Asustada.m4a","emociones/Asustada.png"));
-            pictogramas.add(new Pictograma("emociones/Asustado.m4a","emociones/Asustado.png"));
-            pictogramas.add(new Pictograma("emociones/Cansada.m4a","emociones/Cansada.png"));
-            pictogramas.add(new Pictograma("emociones/Cansado.m4a","emociones/Cansdao.png"));
-            pictogramas.add(new Pictograma("emociones/Contenta.m4a","emociones/Contenta.png"));
-            pictogramas.add(new Pictograma("emociones/Contento.m4a","emociones/Contento.png"));
-            pictogramas.add(new Pictograma("emociones/Dolorida.m4a","emociones/Dolorida.png"));
-            pictogramas.add(new Pictograma("emociones/Dolorido.m4a","emociones/Dolorido.png"));
-            pictogramas.add(new Pictograma("emociones/Enojada.m4a","emociones/Enojada.png"));
-            pictogramas.add(new Pictograma("emociones/Enojado.m4a","emociones/Enojado.png"));
-            pictogramas.add(new Pictograma("emociones/Enojada.m4a","emociones/Enojada.png"));
-            pictogramas.add(new Pictograma("emociones/Enojado.m4a","emociones/Enojado.png"));
-            pictogramas.add(new Pictograma("emociones/Sorprendida.m4a","emociones/Sorprendida.png"));
-            pictogramas.add(new Pictograma("emociones/Sorprendido.m4a","emociones/Sorprendido.png"));
-            pictogramas.add(new Pictograma("emociones/Triste.m4a","emociones/Triste Hombre.png"));
-            pictogramas.add(new Pictograma("emociones/Triste.m4a","emociones/Triste Mujer.png"));
-        }
-        else if(cat.getId()==Categoria.ID_CATEGORIA_ESTABLO){
-            pictogramas.add(new Pictograma("establo/Casco.m4a","establo/Casco.png"));
-            pictogramas.add(new Pictograma("establo/Cepillo.m4a","establo/Cepillo.png"));
-            pictogramas.add(new Pictograma("establo/Escarba Vasos.m4a","establo/Escarba Vasos.png"));
-            pictogramas.add(new Pictograma("establo/Limpieza.m4a","establo/Limpieza.png"));
-            pictogramas.add(new Pictograma("establo/Matra.m4a","establo/Matra.png"));
-            pictogramas.add(new Pictograma("establo/Montura.m4a","establo/Montura.png"));
-            pictogramas.add(new Pictograma("establo/Pasto.m4a","establo/Pasto.png"));
-            pictogramas.add(new Pictograma("establo/Dolorido.m4a","establo/Dolorido.png"));
-            pictogramas.add(new Pictograma("establo/Rasqueta Blanda.m4a","establo/Rasqueta Blanda.png"));
-            pictogramas.add(new Pictograma("establo/Rasqueta Dura.m4a","establo/Rasqueta Dura.png"));
-            pictogramas.add(new Pictograma("establo/Riendas.m4a","establo/Riendas.png"));
-            pictogramas.add(new Pictograma("establo/Zanahoria.m4a","establo/Zanahoria.png"));
 
-        }
-        else if(cat.getId()==Categoria.ID_CATEGORIA_NECESIDADES){
-            pictogramas.add(new Pictograma("necesidades/Banio.m4a","necesidades/Banio.png"));
-            pictogramas.add(new Pictograma("necesidades/Sed Hombre.m4a","necesidades/Sed Hombre.png"));
-            pictogramas.add(new Pictograma("necesidades/Sed Mujer.m4a","necesidades/Sed Mujer.png"));
-
-        }
-        else if(cat.getId()==Categoria.ID_CATEGORIA_PISTA){
-            pictogramas.add(new Pictograma("pista/Aro.m4a","pista/Aro.png"));
-            pictogramas.add(new Pictograma("pista/Broches.m4a","pista/Broches.png"));
-            pictogramas.add(new Pictograma("pista/Burbujas.m4a","pista/Burbujas.png"));
-            pictogramas.add(new Pictograma("pista/Caballo.m4a","pista/Caballo.png"));
-            pictogramas.add(new Pictograma("pista/Caballo 2.m4a","pista/Caballo 2.png"));
-            pictogramas.add(new Pictograma("pista/Caballo 3.m4a","pista/Caballo 3.png"));
-            pictogramas.add(new Pictograma("pista/Chapas.m4a","pista/Chapas.png"));
-            pictogramas.add(new Pictograma("pista/Cubos.m4a","pista/Cubos.png"));
-            pictogramas.add(new Pictograma("pista/Letras.m4a","pista/Letras.png"));
-            pictogramas.add(new Pictograma("pista/Maracas.m4a","pista/Maracas.png"));
-            pictogramas.add(new Pictograma("pista/Palos.m4a","pista/Palos.png"));
-            pictogramas.add(new Pictograma("pista/Pato.m4a","pista/Pato.png"));
-            pictogramas.add(new Pictograma("pista/Pelota.m4a","pista/Pelota.png"));
-            pictogramas.add(new Pictograma("pista/Tarima.m4a","pista/Tarima.png"));
-        }
 
         return pictogramas;
     }
 
-    public List<Pictograma> getPictogramasAjustes(Alumno alumno){
+  /*  public List<Pictograma> getPictogramasAjustes(Alumno alumno){
         List<Pictograma> pictogramas = new ArrayList<>();
 
         if(alumno.getSexo()==SEXO_FEMENINO){
@@ -329,7 +308,7 @@ public class HermesDaoDB {
 
         return pictogramas;
 
-    }
+    }*/
 
     public List<Pictograma> getPictogramasAlumno(Alumno alumno)  {
             SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
@@ -353,7 +332,7 @@ public class HermesDaoDB {
             List<Pictograma> l = new ArrayList<Pictograma>();
             if (cursor.moveToFirst()) {
                 do {
-                    l.add(new Pictograma(cursor.getString(1), cursor.getString(2)));
+                    l.add(new Pictograma(cursor.getLong(1),cursor.getString(2), cursor.getString(3),cursor.getString(4),cursor.getLong(5)));
                 }
                 while (cursor.moveToNext());
             }
@@ -378,7 +357,7 @@ public class HermesDaoDB {
         Cursor c = db.query(
                 HermesContract.Configuracion.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
-                HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE,                                // The columns for the WHERE clause
+                HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE + "=?",                                // The columns for the WHERE clause
                 new String[] { "PORT" } ,                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
@@ -398,7 +377,9 @@ public class HermesDaoDB {
 // Define a projection that specifies which columns from the database
 // you will actually use after this query.
         String[] projection = {
+                HermesContract.Configuracion.COLUMN_NAME_CONFIGURACION_ID,
                 HermesContract.Configuracion.COLUMN_NAME_VALOR,
+                HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE,
         };
 
 // How you want the results sorted in the resulting Cursor
@@ -406,14 +387,14 @@ public class HermesDaoDB {
         Cursor c = db.query(
                 HermesContract.Configuracion.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
-                HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE,                                // The columns for the WHERE clause
+                HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE + "=?",                                // The columns for the WHERE clause
                 new String[] { "IP" } ,                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
                 null                                 // The sort order
         );
         c.moveToFirst();
-        String result = c.getString(1);
+        String result = c.getString(2);
         c.close();
         db.close();
         return  result;
@@ -435,6 +416,7 @@ public class HermesDaoDB {
                 values,
                 " WHERE " + HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE + " =  ? ",
                 new String[]{name});
+        db.close();
     }
 
     public void updateAlumno(Alumno alumno){
@@ -456,7 +438,9 @@ public class HermesDaoDB {
                 values,
                 " WHERE " + HermesContract.Alumno.COLUMN_ALUMNO_ID + " =  ? ",
                 new String[]{alumno.getId().toString()});
+        db.close();
     }
+
 
     public void removeAlumno(Alumno alumno){
         // Gets the data repository in write mode
@@ -468,7 +452,9 @@ public class HermesDaoDB {
                 HermesContract.Alumno.TABLE_NAME,
                 " WHERE " + HermesContract.Alumno.COLUMN_ALUMNO_ID + " =  ? ",
                 new String[]{alumno.getId().toString()});
+        db.close();
     }
+
 
     public void removeAlumnoPictograma(Alumno alumno, Pictograma pictograma){
         // Gets the data repository in write mode
@@ -480,5 +466,6 @@ public class HermesDaoDB {
                 HermesContract.Alumno.TABLE_NAME,
                 " WHERE " + HermesContract.PictogramaAlumno.COLUMN_NAME_ALUMNO_ID + " =  ? AND " +  HermesContract.PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID + " = ? " ,
                 new String[]{alumno.getId().toString(), pictograma.getId().toString()});
+        db.close();
     }
 }
