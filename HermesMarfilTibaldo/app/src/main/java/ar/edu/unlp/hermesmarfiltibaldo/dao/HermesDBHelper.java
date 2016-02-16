@@ -17,7 +17,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ALUMNO =
             "CREATE TABLE " + Alumno.TABLE_NAME + " (" +
-                    Alumno.COLUMN_ALUMNO_ID + " INTEGER PRIMARY KEY," +
+                    Alumno.COLUMN_ALUMNO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     Alumno.COLUMN_NAME_NOMBRE + TEXT_TYPE + COMMA_SEP +
                     Alumno.COLUMN_NAME_APELLIDO + TEXT_TYPE + COMMA_SEP +
                     Alumno.COLUMN_NAME_SEXO + TEXT_TYPE + COMMA_SEP +
@@ -29,8 +29,9 @@ public class HermesDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_PICTOGRAMA =
             "CREATE TABLE " + Pictograma.TABLE_NAME + " (" +
-                    Pictograma.COLUMN_NAME_PICTOGRAMA_ID + " INTEGER PRIMARY KEY," +
-                    Pictograma.COLUMN_NAME_NOMBRE + TEXT_TYPE + COMMA_SEP +
+                    Pictograma.COLUMN_NAME_PICTOGRAMA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    Pictograma.COLUMN_NAME_AUDIO + TEXT_TYPE + COMMA_SEP +
+                    Pictograma.COLUMN_NAME_IMAGEN + TEXT_TYPE + COMMA_SEP +
                     Pictograma.COLUMN_NAME_CATEOGRIA_ID + TEXT_TYPE + COMMA_SEP +
                     " )";
     private static final String SQL_DELETE_PICTOGRAMA =
@@ -39,9 +40,9 @@ public class HermesDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_PICTOGRAMA_ALUMNO =
             "CREATE TABLE " + PictogramaAlumno.TABLE_NAME + " (" +
-                    PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ALUMNO_ID + " INTEGER PRIMARY KEY," +
-                    PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID + TEXT_TYPE + COMMA_SEP +
-                    PictogramaAlumno.COLUMN_NAME_ALUMNO_ID + TEXT_TYPE + COMMA_SEP +
+                    PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ALUMNO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID + " INTEGER " + COMMA_SEP +
+                    PictogramaAlumno.COLUMN_NAME_ALUMNO_ID + " INTEGER " + COMMA_SEP +
                     " )";
     private static final String SQL_DELETE_PICTOGRAMA_ALUMNO =
             "DROP TABLE IF EXISTS " + PictogramaAlumno.TABLE_NAME;
@@ -49,7 +50,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_CONFIGURACION =
             "CREATE TABLE " + Configuracion.TABLE_NAME + " (" +
-                    Configuracion.COLUMN_NAME_CONFIGURACION_ID + " INTEGER PRIMARY KEY," +
+                    Configuracion.COLUMN_NAME_CONFIGURACION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     Configuracion.COLUMN_NAME_VALOR + TEXT_TYPE + COMMA_SEP +
                     Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE + TEXT_TYPE + COMMA_SEP +
                     " )";
@@ -59,20 +60,18 @@ public class HermesDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_CATEGORIA =
             "CREATE TABLE " + Categoria.TABLE_NAME + " (" +
-                    Categoria.COLUMN_NAME_CATEGORIA_ID + " INTEGER PRIMARY KEY," +
+                    Categoria.COLUMN_NAME_CATEGORIA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     Categoria.COLUMN_NAME_NOMBRE + TEXT_TYPE + COMMA_SEP +
                     " )";
     private static final String SQL_DELETE_CATEGORIA =
             "DROP TABLE IF EXISTS " + Categoria.TABLE_NAME;
     // If you change the database schema, you must increment the database version.
 
-
-
     private static final String SQL_CREATE_CATEGORIA_ALUMNO =
             "CREATE TABLE " + CategoriaAlumno.TABLE_NAME + " (" +
-                    CategoriaAlumno.COLUMN_NAME_ENTRY_ID + " INTEGER PRIMARY KEY," +
-                    CategoriaAlumno.COLUMN_NAME_CATEGORIA_ID + TEXT_TYPE + COMMA_SEP +
-                    CategoriaAlumno.COLUMN_NAME_ALUMNO_ID + TEXT_TYPE + COMMA_SEP +
+                    CategoriaAlumno.COLUMN_NAME_ENTRY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    CategoriaAlumno.COLUMN_NAME_CATEGORIA_ID + " INTEGER " + COMMA_SEP +
+                    CategoriaAlumno.COLUMN_NAME_ALUMNO_ID + " INTEGER " + COMMA_SEP +
                     " )";
     private static final String SQL_DELETE_CATEGORIA_ALUMNO =
             "DROP TABLE IF EXISTS " + CategoriaAlumno.TABLE_NAME;
@@ -92,6 +91,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_CONFIGURACION);
         db.execSQL(SQL_CREATE_CATEGORIA);
         db.execSQL(SQL_CREATE_CATEGORIA_ALUMNO);
+        HermesDBStartUp.startUp(db);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

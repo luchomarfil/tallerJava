@@ -1,6 +1,7 @@
 package ar.edu.unlp.hermesmarfiltibaldo.dao;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDBHelper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -78,7 +79,15 @@ public class HermesDaoDB {
                 cursor.getColumnIndexOrThrow(HermesContract.Alumno._ID)
         );
         List<Alumno> l = new ArrayList<Alumno>();
-        l.add( new Alumno(cursor.getString(1),cursor.getString(2),cursor.getString(3)));
+        if (cursor.moveToFirst()) {
+            do {
+                l.add(new Alumno(cursor.getString(1),cursor.getString(2),cursor.getString(3)));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
         while (cursor.moveToNext())
         {
             l.add(new Alumno(cursor.getString(1),cursor.getString(2),cursor.getString(3)));
@@ -88,7 +97,70 @@ public class HermesDaoDB {
         return l;
     }
 
-    public List<Categoria> getCategorias(Alumno alumno) {
+    public void createNewAlumno(Alumno alumno){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+
+        values.put(HermesContract.Alumno.COLUMN_NAME_NOMBRE, alumno.getNombre());
+        values.put(HermesContract.Alumno.COLUMN_NAME_APELLIDO, alumno.getApellido());
+        values.put(HermesContract.Alumno.COLUMN_NAME_SEXO, alumno.getSexo());
+        values.put(HermesContract.Alumno.COLUMN_NAME_TAMANIO, alumno.getTamanioPictograma());
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                HermesContract.Alumno.TABLE_NAME,
+                null,
+                values);
+        db.close();
+    }
+
+
+    public void createNewPictograma(Pictograma pictograma){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+
+        values.put(HermesContract.Alumno.COLUMN_NAME_NOMBRE, pictograma.getId());
+        values.put(HermesContract.Alumno.COLUMN_NAME_APELLIDO, pictograma.getAudioFilename());
+        values.put(HermesContract.Alumno.COLUMN_NAME_SEXO, pictograma.getImageFilename());
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                HermesContract.Alumno.TABLE_NAME,
+                null,
+                values);
+        db.close();
+    }
+
+    public void createNewAlumnoPictograma(Alumno alumno, Pictograma pictograma){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+
+        values.put(HermesContract.PictogramaAlumno.COLUMN_NAME_ALUMNO_ID, alumno.getId());
+        values.put(HermesContract.PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID, pictograma.getId());
+
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                HermesContract.PictogramaAlumno.TABLE_NAME,
+                null,
+                values);
+        db.close();
+    }
+
+
+/*    public List<Categoria> getCategorias(Alumno alumno) {
         SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
 
 // Define a projection that specifies which columns from the database
@@ -128,6 +200,16 @@ public class HermesDaoDB {
         cursor.close();
         db.close();
         return l;
+    }
+*/
+
+    public List<Categoria> getCategorias(Alumno alumno) {
+        List<Categoria> cats = new ArrayList<>();
+        cats.add(Categoria.getCategoriaEmociones());
+        cats.add(Categoria.getCategoriaEstablo());
+        cats.add(Categoria.getCategoriaNecesidades());
+        cats.add(Categoria.getCategoriaPista());
+        return cats;
     }
 
     public List<Pictograma> getPictogramas(Categoria cat){
@@ -186,13 +268,12 @@ public class HermesDaoDB {
             pictogramas.add(new Pictograma("pista/Pato.m4a","pista/Pato.png"));
             pictogramas.add(new Pictograma("pista/Pelota.m4a","pista/Pelota.png"));
             pictogramas.add(new Pictograma("pista/Tarima.m4a","pista/Tarima.png"));
-
         }
 
         return pictogramas;
     }
 
-    public List<Pictograma> getPictogramas(Alumno alumno){
+    public List<Pictograma> getPictogramasAjustes(Alumno alumno){
         List<Pictograma> pictogramas = new ArrayList<>();
 
         if(alumno.getSexo()==SEXO_FEMENINO){
@@ -250,11 +331,154 @@ public class HermesDaoDB {
 
     }
 
+    public List<Pictograma> getPictogramasAlumno(Alumno alumno)  {
+            SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+            String[] projection = {
+                    HermesContract.PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ALUMNO_ID,
+                    HermesContract.PictogramaAlumno.COLUMN_NAME_ALUMNO_ID,
+                    HermesContract.PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID,
+            };
+
+            String getPictogramasAlumno = "SELECT P.* FROM "+
+                    HermesContract.PictogramaAlumno.TABLE_NAME + " as PA " +
+                    " INNER JOIN " + HermesContract.Pictograma.TABLE_NAME + " as P on "+
+                    " PA." + HermesContract.PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID + " = " +
+                    HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID +
+                    " WHERE PA" + HermesContract.Alumno.COLUMN_ALUMNO_ID + " = ? ";
+
+            Cursor cursor = db.rawQuery(getPictogramasAlumno, new String[]{String.valueOf(alumno.getId().toString())});
+            List<Pictograma> l = new ArrayList<Pictograma>();
+            if (cursor.moveToFirst()) {
+                do {
+                    l.add(new Pictograma(cursor.getString(1), cursor.getString(2)));
+                }
+                while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            db.close();
+            return l;
+        }
+
+
     public Integer getPortComunicadorJSON(){
-        return 50;
+        SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                HermesContract.Configuracion.COLUMN_NAME_VALOR,
+        };
+
+// How you want the results sorted in the resulting Cursor
+
+        Cursor c = db.query(
+                HermesContract.Configuracion.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE,                                // The columns for the WHERE clause
+                new String[] { "PORT" } ,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
+        c.moveToFirst();
+        int result =  c.getInt(1);
+        c.close();
+        db.close();
+        return  result;
     }
 
     public String getIP(){
-        return "localhost";
+        SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                HermesContract.Configuracion.COLUMN_NAME_VALOR,
+        };
+
+// How you want the results sorted in the resulting Cursor
+
+        Cursor c = db.query(
+                HermesContract.Configuracion.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE,                                // The columns for the WHERE clause
+                new String[] { "IP" } ,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
+        c.moveToFirst();
+        String result = c.getString(1);
+        c.close();
+        db.close();
+        return  result;
+    }
+
+    public void updateConfig(String name, String value){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+
+        values.put(HermesContract.Configuracion.COLUMN_NAME_VALOR, value);
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.update(
+                HermesContract.Configuracion.TABLE_NAME,
+                values,
+                " WHERE " + HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE + " =  ? ",
+                new String[]{name});
+    }
+
+    public void updateAlumno(Alumno alumno){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+
+        values.put(HermesContract.Alumno.COLUMN_NAME_NOMBRE, alumno.getNombre());
+        values.put(HermesContract.Alumno.COLUMN_NAME_APELLIDO, alumno.getApellido());
+        values.put(HermesContract.Alumno.COLUMN_NAME_SEXO, alumno.getSexo());
+        values.put(HermesContract.Alumno.COLUMN_NAME_TAMANIO, alumno.getTamanioPictograma());
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.update(
+                HermesContract.Alumno.TABLE_NAME,
+                values,
+                " WHERE " + HermesContract.Alumno.COLUMN_ALUMNO_ID + " =  ? ",
+                new String[]{alumno.getId().toString()});
+    }
+
+    public void removeAlumno(Alumno alumno){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.delete(
+                HermesContract.Alumno.TABLE_NAME,
+                " WHERE " + HermesContract.Alumno.COLUMN_ALUMNO_ID + " =  ? ",
+                new String[]{alumno.getId().toString()});
+    }
+
+    public void removeAlumnoPictograma(Alumno alumno, Pictograma pictograma){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase ();
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.delete(
+                HermesContract.Alumno.TABLE_NAME,
+                " WHERE " + HermesContract.PictogramaAlumno.COLUMN_NAME_ALUMNO_ID + " =  ? AND " +  HermesContract.PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID + " = ? " ,
+                new String[]{alumno.getId().toString(), pictograma.getId().toString()});
     }
 }
