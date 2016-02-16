@@ -8,6 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 public class HermesDBStartUp {
     public static void startUp(SQLiteDatabase db) {
 
-        db.insert();
+//        db.insert();
     }
 }

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 crearAlumno();
-                return true;
+                return false;
             }
         });
 
@@ -60,8 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Cuando se selecciona el boton nuevo alumno, se crea el alumno y se va al
+     * activity ajustes
+     */
     private void crearAlumno(){
+        HermesCore.instancia().setAlumnoActual(new Alumno());
         Intent i = new Intent(this, AjustesActivity.class);
         startActivity(i);
     }

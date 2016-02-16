@@ -3,6 +3,8 @@ package ar.edu.unlp.hermesmarfiltibaldo.model;
 import java.util.Enumeration;
 import java.util.List;
 
+import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
+
 /**
  * Created by luciano on 14/12/15.
  */
@@ -16,6 +18,12 @@ public class Alumno {
     private String apellido;
     private String sexo;
     private String tamanioPictograma;
+
+    private List<Categoria> categorias;
+
+    public Alumno(){
+
+    }
 
     public Alumno(String nombre, String apellido, String sexo) {
         this.setNombre(nombre);
@@ -69,4 +77,14 @@ public class Alumno {
     public String toString() {
         return this.getNombre() +" "+this.getApellido();
     }
+
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
 }

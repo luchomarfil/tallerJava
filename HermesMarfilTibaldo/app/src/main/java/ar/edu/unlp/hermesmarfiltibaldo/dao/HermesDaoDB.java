@@ -24,6 +24,7 @@ public class HermesDaoDB {
 
     private static final String SEXO_MASCULINO = "M";
     private static final String SEXO_FEMENINO = "F";
+
     private HermesDBHelper hermesDBHelper;
 
 

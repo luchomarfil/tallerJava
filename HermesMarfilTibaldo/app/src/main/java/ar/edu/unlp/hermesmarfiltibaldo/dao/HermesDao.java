@@ -14,6 +14,8 @@ public class HermesDao {
 
     private static final String SEXO_MASCULINO = "M";
     private static final String SEXO_FEMENINO = "F";
+    private static final String CONFIG_KEY_IP = "ip";
+    private static final String CONFIG_KEY_PORT = "port";
 
     private static HermesDao instance;
 
@@ -170,11 +172,11 @@ public class HermesDao {
 
     }
 
-    public Integer getPortComunicadorJSON(){
-        return 8080;
+    public String getPortComunicadorJSON(){
+        return "8080";
     }
 
     public String getIP(){
-        return "192.167.100.1";
+        return "192.167.100.100";
     }
 }

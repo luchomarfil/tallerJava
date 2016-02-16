@@ -1,10 +1,13 @@
 package ar.edu.unlp.hermesmarfiltibaldo.core;
 
+import android.text.Editable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.comunicadorjson.ClientHTTPJSONListener;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
+import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoDB;
 import ar.edu.unlp.hermesmarfiltibaldo.exception.ComunicarNotificacionException;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
@@ -17,6 +20,9 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 public class HermesCore {
     public static boolean MODO_ALUMNO = false;
     public static boolean MODO_AJUSTE = true;
+    public static final String CONFIG_KEY_PORT = "port";
+    public static final String CONFIG_KEY_IP = "ip";
+
     private boolean modoAjuste = false;
     private static HermesCore instance;
     private Alumno alumnoActual;
@@ -54,7 +60,7 @@ public class HermesCore {
         return alumnoActual;
     }
 
-    public int getPortComunicadorJSON() {
+    public String getPortComunicadorJSON() {
         return HermesDao.instancia().getPortComunicadorJSON();
     }
 
@@ -99,4 +105,16 @@ public class HermesCore {
     }
 
 
+    public void updateAlumno(Alumno alumnoActual) {
+        HermesDaoDB.instancia(null).updateAlumno(alumnoActual);
+    }
+
+    public void createNewAlumno(Alumno alumnoActual) {
+        HermesDaoDB.instancia(null).createNewAlumno(HermesCore.instancia().getAlumnoActual());
+    }
+
+    public void updateConfiguracion(String ip, String puerto) {
+        HermesDaoDB.instancia(null).updateConfig(CONFIG_KEY_IP,ip);
+        HermesDaoDB.instancia(null).updateConfig(CONFIG_KEY_PORT,puerto);
+    }
 }

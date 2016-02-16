@@ -18,6 +18,7 @@ import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
+import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoDB;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
@@ -26,28 +27,29 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
  * Created by Agustín on 2/8/2016.
  */
 public class AjustesActivity extends AppCompatActivity {
-        @Override
+        private EditText editTextIp;
+        private EditText editTextPort;
+        private EditText inputApellido;
+        private EditText inputNombre;
+        private Spinner  sItemsS;
+        private Spinner  sItemsT;
+        private List<Categoria> listC;
+    @Override
         protected void onCreate(Bundle savedInstanceState) {
 
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_ajustes);
 
 
-            /*textViewNuevoAlumno.setOnTouchListener(new AdapterView.OnTouchListener() {
+
+            TextView textViewElimAlumno = (TextView) findViewById(R.id.elimAlumno);
+            textViewElimAlumno.setOnTouchListener(new AdapterView.OnTouchListener() {
                 @Override
-                public boolean onTouch(View view, MotionEvent event) {
-                    crearAlumno();
+                public boolean onTouch(View v, MotionEvent event) {
+                    HermesCore.instancia().deleteAlumnoActual();
                     return true;
                 }
-            });*/
-            TextView textViewElimAlumno = (TextView) findViewById(R.id.elimAlumno);
-    textViewElimAlumno.setOnTouchListener(new AdapterView.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            HermesCore.instancia().deleteAlumnoActual();
-            return false;
-        }
-    });
+            });
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             toolbar.setTitle("HERMES                                     AJUSTES ");
 
@@ -64,7 +66,7 @@ public class AjustesActivity extends AppCompatActivity {
                     this, android.R.layout.simple_spinner_item, spinnerArraySexo);
 
             adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            Spinner sItemsS = (Spinner) findViewById(R.id.spinnerSexo);
+            sItemsS = (Spinner) findViewById(R.id.spinnerSexo);
             sItemsS.setAdapter(adapterSexo);
 
             List<String> spinnerArrayPictogramaTamanio =  new ArrayList<String>();
@@ -75,18 +77,26 @@ public class AjustesActivity extends AppCompatActivity {
                     this, android.R.layout.simple_spinner_item, spinnerArrayPictogramaTamanio);
 
             adapterPictoTamanio.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            Spinner sItemsT = (Spinner) findViewById(R.id.spinnerPictograma);
+            sItemsT = (Spinner) findViewById(R.id.spinnerPictograma);
             sItemsT.setAdapter(adapterPictoTamanio);
 
-            Alumno actual;
-            if ((actual = HermesCore.instancia().getAlumnoActual()) != null) {
+            editTextIp = (EditText)findViewById(R.id.inputIP);
+            editTextPort = ((EditText)findViewById(R.id.inputPuerto));
+            inputApellido = ((EditText) findViewById(R.id.inputApellido));
+            inputNombre = ((EditText) findViewById(R.id.inputNombre));
 
-                ((EditText) findViewById(R.id.inputApellido)).setText(actual.getApellido());
-                ((EditText) findViewById(R.id.inputNombre)).setText(actual.getNombre());
+            Alumno actual = HermesCore.instancia().getAlumnoActual();
+            //si el alumno es un alumno ya existente completo los campos
+
+
+            if ( actual.getId() != null) {
+
+                inputApellido.setText(actual.getApellido());
+                inputNombre.setText(actual.getNombre());
                 sItemsS.setSelection(((actual.getSexo() == Alumno.MASCULINO) ? 1 : 0));
                 sItemsT.setSelection(((actual.getTamanioPictograma() == Alumno.GRANDE) ? 0 : 1));
 
-                List<Categoria> listC = HermesDao.instancia().getCategorias(actual);
+                listC = HermesDao.instancia().getCategorias(actual);
                 if (listC.contains(Categoria.getCategoriaEmociones())) {
                     ((CheckBox) findViewById(R.id.checkBoxEmociones)).setChecked(true);
                 }
@@ -100,9 +110,72 @@ public class AjustesActivity extends AppCompatActivity {
                     ((CheckBox) findViewById(R.id.checkBoxPista)).setChecked(true);
                 }
             }
-            ((EditText)findViewById(R.id.inputIP)).setText(HermesDao.instancia().getIP());
-            ((EditText)findViewById(R.id.inputPuerto)).setText(HermesDao.instancia().getPortComunicadorJSON().toString());
+            editTextIp.setText(HermesCore.instancia().getIP());
+
+            editTextPort.setText(HermesCore.instancia().getPortComunicadorJSON());
         };
 
+    @Override
+    public void onBackPressed() {
+        Boolean alumnoNuevo = HermesCore.instancia().getAlumnoActual().getId() == null;
 
+        prepararAlumnoSegunInterface();
+        //si es alumno ya creado, lo actualizo
+        if(!alumnoNuevo){
+            HermesCore.instancia().updateAlumno(HermesCore.instancia().getAlumnoActual());
+        }
+        //si es aluno nuevo, lo creo en la base de datos
+        else{
+            if(alumnoTieneNombreApellido()) {
+                HermesCore.instancia().createNewAlumno(HermesCore.instancia().getAlumnoActual());
+            }
+        }
+        HermesCore.instancia().updateConfiguracion(editTextIp.getText().toString(), editTextPort.getText().toString());
+    }
+
+    /**
+     * Este metodo actualiza el estado del alumno en base a lo seleccionado en la interface
+     */
+    private void prepararAlumnoSegunInterface() {
+        Alumno a = HermesCore.instancia().getAlumnoActual();
+        List<Categoria> categorias = preprarCategoriasSegunInterface();
+
+        a.setSexo((String) sItemsS.getSelectedItem());
+        a.setNombre(inputNombre.getText().toString());
+        a.setApellido(inputApellido.getText().toString());
+        a.setTamanioPictograma((String) sItemsT.getSelectedItem());
+        a.setCategorias(categorias);
+    }
+
+    private List<Categoria> preprarCategoriasSegunInterface() {
+        List<Categoria> cats = new ArrayList<>();
+        if (listC.contains(Categoria.getCategoriaEmociones())) {
+            Boolean emociones = ((CheckBox) findViewById(R.id.checkBoxEmociones)).isChecked();
+            if(emociones){
+                cats.add(Categoria.getCategoriaEmociones());
+            }
+        }
+        if (listC.contains(Categoria.getCategoriaEstablo())) {
+            Boolean emociones = ((CheckBox) findViewById(R.id.checkBoxEstablo)).isChecked();
+            if(emociones){
+                cats.add(Categoria.getCategoriaEstablo());
+            }
+        }
+        if (listC.contains(Categoria.getCategoriaNecesidades())) {
+            if(((CheckBox) findViewById(R.id.checkBoxNecesidades)).isChecked()){
+                cats.add(Categoria.getCategoriaNecesidades());
+            }
+        }
+        if (listC.contains(Categoria.getCategoriaPista())) {
+            if(((CheckBox) findViewById(R.id.checkBoxPista)).isChecked()){
+                cats.add(Categoria.getCategoriaPista());
+            }
+        }
+        return cats;
+    }
+
+    private boolean alumnoTieneNombreApellido() {
+        return inputApellido.getText() !=null && !inputApellido.getText().equals("")
+                && inputNombre.getText() !=null && !inputNombre.getText().equals("");
+    }
 }

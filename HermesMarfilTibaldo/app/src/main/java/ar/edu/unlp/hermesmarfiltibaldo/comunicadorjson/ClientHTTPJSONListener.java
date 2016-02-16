@@ -18,7 +18,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Notificacion;
 
 public class ClientHTTPJSONListener {
 
-	private static final int PORT = HermesCore.instancia().getPortComunicadorJSON();
+	private static final String PORT = HermesCore.instancia().getPortComunicadorJSON();
 	private static final String IP   = HermesCore.instancia().getIP();
 	private static final String APPLICATIONS_CONTEXT = "/applications/hermes";
 
