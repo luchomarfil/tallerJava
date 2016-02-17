@@ -20,7 +20,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDBHelper.*;
 /**
  * Created by luciano on 14/12/15.
  */
-public class HermesDaoDB {
+public class HermesDaoDB implements HermesDao {
 
     private static final String SEXO_MASCULINO = "M";
     private static final String SEXO_FEMENINO = "F";
@@ -473,5 +473,15 @@ public class HermesDaoDB {
 
     public List<Pictograma> getPictogramas(Alumno alumno) throws Exception {
         throw new Exception();
+    }
+
+    @Override
+    public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

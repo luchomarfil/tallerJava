@@ -1,5 +1,6 @@
 package ar.edu.unlp.hermesmarfiltibaldo.model;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -30,7 +31,10 @@ public class Alumno {
         this.setApellido(apellido);
         this.setSexo(sexo);
         this.setTamanioPictograma(tamanioPictograma);
+        this.setCategorias(new ArrayList<Categoria>());
     }
+
+
 
     public String getNombre() {
         return nombre;

@@ -1,14 +1,12 @@
 package ar.edu.unlp.hermesmarfiltibaldo;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -18,11 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterGeneric;
+import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterModoAlumno;
+import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterModoEdicion;
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 
 public class AlumnoActivity extends AppCompatActivity {
@@ -35,7 +33,7 @@ public class AlumnoActivity extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapterGeneric mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -55,7 +53,7 @@ public class AlumnoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = crearSectionPagerSegunModo();
 
         // Set up the ViewPager with the sections adapter.
 
@@ -66,6 +64,15 @@ public class AlumnoActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+
+    private SectionsPagerAdapterGeneric crearSectionPagerSegunModo() {
+        if(HermesCore.instancia().isModoAjuste()){
+            return new SectionsPagerAdapterModoEdicion(getSupportFragmentManager());
+        }
+        else{
+            return new SectionsPagerAdapterModoAlumno(getSupportFragmentManager());
+        }
+    }
 
 
     @Override
@@ -131,51 +138,21 @@ public class AlumnoActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.fragment_alumno,container,false);
             GridView gridView = (GridView) view.findViewById(R.id.gridView);
 
-            gridView.setAdapter(new ImageAdapter(view.getContext(),number)); // uses the view to get the context instead of getActivity().
+            gridView.setAdapter(getAdapterSegunModo(view)); // uses the view to get the context instead of getActivity().
 
             return view;
         }
-    }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-
-            return PlaceholderFragment.newInstance(position);
-        }
-
-        @Override
-        public int getCount() {
-            // Show 1 total pages.
-            return 5;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Pista";
-                case 1:
-                    return "Establo";
-                case 2:
-                    return "Necesidad";
-                case 3:
-                    return "Emociones";
-                case 4:
-                    return HermesCore.instancia().getAlumnoActual().getNombre();
+        @NonNull
+        private ImageAdapterGeneric getAdapterSegunModo(View view) {
+            if(HermesCore.instancia().isModoAjuste()){
+                return new ImageAdapterModoEdicion(view.getContext(),number);
             }
-            return null;
+            else{
+                return new ImageAdapterModoEdicion(view.getContext(),number);
+            }
+
         }
     }
+
 }
