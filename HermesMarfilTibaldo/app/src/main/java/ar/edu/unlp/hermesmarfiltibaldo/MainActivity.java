@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+
         ListView lv = (ListView) findViewById(R.id.listView);
 
         // This is the array adapter, it takes the context of the activity as a
