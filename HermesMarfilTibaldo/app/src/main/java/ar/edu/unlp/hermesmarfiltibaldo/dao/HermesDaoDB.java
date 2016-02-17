@@ -107,11 +107,11 @@ public class HermesDaoDB implements HermesDao {
 
         ContentValues values = new ContentValues();
 
-        values.put(HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID, pictograma.getId());
-        values.put(HermesContract.Categoria.COLUMN_NAME_NOMBRE, pictograma.getImageFilename());
-        values.put(HermesContract.Categoria.COLUMN_NAME_NOMBRE, pictograma.getAudioFilename());
-        values.put(HermesContract.Categoria.COLUMN_NAME_NOMBRE, pictograma.getSexo());
-        values.put(HermesContract.Categoria.COLUMN_NAME_NOMBRE, pictograma.getCategoriaID());
+        values.put(HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID, pictograma.getId());
+        values.put(HermesContract.Pictograma.COLUMN_NAME_IMAGEN, pictograma.getImageFilename());
+        values.put(HermesContract.Pictograma.COLUMN_NAME_AUDIO, pictograma.getAudioFilename());
+        values.put(HermesContract.Pictograma.COLUMN_NAME_SEXO, pictograma.getSexo());
+        values.put(HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID, pictograma.getCategoriaID());
 
 // Insert the new row, returning the primary key value of the new row
         long newRowId;
