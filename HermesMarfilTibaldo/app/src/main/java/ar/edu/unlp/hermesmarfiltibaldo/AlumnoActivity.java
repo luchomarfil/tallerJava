@@ -149,7 +149,7 @@ public class AlumnoActivity extends AppCompatActivity {
                 return new ImageAdapterModoEdicion(view.getContext(),number);
             }
             else{
-                return new ImageAdapterModoEdicion(view.getContext(),number);
+                return new ImageAdapterModoAlumno(view.getContext(),number);
             }
 
         }
