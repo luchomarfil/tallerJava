@@ -17,7 +17,7 @@ public interface HermesDao {
 
     List<Categoria> getCategorias(Alumno alumno);
 
-    List<Pictograma> getPictogramas(Categoria cat);
+    List<Pictograma> getPictogramas(Categoria cat, String sexo);
 
     List<Pictograma> getPictogramas(Alumno alumno);
 
@@ -49,8 +49,9 @@ public interface HermesDao {
 
     List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria);
 
-    public void removeAlumnoTodasCategoria(Alumno alumno);
+    void removeAlumnoTodasCategoria(Alumno alumno);
 
-    public void createNewCategoriaAlumno(Categoria categoria, Alumno alumno);
+    void createNewCategoriaAlumno(Categoria categoria, Alumno alumno);
+
 }
 
