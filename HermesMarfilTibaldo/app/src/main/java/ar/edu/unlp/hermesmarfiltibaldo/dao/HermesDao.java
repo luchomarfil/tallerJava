@@ -11,21 +11,42 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
  * Created by luciano on 16/02/16.
  */
 public interface HermesDao {
-    public List<Alumno> getAlumnos();
-    public void createNewAlumno(Alumno alumno);
-    public void createNewPictograma(Pictograma pictograma);
-    public void createNewCategoria(Categoria categoria);
-    public void createNewAlumnoPictograma(Alumno alumno, Pictograma pictograma);
-    public List<Categoria> getCategorias();
-    public List<Categoria> getCategorias(Alumno alumno);
-    public List<Pictograma> getPictogramas(Categoria cat);
-    public List<Pictograma> getPictogramasAlumno(Alumno alumno);
-    public String getPortComunicadorJSON();
-    public String getIP();
-    public void updateConfig(String name, String value);
-    public void updateAlumno(Alumno alumno);
-    public void removeAlumno(Alumno alumno);
-    public void removeAlumnoPictograma(Alumno alumno, Pictograma pictograma);
-    public List<Pictograma> getPictogramas(Alumno alumno) throws Exception;
-    public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria);
+
+
+    List<Alumno> getAlumnos();
+
+    List<Categoria> getCategorias(Alumno alumno);
+
+    List<Pictograma> getPictogramas(Categoria cat);
+
+    List<Pictograma> getPictogramas(Alumno alumno) throws Exception;
+
+    String getPortComunicadorJSON();
+
+    String getIP();
+
+    void createNewAlumno(Alumno alumno);
+
+    void createNewPictograma(Pictograma pictograma);
+
+    void createNewCategoria(Categoria categoria);
+
+    void createNewAlumnoPictograma(Alumno alumno, Pictograma pictograma);
+
+    List<Categoria> getCategorias();
+
+    List<Pictograma> getPictogramasAlumno(Alumno alumno);
+
+    void updateConfig(String name, String value);
+
+    void updateAlumno(Alumno alumno);
+
+    void removeAlumno(Alumno alumno);
+
+    void removeAlumnoPictograma(Alumno alumno, Pictograma pictograma);
+
+    void removeAlumnoTodosPictogramas(Alumno alumno);
+
+    List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria);
 }
+

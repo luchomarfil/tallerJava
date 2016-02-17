@@ -46,7 +46,9 @@ public class HermesCore {
 
 
     public List<Alumno> getAlumnos(){
+
         return getHermesDao().getAlumnos();
+
     }
 
     /**
@@ -140,12 +142,11 @@ public class HermesCore {
     }
 
     public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
-        if(alumnoActual.getCategorias().contains(categoria)){
-            return this.getHermesDao().getPictogramas(alumnoActual,categoria);
-        }
-        else{
+        if (alumnoActual.getCategorias().contains(categoria)) {
+            return this.getHermesDao().getPictogramas(alumnoActual, categoria);
+        } else {
             return null;
         }
-
     }
+
 }
