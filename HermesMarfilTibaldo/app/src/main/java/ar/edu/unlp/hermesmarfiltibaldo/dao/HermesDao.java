@@ -8,42 +8,45 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 /**
- * Created by luciano on 14/12/15.
+ * Created by luciano on 16/02/16.
  */
 public interface HermesDao {
 
-    public List<Alumno> getAlumnos();
 
-    public List<Categoria> getCategorias(Alumno alumno);
+    List<Alumno> getAlumnos();
 
-    public List<Pictograma> getPictogramas(Categoria cat);
+    List<Categoria> getCategorias(Alumno alumno);
 
-    public List<Pictograma> getPictogramas(Alumno alumno) throws Exception;
+    List<Pictograma> getPictogramas(Categoria cat);
 
-    public String getPortComunicadorJSON();
+    List<Pictograma> getPictogramas(Alumno alumno) throws Exception;
 
-    public String getIP();
+    String getPortComunicadorJSON();
 
-    public void createNewAlumno(Alumno alumno);
+    String getIP();
 
-    public void createNewPictograma(Pictograma pictograma);
+    void createNewAlumno(Alumno alumno);
 
-    public void createNewCategoria(Categoria categoria);
+    void createNewPictograma(Pictograma pictograma);
 
-    public void createNewAlumnoPictograma(Alumno alumno, Pictograma pictograma);
+    void createNewCategoria(Categoria categoria);
 
-    public List<Categoria> getCategorias();
+    void createNewAlumnoPictograma(Alumno alumno, Pictograma pictograma);
 
-    public List<Pictograma> getPictogramasAlumno(Alumno alumno);
+    List<Categoria> getCategorias();
 
-    public void updateConfig(String name, String value);
+    List<Pictograma> getPictogramasAlumno(Alumno alumno);
 
-    public void updateAlumno(Alumno alumno);
+    void updateConfig(String name, String value);
 
-    public void removeAlumno(Alumno alumno);
+    void updateAlumno(Alumno alumno);
 
-    public void removeAlumnoPictograma(Alumno alumno, Pictograma pictograma);
+    void removeAlumno(Alumno alumno);
 
-    public void removeAlumnoTodosPictogramas(Alumno alumno);
+    void removeAlumnoPictograma(Alumno alumno, Pictograma pictograma);
 
-    }
+    void removeAlumnoTodosPictogramas(Alumno alumno);
+
+    List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria);
+}
+

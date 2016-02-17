@@ -242,6 +242,11 @@ public class HermesDaoDB implements HermesDao {
         return pictogramas;
     }
 
+    @Override
+    public List<Pictograma> getPictogramas(Alumno alumno) throws Exception {
+        return null;
+    }
+
   /*  public List<Pictograma> getPictogramasAjustes(Alumno alumno){
         List<Pictograma> pictogramas = new ArrayList<>();
 
@@ -476,10 +481,15 @@ public class HermesDaoDB implements HermesDao {
         db.close();
     }
 
-    public List<Pictograma> getPictogramas(Alumno alumno) throws Exception {
 
-
-        throw new Exception();
+    @Override
+    public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

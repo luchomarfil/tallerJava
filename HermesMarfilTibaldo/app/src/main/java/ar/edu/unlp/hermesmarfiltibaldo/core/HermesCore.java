@@ -9,6 +9,7 @@ import java.util.List;
 import ar.edu.unlp.hermesmarfiltibaldo.comunicadorjson.ClientHTTPJSONListener;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoDB;
+import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoImpl;
 import ar.edu.unlp.hermesmarfiltibaldo.exception.ComunicarNotificacionException;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
@@ -19,6 +20,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
  * Created by luciano on 14/12/15.
  */
 public class HermesCore {
+
     public static boolean MODO_ALUMNO = false;
     public static boolean MODO_AJUSTE = true;
     public static final String CONFIG_KEY_PORT = "port";
@@ -32,6 +34,7 @@ public class HermesCore {
     public static synchronized HermesCore instancia(){
         if(instance==null){
             instance = new HermesCore();
+            instance.setHermesDao(new HermesDaoImpl());
         }
         return instance;
     }
@@ -43,7 +46,9 @@ public class HermesCore {
 
 
     public List<Alumno> getAlumnos(){
-        return this.getHermesDao().getAlumnos();
+
+        return getHermesDao().getAlumnos();
+
     }
 
     /**
@@ -127,11 +132,21 @@ public class HermesCore {
         this.getHermesDao().updateConfig(CONFIG_KEY_PORT, puerto);
     }
 
-    public void setHermesDao(HermesDao h) {
-        this.hermesDao = h;
-    }
 
     public HermesDao getHermesDao() {
         return hermesDao;
     }
+
+    public void setHermesDao(HermesDao hermesDao) {
+        this.hermesDao = hermesDao;
+    }
+
+    public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
+        if (alumnoActual.getCategorias().contains(categoria)) {
+            return this.getHermesDao().getPictogramas(alumnoActual, categoria);
+        } else {
+            return null;
+        }
+    }
+
 }
