@@ -118,7 +118,8 @@ public class HermesDBStartUp {
                 HermesContract.Configuracion.TABLE_NAME,
                 null,
                 values);
-        db.close();
+
+
 
     }
 }

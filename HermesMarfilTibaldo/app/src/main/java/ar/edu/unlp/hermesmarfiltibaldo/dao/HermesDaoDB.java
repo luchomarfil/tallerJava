@@ -40,7 +40,6 @@ public class HermesDaoDB implements HermesDao {
 
 // Retorna todos los alumnos
         String[] projection = {
-                HermesContract.Alumno._ID,
                 HermesContract.Alumno.COLUMN_ALUMNO_ID,
                 HermesContract.Alumno.COLUMN_NAME_NOMBRE,
                 HermesContract.Alumno.COLUMN_NAME_APELLIDO,
@@ -65,15 +64,15 @@ public class HermesDaoDB implements HermesDao {
         );
 
         cursor.moveToFirst();
-        long itemId = cursor.getLong(
-                cursor.getColumnIndexOrThrow(HermesContract.Alumno._ID)
-        );
+
         List<Alumno> l = new ArrayList<Alumno>();
-        if (cursor.moveToFirst()) {
-            do {
-                l.add(new Alumno(cursor.getLong(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5)));
+        if (cursor.getCount() > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    l.add(new Alumno(cursor.getLong(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)));
+                }
+                while (cursor.moveToNext());
             }
-            while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
@@ -169,7 +168,7 @@ public class HermesDaoDB implements HermesDao {
 // Define a projection that specifies which columns from the database
 // you will actually use after this query.
         String[] projection = {
-                HermesContract.Categoria._ID,
+
                 HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID,
                 HermesContract.Categoria.COLUMN_NAME_NOMBRE,
         };
@@ -241,6 +240,11 @@ public class HermesDaoDB implements HermesDao {
 
 
         return pictogramas;
+    }
+
+    @Override
+    public List<Pictograma> getPictogramas(Alumno alumno) throws Exception {
+        return null;
     }
 
   /*  public List<Pictograma> getPictogramasAjustes(Alumno alumno){
@@ -337,10 +341,13 @@ public class HermesDaoDB implements HermesDao {
     public String getPortComunicadorJSON(){
         SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
 
+
 // Define a projection that specifies which columns from the database
 // you will actually use after this query.
         String[] projection = {
+                HermesContract.Configuracion.COLUMN_NAME_CONFIGURACION_ID,
                 HermesContract.Configuracion.COLUMN_NAME_VALOR,
+                HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE,
         };
 
 // How you want the results sorted in the resulting Cursor
@@ -355,10 +362,10 @@ public class HermesDaoDB implements HermesDao {
                 null                                 // The sort order
         );
         c.moveToFirst();
-        int result =  c.getInt(1);
+        String result = c.getString(1);
         c.close();
         db.close();
-        return  (new Integer(result)).toString();
+        return  result;
     }
 
     public String getIP(){
@@ -385,7 +392,7 @@ public class HermesDaoDB implements HermesDao {
                 null                                 // The sort order
         );
         c.moveToFirst();
-        String result = c.getString(2);
+        String result = c.getString(1);
         c.close();
         db.close();
         return  result;
@@ -474,11 +481,6 @@ public class HermesDaoDB implements HermesDao {
         db.close();
     }
 
-    public List<Pictograma> getPictogramas(Alumno alumno) throws Exception {
-
-
-        throw new Exception();
-    }
 
     @Override
     public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
@@ -489,4 +491,5 @@ public class HermesDaoDB implements HermesDao {
             return null;
         }
     }
+
 }
