@@ -218,8 +218,8 @@ public class HermesDaoDB implements HermesDao {
                 HermesContract.CategoriaAlumno.TABLE_NAME + " as CA " +
                 " INNER JOIN " + HermesContract.Categoria.TABLE_NAME + " as C on "+
                 " CA." + HermesContract.CategoriaAlumno.COLUMN_NAME_CATEGORIA_ID + " = " +
-                HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID +
-                " WHERE CA" + HermesContract.CategoriaAlumno.COLUMN_NAME_ALUMNO_ID + " = ? ";
+                "C."   + HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID +
+                " WHERE CA." + HermesContract.CategoriaAlumno.COLUMN_NAME_ALUMNO_ID + " = ? ";
 
         Cursor cursor = db.rawQuery(getPictogramasAlumno, new String[]{String.valueOf(alumno.getId().toString())});
         List<Categoria> l = new ArrayList<Categoria>();
