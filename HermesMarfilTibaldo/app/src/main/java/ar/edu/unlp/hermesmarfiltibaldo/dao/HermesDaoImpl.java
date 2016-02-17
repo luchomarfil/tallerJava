@@ -121,8 +121,6 @@ public class HermesDaoImpl implements HermesDao {
     public List<Pictograma> getPictogramas(Alumno alumno) {
         List<Pictograma> pictogramas = new ArrayList<>();
 
-        if (alumno.getSexo() == SEXO_FEMENINO) {
-
             pictogramas.add(new Pictograma(1, "emociones/Asustada.m4a", "emociones/Asustada.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
             pictogramas.add(new Pictograma(2, "emociones/Cansada.m4a", "emociones/Cansada.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
             pictogramas.add(new Pictograma(3, "emociones/Contenta.m4a", "emociones/Contenta.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
@@ -133,9 +131,6 @@ public class HermesDaoImpl implements HermesDao {
             pictogramas.add(new Pictograma(8, "necesidades/Sed Mujer.m4a", "necesidades/Sed Mujer.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_NECESIDADES));
 
             return pictogramas;
-
-        }
-        return pictogramas;
     }
 
 
@@ -179,8 +174,22 @@ public class HermesDaoImpl implements HermesDao {
     }
 
     @Override
-    public List<Pictograma> getPictogramasAlumno(Alumno alumno) {
-        return null;
+    public List<Pictograma> getPictogramasAlumno(Alumno alumno)
+    {
+        List<Pictograma> pictogramas = new ArrayList<>();
+
+            pictogramas.add(new Pictograma(1,"emociones/Asustada.m4a","emociones/Asustada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(2,"emociones/Cansada.m4a","emociones/Cansada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(3,"emociones/Contenta.m4a","emociones/Contenta.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(4,"emociones/Dolorida.m4a","emociones/Dolorida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(5,"emociones/Enojada.m4a","emociones/Enojada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(6,"emociones/Sorprendida.m4a","emociones/Sorprendida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(7,"emociones/Triste.m4a","emociones/Triste Mujer.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+
+            pictogramas.add(new Pictograma(9,"emociones/Asustado.m4a","emociones/Asustado.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(10,"emociones/Cansado.m4a","emociones/Cansdao.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(11,"emociones/Contento.m4a","emociones/Contento.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+        return pictogramas;
     }
 
     @Override

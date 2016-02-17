@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
@@ -63,7 +64,10 @@ public abstract class ImageAdapterGeneric extends BaseAdapter {
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(300, 250));
+            if(HermesCore.instancia().getAlumnoActual().getTamanioPictograma() != Alumno.GRANDE ){
+                imageView.setLayoutParams(new GridView.LayoutParams(100, 200));
+            }
+
             //   imageView.setLayoutParams(new GridView.LayoutParams(800,600));
             imageView.setAdjustViewBounds(true);
 
@@ -79,11 +83,11 @@ public abstract class ImageAdapterGeneric extends BaseAdapter {
         // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         //imageView.setImageBitmap(bitmapFromAsset);
         imageView.setImageDrawable(bmd);
-        this.asignarEventoTouch();
+        this.asignarEventoTouch(imageView,mThumbIds.get(position));
         return imageView;
     }
 
-    protected abstract void asignarEventoTouch();
+    protected abstract void asignarEventoTouch(ImageView imageView, Pictograma pictograma);
 
 
 }

@@ -1,8 +1,12 @@
 package ar.edu.unlp.hermesmarfiltibaldo.core;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.text.Editable;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -139,7 +143,7 @@ public class HermesCore {
     }
 
     public void updateConfiguracion(String ip, String puerto) {
-        this.getHermesDao().updateConfig(CONFIG_KEY_IP,ip);
+        this.getHermesDao().updateConfig(CONFIG_KEY_IP, ip);
         this.getHermesDao().updateConfig(CONFIG_KEY_PORT, puerto);
     }
 
@@ -163,4 +167,27 @@ public class HermesCore {
         }
     }
 
+    public void playAudio(Pictograma pictograma, Context mContext) {
+
+
+            MediaPlayer mp = new MediaPlayer();
+            try {
+                File imgFile = new  File(pictograma.getAudioFilename());
+                AssetFileDescriptor descriptor = mContext.getAssets().openFd(imgFile.getPath());
+                mp.setDataSource(descriptor.getFileDescriptor(),descriptor.getStartOffset(), descriptor.getLength());
+                descriptor.close();
+                mp.prepare();
+                mp.setLooping(false);
+                mp.start();
+                //mp.setVolume(3, 3);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+    }
 }

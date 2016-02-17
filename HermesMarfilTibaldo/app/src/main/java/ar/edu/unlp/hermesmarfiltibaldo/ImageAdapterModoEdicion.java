@@ -5,13 +5,12 @@ package ar.edu.unlp.hermesmarfiltibaldo;
  */
 
 import android.content.Context;
+import android.widget.ImageView;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
@@ -63,6 +62,6 @@ public class ImageAdapterModoEdicion extends ImageAdapterGeneric {
     }
 
     @Override
-    protected void asignarEventoTouch() {
+    protected void asignarEventoTouch(ImageView imageView, Pictograma pictograma) {
     }
 }

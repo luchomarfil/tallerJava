@@ -5,14 +5,17 @@ package ar.edu.unlp.hermesmarfiltibaldo;
  */
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
+import android.media.MediaPlayer;
+import android.view.View;
+import android.widget.ImageView;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
-import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 public class ImageAdapterModoAlumno extends ImageAdapterGeneric {
@@ -47,7 +50,15 @@ public class ImageAdapterModoAlumno extends ImageAdapterGeneric {
     }
 
     @Override
-    protected void asignarEventoTouch() {
+    protected void asignarEventoTouch(ImageView imageView, final Pictograma pictograma) {
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HermesCore.instancia().playAudio(pictograma,mContext);
+            }
+        });
 
     }
+
+
 }
