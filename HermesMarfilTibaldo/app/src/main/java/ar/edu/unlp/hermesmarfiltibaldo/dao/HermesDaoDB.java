@@ -48,8 +48,7 @@ public class HermesDaoDB {
     public List<Alumno> getAlumnos(){
         SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
 
-// Define a projection that specifies which columns from the database
-// you will actually use after this query.
+// Retorna todos los alumnos
         String[] projection = {
                 HermesContract.Alumno._ID,
                 HermesContract.Alumno.COLUMN_ALUMNO_ID,
@@ -390,7 +389,7 @@ public class HermesDaoDB {
                 HermesContract.Configuracion.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
                 HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE + "=?",                                // The columns for the WHERE clause
-                new String[] { "IP" } ,                            // The values for the WHERE clause
+                new String[]{"IP"},                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
                 null                                 // The sort order
@@ -416,7 +415,7 @@ public class HermesDaoDB {
         newRowId = db.update(
                 HermesContract.Configuracion.TABLE_NAME,
                 values,
-                " WHERE " + HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE + " =  ? ",
+                HermesContract.Configuracion.CONLUMN_NAME_CONFIGURACION_NOMBRE + " =  ? ",
                 new String[]{name});
         db.close();
     }
@@ -438,7 +437,7 @@ public class HermesDaoDB {
         newRowId = db.update(
                 HermesContract.Alumno.TABLE_NAME,
                 values,
-                " WHERE " + HermesContract.Alumno.COLUMN_ALUMNO_ID + " =  ? ",
+                HermesContract.Alumno.COLUMN_ALUMNO_ID + " =  ? ",
                 new String[]{alumno.getId().toString()});
         db.close();
     }
@@ -452,7 +451,7 @@ public class HermesDaoDB {
         long newRowId;
         newRowId = db.delete(
                 HermesContract.Alumno.TABLE_NAME,
-                " WHERE " + HermesContract.Alumno.COLUMN_ALUMNO_ID + " =  ? ",
+                HermesContract.Alumno.COLUMN_ALUMNO_ID + " =  ? ",
                 new String[]{alumno.getId().toString()});
         db.close();
     }
@@ -465,13 +464,29 @@ public class HermesDaoDB {
 // Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId = db.delete(
-                HermesContract.Alumno.TABLE_NAME,
-                " WHERE " + HermesContract.PictogramaAlumno.COLUMN_NAME_ALUMNO_ID + " =  ? AND " +  HermesContract.PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID + " = ? " ,
+                HermesContract.PictogramaAlumno.TABLE_NAME,
+                HermesContract.PictogramaAlumno.COLUMN_NAME_ALUMNO_ID + " =  ? AND " + HermesContract.PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID + " = ? ",
                 new String[]{alumno.getId().toString(), pictograma.getId().toString()});
         db.close();
     }
 
+
+    public void removeAlumnoTodosPictogramas(Alumno alumno){
+        //  Lo usamos para cuando hay un cambio de sexo
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase ();
+
+
+        long newRowId;
+        newRowId = db.delete(
+                HermesContract.PictogramaAlumno.TABLE_NAME,
+                HermesContract.PictogramaAlumno.COLUMN_NAME_ALUMNO_ID + "=?" ,
+                new String[]{alumno.getId().toString()});
+        db.close();
+    }
+
     public List<Pictograma> getPictogramas(Alumno alumno) throws Exception {
+
+
         throw new Exception();
     }
 }
