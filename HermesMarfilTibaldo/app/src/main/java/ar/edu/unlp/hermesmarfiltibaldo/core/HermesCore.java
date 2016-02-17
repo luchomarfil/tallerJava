@@ -81,17 +81,18 @@ public class HermesCore {
     }
 
 
-    public List<Pictograma> getPictogramas(Categoria cat){
-        return this.getHermesDao().getPictogramas(cat);
+    public List<Pictograma> getPictogramas(Categoria cat, String sexo){
+        return this.getHermesDao().getPictogramas(cat,sexo);
     }
 
-    //TODO hacer!!!
     public List<Pictograma> getPictogramas(Alumno alumno){
             return this.getHermesDao().getPictogramas(alumno);
     }
 
-    public void comunicarNotificacion(Notificacion n){
+    public void comunicarNotificacion(Pictograma p){
         try {
+            //TODO aca hay que transformar p en n
+            Notificacion n = new Notificacion();
             ClientHTTPJSONListener.comunicarNotificacion(n);
            // HermesCore.instancia().marcarNotificacionComoRecibida(n);
         } catch (ComunicarNotificacionException e) {
@@ -161,7 +162,7 @@ public class HermesCore {
 
     public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
         if (alumnoActual.getCategorias().contains(categoria)) {
-            return this.getHermesDao().getPictogramas(alumnoActual, categoria);
+            return this.getHermesDao().getPictogramas(categoria,alumnoActual.getSexo());
         } else {
             return null;
         }

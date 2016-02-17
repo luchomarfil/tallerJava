@@ -76,8 +76,8 @@ public class AjustesActivity extends AppCompatActivity {
             sItemsS.setAdapter(adapterSexo);
 
             List<String> spinnerArrayPictogramaTamanio =  new ArrayList<String>();
-            spinnerArrayPictogramaTamanio.add("Grande");
-            spinnerArrayPictogramaTamanio.add("Normal");
+            spinnerArrayPictogramaTamanio.add(Alumno.GRANDE);
+            spinnerArrayPictogramaTamanio.add(Alumno.NORMAL);
 
             ArrayAdapter<String> adapterPictoTamanio = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, spinnerArrayPictogramaTamanio);

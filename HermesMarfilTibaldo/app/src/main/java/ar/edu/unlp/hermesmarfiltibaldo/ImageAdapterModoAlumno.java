@@ -55,6 +55,7 @@ public class ImageAdapterModoAlumno extends ImageAdapterGeneric {
             @Override
             public void onClick(View v) {
                 HermesCore.instancia().playAudio(pictograma,mContext);
+                HermesCore.instancia().comunicarNotificacion(pictograma);
             }
         });
 
