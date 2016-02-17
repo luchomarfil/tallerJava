@@ -69,7 +69,7 @@ public class HermesDaoDB implements HermesDao {
         if (cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    l.add(new Alumno(cursor.getLong(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)));
+                    l.add(new Alumno(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4)));
                 }
                 while (cursor.moveToNext());
             }
@@ -481,6 +481,18 @@ public class HermesDaoDB implements HermesDao {
         db.close();
     }
 
+    public void removeAlumnoTodasCategoria(Alumno alumno){
+        //  Lo usamos para cuando hay un cambio de sexo
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase ();
+
+
+        long newRowId;
+        newRowId = db.delete(
+                HermesContract.CategoriaAlumno.TABLE_NAME,
+                HermesContract.CategoriaAlumno.COLUMN_NAME_ALUMNO_ID + "=?" ,
+                new String[]{alumno.getId().toString()});
+        db.close();
+    }
 
     @Override
     public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
