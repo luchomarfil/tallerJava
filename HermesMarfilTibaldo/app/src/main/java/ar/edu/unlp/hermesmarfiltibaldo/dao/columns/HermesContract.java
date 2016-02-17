@@ -44,8 +44,8 @@ public final class HermesContract {
 
     /* Inner class that defines the table contents */
     public static abstract class CategoriaAlumno implements BaseColumns {
-        public static final String TABLE_NAME = "solapaalumno";
-        public static final String COLUMN_NAME_ENTRY_ID = "categoriaalumnoid";
+        public static final String TABLE_NAME = "categoriaalumno";
+        public static final String COLUMN_NAME_CATEGORIA_ALUMNO_ID = "categoriaalumnoid";
         public static final String COLUMN_NAME_CATEGORIA_ID = "categoriaid";
         public static final String COLUMN_NAME_ALUMNO_ID = "alumnoid";
     }

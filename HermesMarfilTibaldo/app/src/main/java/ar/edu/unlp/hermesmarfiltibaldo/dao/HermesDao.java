@@ -48,5 +48,9 @@ public interface HermesDao {
     void removeAlumnoTodosPictogramas(Alumno alumno);
 
     List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria);
+
+    public void removeAlumnoTodasCategoria(Alumno alumno);
+
+    public void createNewCategoriaAlumno(Categoria categoria, Alumno alumno);
 }
 

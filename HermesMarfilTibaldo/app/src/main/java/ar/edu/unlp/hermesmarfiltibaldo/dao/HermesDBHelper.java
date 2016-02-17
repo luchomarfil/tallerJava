@@ -70,7 +70,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_CATEGORIA_ALUMNO =
             "CREATE TABLE " + CategoriaAlumno.TABLE_NAME + " (" +
-                    CategoriaAlumno.COLUMN_NAME_ENTRY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    CategoriaAlumno.COLUMN_NAME_CATEGORIA_ALUMNO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     CategoriaAlumno.COLUMN_NAME_CATEGORIA_ID + " INTEGER " + COMMA_SEP +
                     CategoriaAlumno.COLUMN_NAME_ALUMNO_ID + " INTEGER " +
                     " )";

@@ -215,4 +215,14 @@ public class HermesDaoImpl implements HermesDao {
         return null;
     }
 
+    @Override
+    public void removeAlumnoTodasCategoria(Alumno alumno) {
+
+    }
+
+    @Override
+    public void createNewCategoriaAlumno(Categoria categoria, Alumno alumno) {
+
+    }
+
 }

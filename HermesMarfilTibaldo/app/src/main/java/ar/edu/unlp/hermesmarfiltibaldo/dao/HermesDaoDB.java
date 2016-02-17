@@ -142,6 +142,27 @@ public class HermesDaoDB implements HermesDao {
         db.close();
     }
 
+    public void createNewCategoriaAlumno(Categoria categoria, Alumno alumno){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+
+        values.put(HermesContract.CategoriaAlumno.COLUMN_NAME_ALUMNO_ID, alumno.getId());
+        values.put(HermesContract.CategoriaAlumno.COLUMN_NAME_CATEGORIA_ID, categoria.getId());
+        values.put(HermesContract.CategoriaAlumno.COLUMN_NAME_CATEGORIA_ALUMNO_ID, categoria.getNombre());
+
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                HermesContract.CategoriaAlumno.TABLE_NAME,
+                null,
+                values);
+        db.close();
+    }
+
     public void createNewAlumnoPictograma(Alumno alumno, Pictograma pictograma){
         // Gets the data repository in write mode
         SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
