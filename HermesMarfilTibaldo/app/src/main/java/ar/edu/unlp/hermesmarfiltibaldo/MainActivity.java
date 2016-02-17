@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import ar.edu.unlp.hermesmarfiltibaldo.core.HermesConfiguration;
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
+
+        HermesConfiguration.inicializar(this);
 
         setContentView(R.layout.activity_main);
 

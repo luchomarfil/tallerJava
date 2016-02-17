@@ -64,6 +64,5 @@ public class ImageAdapterModoEdicion extends ImageAdapterGeneric {
 
     @Override
     protected void asignarEventoTouch() {
-
     }
 }

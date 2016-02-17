@@ -34,7 +34,6 @@ public class HermesCore {
     public static synchronized HermesCore instancia(){
         if(instance==null){
             instance = new HermesCore();
-            instance.setHermesDao(new HermesDaoImpl());
         }
         return instance;
     }
