@@ -82,12 +82,7 @@ public class HermesCore {
 
     //TODO hacer!!!
     public List<Pictograma> getPictogramas(Alumno alumno){
-        try {
             return this.getHermesDao().getPictogramas(alumno);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public void comunicarNotificacion(Notificacion n){

@@ -243,8 +243,10 @@ public class HermesDaoDB implements HermesDao {
     }
 
     @Override
-    public List<Pictograma> getPictogramas(Alumno alumno) throws Exception {
-        return null;
+    public List<Pictograma> getPictogramas(Alumno alumno){
+        //crotada
+
+        return this.getPictogramasAlumno(alumno);
     }
 
   /*  public List<Pictograma> getPictogramasAjustes(Alumno alumno){
@@ -304,7 +306,7 @@ public class HermesDaoDB implements HermesDao {
         return pictogramas;
 
     }*/
-
+@Override
     public List<Pictograma> getPictogramasAlumno(Alumno alumno)  {
             SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
 
@@ -320,8 +322,8 @@ public class HermesDaoDB implements HermesDao {
                     HermesContract.PictogramaAlumno.TABLE_NAME + " as PA " +
                     " INNER JOIN " + HermesContract.Pictograma.TABLE_NAME + " as P on "+
                     " PA." + HermesContract.PictogramaAlumno.COLUMN_NAME_PICTOGRAMA_ID + " = " +
-                    HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID +
-                    " WHERE PA" + HermesContract.Alumno.COLUMN_ALUMNO_ID + " = ? ";
+                    " P." + HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID +
+                    " WHERE PA." + HermesContract.Alumno.COLUMN_ALUMNO_ID + " = ? ";
 
             Cursor cursor = db.rawQuery(getPictogramasAlumno, new String[]{String.valueOf(alumno.getId().toString())});
             List<Pictograma> l = new ArrayList<Pictograma>();

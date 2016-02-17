@@ -19,7 +19,7 @@ public interface HermesDao {
 
     List<Pictograma> getPictogramas(Categoria cat);
 
-    List<Pictograma> getPictogramas(Alumno alumno) throws Exception;
+    List<Pictograma> getPictogramas(Alumno alumno);
 
     String getPortComunicadorJSON();
 
