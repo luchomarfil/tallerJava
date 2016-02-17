@@ -32,12 +32,6 @@ public class ImageAdapterModoAlumno extends ImageAdapterGeneric {
         return 0;
     }
 
-
-
-
-
-
-
     public void getImages()
     {
         // references to our images

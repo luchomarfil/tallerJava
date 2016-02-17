@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
@@ -34,6 +36,8 @@ public class AjustesActivity extends AppCompatActivity {
         private Spinner  sItemsS;
         private Spinner  sItemsT;
         private List<Categoria> listC;
+
+        private Logger logger = Logger.getLogger(AjustesActivity.class.getName());
     @Override
         protected void onCreate(Bundle savedInstanceState) {
 
@@ -54,8 +58,10 @@ public class AjustesActivity extends AppCompatActivity {
             toolbar.setTitle("HERMES                                     AJUSTES ");
 
 
+
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
             List<String> spinnerArraySexo =  new ArrayList<String>();
             spinnerArraySexo.add("Femenino");
@@ -89,6 +95,7 @@ public class AjustesActivity extends AppCompatActivity {
             //si el alumno es un alumno ya existente completo los campos
 
 
+
             if ( actual.getId() != null) {
 
                 inputApellido.setText(actual.getApellido());
@@ -117,20 +124,42 @@ public class AjustesActivity extends AppCompatActivity {
     };
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            guardarInformacion();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
     public void onBackPressed() {
+        guardarInformacion();
+    }
+
+    private void guardarInformacion() {
+        logger.info("Guardando la informacion del alumno");
         Boolean alumnoNuevo = HermesCore.instancia().getAlumnoActual().getId() == null;
 
         prepararAlumnoSegunInterface();
         //si es alumno ya creado, lo actualizo
         if(!alumnoNuevo){
+            logger.info("Es un alumno ya existente, se actualiza");
             HermesCore.instancia().updateAlumno(HermesCore.instancia().getAlumnoActual());
         }
         //si es aluno nuevo, lo creo en la base de datos
         else{
+            logger.info("Es un alumno nuevo, se crea");
             if(alumnoTieneNombreApellido()) {
                 HermesCore.instancia().createNewAlumno(HermesCore.instancia().getAlumnoActual());
             }
+            else{
+                logger.warning("El alumno no tiene ni nombre ni apellido, no se guarda");
+            }
         }
+        logger.info("Guardando configuracion general");
         HermesCore.instancia().updateConfiguracion(editTextIp.getText().toString(), editTextPort.getText().toString());
     }
 
@@ -150,33 +179,27 @@ public class AjustesActivity extends AppCompatActivity {
 
     private List<Categoria> preprarCategoriasSegunInterface() {
         List<Categoria> cats = new ArrayList<>();
-        if (listC.contains(Categoria.getCategoriaEmociones())) {
-            Boolean emociones = ((CheckBox) findViewById(R.id.checkBoxEmociones)).isChecked();
-            if(emociones){
-                cats.add(Categoria.getCategoriaEmociones());
-            }
-        }
-        if (listC.contains(Categoria.getCategoriaEstablo())) {
-            Boolean emociones = ((CheckBox) findViewById(R.id.checkBoxEstablo)).isChecked();
-            if(emociones){
-                cats.add(Categoria.getCategoriaEstablo());
-            }
-        }
-        if (listC.contains(Categoria.getCategoriaNecesidades())) {
-            if(((CheckBox) findViewById(R.id.checkBoxNecesidades)).isChecked()){
-                cats.add(Categoria.getCategoriaNecesidades());
-            }
-        }
-        if (listC.contains(Categoria.getCategoriaPista())) {
-            if(((CheckBox) findViewById(R.id.checkBoxPista)).isChecked()){
-                cats.add(Categoria.getCategoriaPista());
-            }
-        }
+
+         Boolean emociones = ((CheckBox) findViewById(R.id.checkBoxEmociones)).isChecked();
+         if(emociones) {
+             cats.add(Categoria.getCategoriaEmociones());
+         }
+         Boolean establo = ((CheckBox) findViewById(R.id.checkBoxEstablo)).isChecked();
+         if(establo){
+             cats.add(Categoria.getCategoriaEstablo());
+         }
+         if(((CheckBox) findViewById(R.id.checkBoxNecesidades)).isChecked()){
+             cats.add(Categoria.getCategoriaNecesidades());
+         }
+         if(((CheckBox) findViewById(R.id.checkBoxPista)).isChecked()){
+             cats.add(Categoria.getCategoriaPista());
+         }
+
         return cats;
     }
 
     private boolean alumnoTieneNombreApellido() {
-        return inputApellido.getText() !=null && !inputApellido.getText().equals("")
-                && inputNombre.getText() !=null && !inputNombre.getText().equals("");
+        return inputApellido.getText() !=null && !inputApellido.getText().toString().trim().equals("")
+                && inputNombre.getText() !=null && !inputNombre.getText().toString().trim().equals("");
     }
 }

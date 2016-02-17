@@ -170,7 +170,12 @@ public class HermesDaoImpl implements HermesDao {
 
     @Override
     public List<Categoria> getCategorias() {
-        return null;
+        List<Categoria> cats = new ArrayList<>();
+        cats.add(Categoria.getCategoriaEmociones());
+        cats.add(Categoria.getCategoriaEstablo());
+        cats.add(Categoria.getCategoriaNecesidades());
+        cats.add(Categoria.getCategoriaPista());
+        return cats;
     }
 
     @Override

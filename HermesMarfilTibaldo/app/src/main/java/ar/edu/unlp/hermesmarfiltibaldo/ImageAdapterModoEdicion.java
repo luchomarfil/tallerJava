@@ -32,12 +32,6 @@ public class ImageAdapterModoEdicion extends ImageAdapterGeneric {
         return 0;
     }
 
-
-
-
-
-
-
     public void getImages()
     {
         // references to our images

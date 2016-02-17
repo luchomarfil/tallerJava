@@ -124,7 +124,7 @@ public class HermesCore {
     }
 
     public void createNewAlumno(Alumno alumnoActual) {
-        this.getHermesDao().createNewAlumno(HermesCore.instancia().getAlumnoActual());
+        this.getHermesDao().createNewAlumno(alumnoActual);
     }
 
     public void updateConfiguracion(String ip, String puerto) {
@@ -132,6 +132,9 @@ public class HermesCore {
         this.getHermesDao().updateConfig(CONFIG_KEY_PORT, puerto);
     }
 
+    public List<Categoria> getCategorias(){
+        return this.getHermesDao().getCategorias();
+    }
 
     public HermesDao getHermesDao() {
         return hermesDao;
