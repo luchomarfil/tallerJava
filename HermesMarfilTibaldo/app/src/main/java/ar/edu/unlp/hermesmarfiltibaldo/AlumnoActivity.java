@@ -51,6 +51,10 @@ public class AlumnoActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        refrescarModo();
+    }
+
+    private void refrescarModo() {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = crearSectionPagerSegunModo();
@@ -92,6 +96,7 @@ public class AlumnoActivity extends AppCompatActivity {
         //Acá tenemos que configurar qué pasa cuando hacemos click en los botones del menue
         if (id == R.id.modo_edicion) {
             HermesCore.instancia().setModoAjuste();
+            refrescarModo();
         }
 
         if (id == R.id.ajustes) {
