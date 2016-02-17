@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Editable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.comunicadorjson.ClientHTTPJSONListener;
@@ -122,10 +123,19 @@ public class HermesCore {
 
     public void updateAlumno(Alumno alumnoActual) {
         this.getHermesDao().updateAlumno(alumnoActual);
+        this.getHermesDao().removeAlumnoTodasCategoria(alumnoActual);
+        Iterator<Categoria> iterator =  alumnoActual.getCategorias().iterator();
+        for (Categoria c: alumnoActual.getCategorias()) {
+            this.getHermesDao().createNewCategoriaAlumno(c,alumnoActual);
+        }
     }
 
     public void createNewAlumno(Alumno alumnoActual) {
         this.getHermesDao().createNewAlumno(alumnoActual);
+        Iterator<Categoria> iterator =  alumnoActual.getCategorias().iterator();
+        for (Categoria c: alumnoActual.getCategorias()) {
+            this.getHermesDao().createNewCategoriaAlumno(c,alumnoActual);
+        }
     }
 
     public void updateConfiguracion(String ip, String puerto) {
