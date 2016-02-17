@@ -100,16 +100,16 @@ public class ImageAdapter extends BaseAdapter {
         l.info("Numero "+this.number);
         switch (this.number) {
             case 0:
-                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaPista());
+                mThumbIds = HermesCore.instancia().getHermesDao().getPictogramas(Categoria.getCategoriaPista());
                 break;
             case 1:
-                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaEstablo());
+                mThumbIds = HermesCore.instancia().getHermesDao().getPictogramas(Categoria.getCategoriaEstablo());
                 break;
             case 2:
-                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaNecesidades());
+                mThumbIds = HermesCore.instancia().getHermesDao().getPictogramas(Categoria.getCategoriaNecesidades());
                 break;
             case 3:
-                mThumbIds = HermesDao.instancia().getPictogramas(Categoria.getCategoriaEmociones());
+                mThumbIds = HermesCore.instancia().getHermesDao().getPictogramas(Categoria.getCategoriaEmociones());
                 break;
             case 4:
                 //mThumbIds = HermesDao.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());

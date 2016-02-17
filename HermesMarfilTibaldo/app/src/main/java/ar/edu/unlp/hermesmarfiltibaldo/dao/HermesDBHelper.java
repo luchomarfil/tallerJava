@@ -30,6 +30,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_PICTOGRAMA =
             "CREATE TABLE " + Pictograma.TABLE_NAME + " (" +
                     Pictograma.COLUMN_NAME_PICTOGRAMA_ID + " INTEGER PRIMARY KEY ," +
+                    Pictograma.COLUMN_NAME_SEXO + TEXT_TYPE + COMMA_SEP +
                     Pictograma.COLUMN_NAME_AUDIO + TEXT_TYPE + COMMA_SEP +
                     Pictograma.COLUMN_NAME_IMAGEN + TEXT_TYPE + COMMA_SEP +
                     Pictograma.COLUMN_NAME_CATEOGRIA_ID + TEXT_TYPE +

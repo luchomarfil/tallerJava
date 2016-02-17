@@ -64,6 +64,30 @@ public class MainActivity extends AppCompatActivity {
      * Cuando se selecciona el boton nuevo alumno, se crea el alumno y se va al
      * activity ajustes
      */
+
+    protected void onResume(Bundle savedInstanceState) {
+        ListView lv = (ListView) findViewById(R.id.listView);
+
+        // This is the array adapter, it takes the context of the activity as a
+        // first parameter, the type of list view as a second parameter and your
+        // array as a third parameter.
+
+
+        ArrayAdapter<Alumno> arrayAdapter = new ArrayAdapter<Alumno>(
+                this,
+                R.layout.list_item_2,
+                HermesCore.instancia().getAlumnos());
+
+        lv.setAdapter(arrayAdapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                clickAlumno(position);
+            }
+        });
+    }
+
     private void crearAlumno(){
         HermesCore.instancia().setAlumnoActual(new Alumno());
         Intent i = new Intent(this, AjustesActivity.class);
