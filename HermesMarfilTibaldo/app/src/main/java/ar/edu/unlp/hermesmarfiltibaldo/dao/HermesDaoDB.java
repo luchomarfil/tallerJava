@@ -20,27 +20,17 @@ import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDBHelper.*;
 /**
  * Created by luciano on 14/12/15.
  */
-public class HermesDaoDB {
+public class HermesDaoDB implements HermesDao {
 
     private static final String SEXO_MASCULINO = "M";
     private static final String SEXO_FEMENINO = "F";
     private static HermesDBHelper hermesDBHelper;
 
-
-    private static HermesDaoDB instance;
-
-/*
-    public static synchronized HermesDaoDB instancia(Context context){
-        if(instance==null){
-            instance = new HermesDaoDB(context);
-        }
-        return instance;
-    }
-*/
-
-    public HermesDaoDB(Context context){
+    public HermesDaoDB(Context context)
+    {
         hermesDBHelper = new HermesDBHelper(context);
     }
+
     private void beforeRead(){
 
     }
