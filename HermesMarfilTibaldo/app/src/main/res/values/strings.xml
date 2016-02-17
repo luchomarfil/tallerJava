@@ -8,4 +8,5 @@
     <string name="ajustes">Ajustes</string>
     <string name="modo_edicion">Modo Edición</string>
     <string name="title_activity_ajustes">Ajustes</string>
+    <string name="modo_alumno">modo alumno</string>
 </resources>

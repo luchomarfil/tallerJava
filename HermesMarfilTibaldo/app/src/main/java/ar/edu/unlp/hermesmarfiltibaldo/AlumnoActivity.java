@@ -46,8 +46,7 @@ public class AlumnoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alumno);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("HERMES                                      "+ HermesCore.instancia().getAlumnoActual().toString());
-
+        toolbar.setTitle("HERMES                                      " + HermesCore.instancia().getAlumnoActual().toString());
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -95,8 +94,16 @@ public class AlumnoActivity extends AppCompatActivity {
 
         //Acá tenemos que configurar qué pasa cuando hacemos click en los botones del menue
         if (id == R.id.modo_edicion) {
-            HermesCore.instancia().setModoAjuste();
-            refrescarModo();
+            if (item.getTitle() == "Modo Edición") {
+                HermesCore.instancia().setModoAjuste();
+                item.setTitle("Modo Alumno");
+                refrescarModo();
+            } else{
+                HermesCore.instancia().setModoAlumno();
+                item.setTitle("Modo Edición");
+                refrescarModo();
+            }
+
         }
 
         if (id == R.id.ajustes) {
