@@ -115,7 +115,14 @@ public class HermesCore {
 
 
     public boolean deleteAlumnoActual() {
-        return true;
+        try{
+            this.getHermesDao().removeAlumnoTodosPictogramas(HermesCore.instancia().getAlumnoActual());
+            this.getHermesDao().removeAlumno(HermesCore.instancia().getAlumnoActual());
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
 

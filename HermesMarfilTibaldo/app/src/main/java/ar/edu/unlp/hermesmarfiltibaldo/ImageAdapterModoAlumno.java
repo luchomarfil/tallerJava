@@ -45,4 +45,9 @@ public class ImageAdapterModoAlumno extends ImageAdapterGeneric {
         }
 
     }
+
+    @Override
+    protected void asignarEventoTouch() {
+
+    }
 }

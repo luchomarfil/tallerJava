@@ -78,12 +78,11 @@ public abstract class ImageAdapterGeneric extends BaseAdapter {
         // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         //imageView.setImageBitmap(bitmapFromAsset);
         imageView.setImageDrawable(bmd);
+        this.asignarEventoTouch();
         return imageView;
     }
 
-
-
-
+    protected abstract void asignarEventoTouch();
 
 
 }
