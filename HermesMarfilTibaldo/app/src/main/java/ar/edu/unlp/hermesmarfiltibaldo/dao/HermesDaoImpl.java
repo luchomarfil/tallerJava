@@ -54,6 +54,11 @@ public class HermesDaoImpl implements HermesDao {
         return cats;
     }
 
+    @Override
+    public List<Pictograma> getPictogramas(Categoria cat, String sexo) {
+        return null;
+    }
+
     public List<Pictograma> getPictogramas(Categoria cat){
         List<Pictograma> pictogramas = new ArrayList<>();
 
