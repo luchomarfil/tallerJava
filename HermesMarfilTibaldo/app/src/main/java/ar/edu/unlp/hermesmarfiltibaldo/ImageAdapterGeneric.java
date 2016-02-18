@@ -14,35 +14,47 @@ import android.widget.ImageView;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
-import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 /**
  * Created by luciano on 16/02/16.
  */
-public abstract class ImageAdapterGeneric extends BaseAdapter {
+public class ImageAdapterGeneric extends BaseAdapter {
     protected Context mContext;
     protected int number;
     protected List<Pictograma> mThumbIds;
+    private ImageAdapterStrategy strategy;
 
-    public ImageAdapterGeneric(Context c, int number) {
+    public ImageAdapterGeneric(Context c, int number, ImageAdapterStrategy strategy) {
         this.mContext = c;
         this.number = number;
         this.mThumbIds = new LinkedList<Pictograma>();
+        this.setStrategy(strategy);
+        this.getStrategy().setOwner(this);
         this.getImages();
     }
 
-    protected abstract void getImages();
+    protected void getImages(){
+        this.getStrategy().getImages();
+    }
 
     public int getCount() {
         return mThumbIds.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return this.getStrategy().getItem(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return this.getStrategy().getItemId(position);
     }
 
     protected Bitmap getBitmapFromAsset(String strName)
@@ -87,9 +99,18 @@ public abstract class ImageAdapterGeneric extends BaseAdapter {
         return imageView;
     }
 
-    protected abstract void asignarEventoTouch(ImageView imageView, Pictograma pictograma);
+    protected void asignarEventoTouch(ImageView imageView, Pictograma pictograma){
+        this.getStrategy().asignarEventoTouch(imageView,pictograma);
+    }
 
 
+    public ImageAdapterStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(ImageAdapterStrategy strategy) {
+        this.strategy = strategy;
+    }
 }
 
 

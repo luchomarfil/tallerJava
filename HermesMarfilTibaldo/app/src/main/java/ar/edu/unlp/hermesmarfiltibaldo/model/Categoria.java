@@ -61,4 +61,20 @@ public class Categoria {
     public static Categoria getCategoriaPista() {
         return new Categoria(Categoria.ID_CATEGORIA_PISTA,"Pista");
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Categoria categoria = (Categoria) o;
+
+        return id.equals(categoria.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

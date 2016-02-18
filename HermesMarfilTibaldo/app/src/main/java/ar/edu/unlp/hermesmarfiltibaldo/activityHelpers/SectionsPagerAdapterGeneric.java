@@ -9,20 +9,33 @@ import ar.edu.unlp.hermesmarfiltibaldo.AlumnoActivity;
 /**
  * Created by luciano on 16/02/16.
  */
-public abstract class SectionsPagerAdapterGeneric extends FragmentPagerAdapter {
+public class SectionsPagerAdapterGeneric extends FragmentPagerAdapter {
     public SectionsPagerAdapterGeneric(FragmentManager fm) {
         super(fm);
     }
 
-    abstract public int getCount();
+    public SectionsPagerStrategy getStrategy() {
+        return strategy;
+    }
 
-    abstract public CharSequence getPageTitle(int position);
+    public void setStrategy(SectionsPagerStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    protected SectionsPagerStrategy strategy;
+
+    public int getCount(){
+        return this.strategy.getCount();
+    }
+
+    public CharSequence getPageTitle(int position){
+        return this.strategy.getPageTitle(position);
+    }
 
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-
         return AlumnoActivity.PlaceholderFragment.newInstance(position);
     }
 }

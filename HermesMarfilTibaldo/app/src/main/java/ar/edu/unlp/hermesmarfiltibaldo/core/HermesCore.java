@@ -53,8 +53,11 @@ public class HermesCore {
 
 
     public List<Alumno> getAlumnos(){
-
-        return getHermesDao().getAlumnos();
+        List<Alumno> als = getHermesDao().getAlumnos();
+        for (Alumno a: als) {
+            a.setCategorias(HermesCore.instancia().getCategorias(a));
+        }
+        return als;
 
     }
 

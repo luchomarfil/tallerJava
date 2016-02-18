@@ -11,11 +11,8 @@ import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapterModoEdicion extends SectionsPagerAdapterGeneric {
+public class SectionsPagerAdapterModoEdicion extends SectionsPagerStrategy {
 
-    public SectionsPagerAdapterModoEdicion(FragmentManager fm) {
-        super(fm);
-    }
 
     @Override
     public int getCount() {

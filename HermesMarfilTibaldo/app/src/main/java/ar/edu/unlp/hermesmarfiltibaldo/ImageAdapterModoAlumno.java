@@ -18,12 +18,7 @@ import java.util.logging.Logger;
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
-public class ImageAdapterModoAlumno extends ImageAdapterGeneric {
-
-    public ImageAdapterModoAlumno(Context c, int number) {
-        super(c, number);
-    }
-
+public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
 
 
 
@@ -39,10 +34,10 @@ public class ImageAdapterModoAlumno extends ImageAdapterGeneric {
     {
         // references to our images
         Logger l = Logger.getLogger(ImageAdapterModoAlumno.class.getName());
-        l.info("Numero "+this.number);
-        switch (this.number) {
+        l.info("Numero " + getOwner().number);
+        switch (getOwner().number) {
             case 0:
-                mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
                 //mThumbIds = new ArrayList<Pictograma>();
                 break;
         }
@@ -54,7 +49,7 @@ public class ImageAdapterModoAlumno extends ImageAdapterGeneric {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HermesCore.instancia().playAudio(pictograma,mContext);
+                HermesCore.instancia().playAudio(pictograma,getOwner().mContext);
                 HermesCore.instancia().comunicarNotificacion(pictograma);
             }
         });

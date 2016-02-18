@@ -14,14 +14,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
-public class ImageAdapterModoEdicion extends ImageAdapterGeneric {
-
-    public ImageAdapterModoEdicion(Context c, int number) {
-        super(c, number);
-    }
-
-
-
+public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
 
     public Object getItem(int position) {
         return null;
@@ -35,28 +28,28 @@ public class ImageAdapterModoEdicion extends ImageAdapterGeneric {
     {
         // references to our images
         Logger l = Logger.getLogger(ImageAdapterModoEdicion.class.getName());
-        l.info("Numero "+this.number);
-        switch (this.number) {
+        l.info("Numero "+getOwner().number);
+        switch (getOwner().number) {
             case 0:
-                mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaPista());
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaPista());
                 break;
             case 1:
-                mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEstablo());
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEstablo());
                 break;
             case 2:
-                mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaNecesidades());
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaNecesidades());
                 break;
             case 3:
-                mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEmociones());
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEmociones());
                 break;
             case 4:
-                mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
                 //mThumbIds = new ArrayList<Pictograma>();
                 break;
         }
 
-        if(mThumbIds==null){
-            mThumbIds = new LinkedList<>();
+        if(getOwner().mThumbIds==null){
+            getOwner().mThumbIds = new LinkedList<>();
         }
 
     }

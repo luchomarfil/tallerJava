@@ -52,7 +52,18 @@ public class AlumnoActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        refrescarModo();
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapterGeneric(getSupportFragmentManager());
+        crearEstrategiaSegunModo(mSectionsPagerAdapter);
+        // Set up the ViewPager with the sections adapter.
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
         ImageButton ib = (ImageButton) findViewById(R.id.imageButton);
         final Pictograma p = HermesCore.instancia().getPictogramaPorNombre("emociones/Si.png");
@@ -76,27 +87,16 @@ public class AlumnoActivity extends AppCompatActivity {
 
     }
 
-    private void refrescarModo() {
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = crearSectionPagerSegunModo();
-
-        // Set up the ViewPager with the sections adapter.
-
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-    }
 
 
-    private SectionsPagerAdapterGeneric crearSectionPagerSegunModo() {
+
+    private void crearEstrategiaSegunModo(SectionsPagerAdapterGeneric mSectionsPagerAdapter) {
+
         if(HermesCore.instancia().isModoAjuste()){
-            return new SectionsPagerAdapterModoEdicion(getSupportFragmentManager());
+            mSectionsPagerAdapter.setStrategy(new SectionsPagerAdapterModoEdicion());
         }
         else{
-            return new SectionsPagerAdapterModoAlumno(getSupportFragmentManager());
+            mSectionsPagerAdapter.setStrategy(new SectionsPagerAdapterModoAlumno());
         }
     }
 
@@ -117,14 +117,14 @@ public class AlumnoActivity extends AppCompatActivity {
 
         //Acá tenemos que configurar qué pasa cuando hacemos click en los botones del menue
         if (id == R.id.modo_edicion) {
-            if (item.getTitle() == "Modo Edición") {
+            if (item.getTitle().equals("Modo Edición")) {
                 HermesCore.instancia().setModoAjuste();
                 item.setTitle("Modo Alumno");
-                refrescarModo();
+                crearEstrategiaSegunModo(mSectionsPagerAdapter);
             } else{
                 HermesCore.instancia().setModoAlumno();
                 item.setTitle("Modo Edición");
-                refrescarModo();
+                crearEstrategiaSegunModo(mSectionsPagerAdapter);
             }
 
         }
@@ -172,19 +172,18 @@ public class AlumnoActivity extends AppCompatActivity {
 
             View view = inflater.inflate(R.layout.fragment_alumno,container,false);
             GridView gridView = (GridView) view.findViewById(R.id.gridView);
-
-            gridView.setAdapter(getAdapterSegunModo(view)); // uses the view to get the context instead of getActivity().
-
+            ImageAdapterGeneric im = new ImageAdapterGeneric(view.getContext(),number,crearEstrategiaSegunModo());
+            gridView.setAdapter(im);
             return view;
         }
 
         @NonNull
-        private ImageAdapterGeneric getAdapterSegunModo(View view) {
+        private ImageAdapterStrategy crearEstrategiaSegunModo() {
             if(HermesCore.instancia().isModoAjuste()){
-                return new ImageAdapterModoEdicion(view.getContext(),number);
+                return new ImageAdapterModoEdicion();
             }
             else{
-                return new ImageAdapterModoAlumno(view.getContext(),number);
+                return new ImageAdapterModoAlumno();
             }
 
         }
