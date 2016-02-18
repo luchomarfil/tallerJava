@@ -206,7 +206,7 @@ public class HermesCore {
         if (alumnoActual.getCategorias().contains(categoria)) {
             return this.getHermesDao().getPictogramas(categoria,alumnoActual.getSexo());
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 

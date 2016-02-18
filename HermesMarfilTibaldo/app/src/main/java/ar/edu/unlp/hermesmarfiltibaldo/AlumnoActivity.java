@@ -53,17 +53,7 @@ public class AlumnoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapterGeneric(getSupportFragmentManager());
-        crearEstrategiaSegunModo(mSectionsPagerAdapter);
-        // Set up the ViewPager with the sections adapter.
-
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        recrearSolapas();
 
         ImageButton ib = (ImageButton) findViewById(R.id.imageButton);
         final Pictograma p = HermesCore.instancia().getPictogramaPorNombre("emociones/Si.png");
@@ -87,7 +77,19 @@ public class AlumnoActivity extends AppCompatActivity {
 
     }
 
+    private void recrearSolapas() {
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapterGeneric(getSupportFragmentManager());
+        crearEstrategiaSegunModo(mSectionsPagerAdapter);
+        // Set up the ViewPager with the sections adapter.
 
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+    }
 
 
     private void crearEstrategiaSegunModo(SectionsPagerAdapterGeneric mSectionsPagerAdapter) {
@@ -120,11 +122,13 @@ public class AlumnoActivity extends AppCompatActivity {
             if (item.getTitle().equals("Modo Edición")) {
                 HermesCore.instancia().setModoAjuste();
                 item.setTitle("Modo Alumno");
-                crearEstrategiaSegunModo(mSectionsPagerAdapter);
-            } else{
+                recrearSolapas();
+
+            } else {
                 HermesCore.instancia().setModoAlumno();
                 item.setTitle("Modo Edición");
-                crearEstrategiaSegunModo(mSectionsPagerAdapter);
+                recrearSolapas();
+
             }
 
         }

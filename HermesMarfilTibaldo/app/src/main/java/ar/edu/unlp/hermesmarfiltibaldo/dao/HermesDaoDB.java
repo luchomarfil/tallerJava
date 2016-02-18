@@ -272,7 +272,7 @@ public class HermesDaoDB implements HermesDao {
                 HermesContract.Pictograma.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
                 " ( " + HermesContract.Pictograma.COLUMN_NAME_SEXO + "=? OR "
-                        + HermesContract.Pictograma.COLUMN_NAME_SEXO + "=U ) AND "
+                        + HermesContract.Pictograma.COLUMN_NAME_SEXO + "= 'U' ) AND "
                         + HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID + "=? ",                                // The columns for the WHERE clause
                 new String[]{sexo, cat.getId().toString()},                            // The values for the WHERE clause
                 null,                                     // don't group the rows

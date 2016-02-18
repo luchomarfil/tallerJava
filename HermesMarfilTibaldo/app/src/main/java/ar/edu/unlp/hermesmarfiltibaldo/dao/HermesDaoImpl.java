@@ -59,7 +59,15 @@ public class HermesDaoImpl implements HermesDao {
 
     @Override
     public List<Pictograma> getPictogramas(Categoria cat, String sexo) {
-        return null;
+        List<Pictograma> pictogramas = new ArrayList<>();
+
+        pictogramas.add(new Pictograma(2,"emociones/Cansada.m4a","emociones/Cansada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(3,"emociones/Contenta.m4a","emociones/Contenta.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(4,"emociones/Dolorida.m4a","emociones/Dolorida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(5,"emociones/Enojada.m4a","emociones/Enojada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+
+        return pictogramas;
+
     }
 
     public List<Pictograma> getPictogramas(Categoria cat){
