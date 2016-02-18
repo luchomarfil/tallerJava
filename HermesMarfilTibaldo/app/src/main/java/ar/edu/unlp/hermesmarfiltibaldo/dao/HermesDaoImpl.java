@@ -5,6 +5,7 @@ import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Notificacion;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 /**
@@ -238,6 +239,21 @@ public class HermesDaoImpl implements HermesDao {
 
     @Override
     public void createNewCategoriaAlumno(Categoria categoria, Alumno alumno) {
+
+    }
+
+    @Override
+    public void createNewNotificacion(Notificacion n, boolean b) {
+
+    }
+
+    @Override
+    public List<Notificacion> getNotificacionesNoEnviadas() {
+        return null;
+    }
+
+    @Override
+    public void setNotificacionToEnviada(Notificacion n) {
 
     }
 

@@ -20,7 +20,7 @@ public class Notificacion {
 
 	public Notificacion() {
 	}
-	
+
 	public Notificacion(Date fecha, String categoria, String contexto,
 			String mensaje, String ninio) {
 		this.fecha = fecha;

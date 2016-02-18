@@ -80,6 +80,22 @@ public class HermesDBHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + CategoriaAlumno.TABLE_NAME;
     // If you change the database schema, you must increment the database version.
 
+    private static final String SQL_CREATE_CATEGORIA_NOTIFICACION =
+            "CREATE TABLE " + Notificacion.TABLE_NAME + " (" +
+                    Notificacion.COLUMN_NOTIFICACION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    Notificacion.COLUMN_NAME_CONTEXTO + TEXT_TYPE + COMMA_SEP +
+                    Notificacion.COLUMN_NAME_ENVIADO + TEXT_TYPE + COMMA_SEP +
+                    Notificacion.COLUMN_NAME_FECHA + TEXT_TYPE + COMMA_SEP +
+                    Notificacion.COLUMN_NAME_MENSAJE + TEXT_TYPE + COMMA_SEP +
+                    Notificacion.COLUMN_NAME_NINIO + TEXT_TYPE + COMMA_SEP +
+                    Notificacion.COLUMN_NAME_CATEGORIA + TEXT_TYPE +
+                    " )";
+
+
+    private static final String SQL_DELETE_CATEGORIA_NOTIFICACION =
+            "DROP TABLE IF EXISTS " + Notificacion.TABLE_NAME;
+    // If you change the database schema, you must increment the database version.
+
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "HERMES.db";
@@ -87,7 +103,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
     public HermesDBHelper(Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        //this.onUpgrade(this.getWritableDatabase(),DATABASE_VERSION,DATABASE_VERSION+1);
+        this.onUpgrade(this.getWritableDatabase(), DATABASE_VERSION, DATABASE_VERSION + 1);
     }
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_PICTOGRAMA);
@@ -96,6 +112,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_CONFIGURACION);
         db.execSQL(SQL_CREATE_CATEGORIA);
         db.execSQL(SQL_CREATE_CATEGORIA_ALUMNO);
+        db.execSQL(SQL_CREATE_CATEGORIA_NOTIFICACION);
         HermesDBStartUp.startUp(db);
     }
 
@@ -108,6 +125,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_CONFIGURACION);
         db.execSQL(SQL_DELETE_CATEGORIA);
         db.execSQL(SQL_DELETE_CATEGORIA_ALUMNO);
+        db.execSQL(SQL_DELETE_CATEGORIA_NOTIFICACION);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

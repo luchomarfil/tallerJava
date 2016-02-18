@@ -6,12 +6,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Notificacion;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDBHelper.*;
@@ -210,7 +212,7 @@ public class HermesDaoDB implements HermesDao {
        if (cursor.getCount() > 0) {
            if (cursor.moveToFirst()) {
                do {
-                   l.add( new Categoria(cursor.getLong(1),cursor.getString(2)));
+                   l.add( new Categoria(cursor.getLong(0),cursor.getString(1)));
                }
                while (cursor.moveToNext());
            }
@@ -242,7 +244,7 @@ public class HermesDaoDB implements HermesDao {
         if (cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    l.add(new Categoria(cursor.getLong(1), cursor.getString(2)));
+                    l.add(new Categoria(cursor.getLong(0), cursor.getString(1)));
                 }
                 while (cursor.moveToNext());
             }
@@ -280,7 +282,7 @@ public class HermesDaoDB implements HermesDao {
         if (c.getCount() > 0) {
             if (c.moveToFirst()) {
                 do {
-                    pictogramas.add(new Pictograma(c.getLong(1),c.getString(2), c.getString(3),c.getString(4),c.getLong(5)));
+                    pictogramas.add(new Pictograma(c.getLong(0),c.getString(1), c.getString(2),c.getString(3),c.getLong(4)));
                 }
                 while (c.moveToNext());
             }
@@ -310,7 +312,7 @@ public class HermesDaoDB implements HermesDao {
             List<Pictograma> l = new ArrayList<Pictograma>();
             if (cursor.moveToFirst()) {
                 do {
-                    l.add(new Pictograma(cursor.getLong(1),cursor.getString(2), cursor.getString(3),cursor.getString(4),cursor.getLong(5)));
+                    l.add(new Pictograma(cursor.getLong(0),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getLong(4)));
                 }
                 while (cursor.moveToNext());
             }
@@ -442,14 +444,14 @@ public class HermesDaoDB implements HermesDao {
         long newRowId;
         newRowId = db.delete(
                 HermesContract.PictogramaAlumno.TABLE_NAME,
-                HermesContract.PictogramaAlumno.COLUMN_NAME_ALUMNO_ID + "=?" ,
+                HermesContract.PictogramaAlumno.COLUMN_NAME_ALUMNO_ID + "=?",
                 new String[]{alumno.getId().toString()});
         db.close();
     }
 
     public void removeAlumnoTodasCategoria(Alumno alumno){
         //  Lo usamos para cuando hay un cambio de sexo
-        SQLiteDatabase db = hermesDBHelper.getWritableDatabase ();
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
 
 
         long newRowId;
@@ -477,13 +479,13 @@ public class HermesDaoDB implements HermesDao {
                         cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_IMAGEN)),
                         cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_SEXO)),
                         cursor.getLong(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID)));
+
         }
 
         cursor.close();
         db.close();
         return p;
     }
-
 
     public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
         SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
@@ -496,12 +498,12 @@ public class HermesDaoDB implements HermesDao {
                 " WHERE PA." + HermesContract.Alumno.COLUMN_ALUMNO_ID + " = ? " +
                 " AND P." + HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID + " =?";
 
-        Cursor cursor = db.rawQuery(getPictogramasAlumno, new String[]{alumnoActual.getId().toString(),categoria.getId().toString() });
+        Cursor cursor = db.rawQuery(getPictogramasAlumno, new String[]{alumnoActual.getId().toString(), categoria.getId().toString()});
         List<Pictograma> l = new ArrayList<Pictograma>();
         if(cursor.getCount() > 0){
                 if (cursor.moveToFirst()) {
                     do {
-                        l.add(new Pictograma(cursor.getLong(1),cursor.getString(2), cursor.getString(3),cursor.getString(4),cursor.getLong(5)));
+                        l.add(new Pictograma(cursor.getLong(0),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getLong(4)));
                     }
                     while (cursor.moveToNext());
                 }
@@ -510,6 +512,89 @@ public class HermesDaoDB implements HermesDao {
         cursor.close();
         db.close();
         return l;
+    }
+
+    public void createNewNotificacion(Notificacion n, boolean b) {
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+
+        values.put(HermesContract.Notificacion.COLUMN_NAME_CATEGORIA, n.getCategoria());
+        values.put(HermesContract.Notificacion.COLUMN_NAME_CONTEXTO,n.getContexto()) ;
+        values.put(HermesContract.Notificacion.COLUMN_NAME_ENVIADO, b );
+        values.put(HermesContract.Notificacion.COLUMN_NAME_FECHA, n.getFecha().toString() );
+        values.put(HermesContract.Notificacion.COLUMN_NAME_MENSAJE, n.getMensaje());
+        values.put(HermesContract.Notificacion.COLUMN_NAME_NINIO, n.getNinio());
+
+// Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                HermesContract.Notificacion.TABLE_NAME,
+                null,
+                values);
+        db.close();
+    }
+
+    public List<Notificacion> getNotificacionesNoEnviadas(){
+        SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+        String[] projection = {
+                HermesContract.Notificacion.COLUMN_NAME_CATEGORIA,
+                HermesContract.Notificacion.COLUMN_NAME_CONTEXTO,
+                HermesContract.Notificacion.COLUMN_NAME_ENVIADO,
+                HermesContract.Notificacion.COLUMN_NAME_FECHA,
+                HermesContract.Notificacion.COLUMN_NAME_MENSAJE,
+                HermesContract.Notificacion.COLUMN_NAME_NINIO,
+        };
+        Cursor c = db.query(
+                HermesContract.Notificacion.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                HermesContract.Notificacion.COLUMN_NAME_ENVIADO + " =? ",                                // The columns for the WHERE clause
+                new String[]{ "false" },                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
+
+        List<Notificacion> notificacion = new ArrayList<Notificacion>();
+        if (c.getCount() > 0) {
+            if (c.moveToFirst()) {
+                do {
+                    notificacion.add(new Notificacion(new Date(c.getLong(c.getColumnIndex(HermesContract.Notificacion.COLUMN_NAME_FECHA))),
+                            c.getString(c.getColumnIndex(HermesContract.Notificacion.COLUMN_NAME_CATEGORIA)),
+                            c.getString(c.getColumnIndex(HermesContract.Notificacion.COLUMN_NAME_CONTEXTO)),
+                            c.getString(c.getColumnIndex(HermesContract.Notificacion.COLUMN_NAME_MENSAJE)),
+                            c.getString(c.getColumnIndex(HermesContract.Notificacion.COLUMN_NAME_NINIO))));
+                }
+                while (c.moveToNext());
+            }
+        }
+        c.close();
+        db.close();
+        return notificacion;
+    }
+
+    public void setNotificacionToEnviada(Notificacion n) {
+        // Gets the data repository in write mode
+        SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(HermesContract.Notificacion.COLUMN_NAME_ENVIADO, "true");
+        
+        long newRowId;
+        newRowId = db.update(
+                HermesContract.Notificacion.TABLE_NAME,
+                values,
+                HermesContract.Notificacion.COLUMN_NAME_CATEGORIA + " =? " +
+                    HermesContract.Notificacion.COLUMN_NAME_CONTEXTO + " =? " +
+                    HermesContract.Notificacion.COLUMN_NAME_MENSAJE + " =? " +
+                    HermesContract.Notificacion.COLUMN_NAME_NINIO + " =? " +
+                    HermesContract.Notificacion.COLUMN_NAME_FECHA + " =? ",
+                new String[]{n.getCategoria(), n.getContexto(), n.getMensaje(), n.getNinio(), n.getFecha().toString()});
+        db.close();
     }
 
 }

@@ -12,10 +12,13 @@ public class HermesConfiguration {
 
 
     public static void inicializar(Context c) {
+
         if(HermesCore.instancia().getHermesDao()==null) {
             HermesCore.instancia().setHermesDao(new HermesDaoDB(c));
+            HermesCore.instancia().setNoEnviados((!HermesCore.instancia().getHermesDao().getNotificacionesNoEnviadas().isEmpty()));
             //HermesCore.instancia().setHermesDao(new HermesDaoImpl());
         }
+
 
     }
 }

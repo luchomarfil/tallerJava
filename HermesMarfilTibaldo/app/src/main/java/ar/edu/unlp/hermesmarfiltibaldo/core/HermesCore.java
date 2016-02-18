@@ -7,7 +7,10 @@ import android.text.Editable;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,6 +38,7 @@ public class HermesCore {
     private static HermesCore instance;
     private Alumno alumnoActual;
     private HermesDao hermesDao;
+    private boolean hayMensajesNoEnviado;
 
     public static synchronized HermesCore instancia(){
         if(instance==null){
@@ -44,7 +48,6 @@ public class HermesCore {
     }
 
     private HermesCore(){
-
     }
 
 
@@ -91,9 +94,17 @@ public class HermesCore {
 
     public void comunicarNotificacion(Pictograma p){
         try {
-            //TODO aca hay que transformar p en n
-            Notificacion n = new Notificacion();
-            ClientHTTPJSONListener.comunicarNotificacion(n);
+
+            Notificacion n = new Notificacion( new java.util.Date(), Categoria.getCategoriaByID(p.getCategoriaID()).getNombre(),"Mi contexto", p.getImageFilename(), this.getAlumnoActual().toString());
+            Boolean enviado = ClientHTTPJSONListener.comunicarNotificacion(n);
+            if (enviado) {
+                hermesDao.createNewNotificacion(n,true);
+                this.hayMensajesNoEnviado = true;
+            }else{
+                hermesDao.createNewNotificacion(n,false);
+            }
+
+
            // HermesCore.instancia().marcarNotificacionComoRecibida(n);
         } catch (ComunicarNotificacionException e) {
            // HermesCore.instancia().marcarNotificacionComoPendiente(n);
@@ -188,11 +199,14 @@ public class HermesCore {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
     }
+    public void setNoEnviados (boolean noEnviados) {
+        this.hayMensajesNoEnviado = noEnviados;
+    }
+
 
     public Pictograma getPictogramaPorNombre(String nombre) {
         return this.getHermesDao().getPictogramaPorNombre(nombre);
     }
+
 }

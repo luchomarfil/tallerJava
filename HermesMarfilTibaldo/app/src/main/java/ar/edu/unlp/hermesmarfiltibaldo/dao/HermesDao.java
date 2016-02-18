@@ -5,6 +5,7 @@ import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Notificacion;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 /**
@@ -53,6 +54,13 @@ public interface HermesDao {
 
     void createNewCategoriaAlumno(Categoria categoria, Alumno alumno);
 
+    void createNewNotificacion(Notificacion n, boolean b);
+
+    List<Notificacion> getNotificacionesNoEnviadas();
+
+    void setNotificacionToEnviada(Notificacion n);
+
     Pictograma getPictogramaPorNombre(String nombre);
+
 }
 
