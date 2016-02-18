@@ -54,10 +54,14 @@ public interface HermesDao {
 
     void createNewCategoriaAlumno(Categoria categoria, Alumno alumno);
 
+
     void createNewNotificacion(Notificacion n, boolean b);
 
     List<Notificacion> getNotificacionesNoEnviadas();
 
     void setNotificacionToEnviada(Notificacion n);
+
+    Pictograma getPictogramaPorNombre(String nombre);
+
 }
 

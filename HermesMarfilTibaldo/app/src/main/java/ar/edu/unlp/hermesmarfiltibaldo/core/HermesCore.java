@@ -205,6 +205,8 @@ public class HermesCore {
     }
 
 
-
+    public Pictograma getPictogramaPorNombre(String nombre) {
+        return this.getHermesDao().getPictogramaPorNombre(nombre);
+    }
 
 }

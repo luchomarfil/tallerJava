@@ -17,11 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterGeneric;
 import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterModoAlumno;
 import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterModoEdicion;
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 public class AlumnoActivity extends AppCompatActivity {
 
@@ -51,6 +53,27 @@ public class AlumnoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         refrescarModo();
+
+        ImageButton ib = (ImageButton) findViewById(R.id.imageButton);
+        final Pictograma p = HermesCore.instancia().getPictogramaPorNombre("emociones/Si.png");
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HermesCore.instancia().playAudio(p, getApplicationContext());
+                HermesCore.instancia().comunicarNotificacion(p);
+            }
+        });
+
+        ImageButton ib2 = (ImageButton) findViewById(R.id.imageButton2);
+        final Pictograma p2 = HermesCore.instancia().getPictogramaPorNombre("emociones/No.png");
+        ib2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HermesCore.instancia().playAudio(p2,getApplicationContext());
+                HermesCore.instancia().comunicarNotificacion(p2);
+            }
+        });
+
     }
 
     private void refrescarModo() {
