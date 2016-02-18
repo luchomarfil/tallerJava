@@ -13,11 +13,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import ar.edu.unlp.hermesmarfiltibaldo.comunicadorjson.ClientHTTPJSONListener;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoDB;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoImpl;
+import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 import ar.edu.unlp.hermesmarfiltibaldo.exception.ComunicarNotificacionException;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
@@ -48,6 +52,15 @@ public class HermesCore {
     }
 
     private HermesCore(){
+        Runnable resendUnsended = new Runnable() {
+            public void run() {
+                HermesCore.instancia().comunicarNotificacionesNoEnviadas();
+
+            }
+        };
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(resendUnsended, 1, 30, TimeUnit.SECONDS);
     }
 
 
@@ -95,6 +108,21 @@ public class HermesCore {
             return this.getHermesDao().getPictogramas(alumno);
     }
 
+    public void comunicarNotificacionesNoEnviadas(){
+        List<Notificacion> notificaciones = hermesDao.getNotificacionesNoEnviadas();
+        System.out.println("Hola desde el notificador");
+        if (!notificaciones.isEmpty()){
+        for(Iterator<Notificacion> i = notificaciones.iterator(); i.hasNext(); ) {
+            try {
+                Notificacion n = i.next();
+                ClientHTTPJSONListener.comunicarNotificacion(n);
+            } catch (ComunicarNotificacionException e) {
+                // HermesCore.instancia().marcarNotificacionComoPendiente(n);
+                e.printStackTrace();
+            }
+        }
+        }
+    }
     public void comunicarNotificacion(Pictograma p){
         try {
 
