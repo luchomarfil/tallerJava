@@ -460,6 +460,26 @@ public class HermesDaoDB implements HermesDao {
         db.close();
     }
 
+    public Pictograma getPictogramaPorNombre(String nombre){
+        SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+        String getPictogramasAlumno = "SELECT PA.* FROM "+
+                "  " + HermesContract.Pictograma.TABLE_NAME + " as PA " +
+                " WHERE PA." + HermesContract.Pictograma.COLUMN_NAME_IMAGEN + " = ? ";
+
+        Cursor cursor = db.rawQuery(getPictogramasAlumno, new String[]{String.valueOf(nombre)});
+        //List<Pictograma> l = new ArrayList<Pictograma>();
+        Pictograma p = null;
+        if (cursor.moveToFirst()) {
+                p = new Pictograma(cursor.getLong(1),cursor.getString(2), cursor.getString(3),cursor.getString(4),cursor.getLong(5));
+        }
+
+        cursor.close();
+        db.close();
+        return p;
+    }
+
+
     public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
         SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
 

@@ -82,7 +82,7 @@ public class HermesCore {
 
 
     public List<Pictograma> getPictogramas(Categoria cat, String sexo){
-        return this.getHermesDao().getPictogramas(cat,sexo);
+        return this.getHermesDao().getPictogramas(cat, sexo);
     }
 
     public List<Pictograma> getPictogramas(Alumno alumno){
@@ -190,5 +190,9 @@ public class HermesCore {
             }
 
 
+    }
+
+    public Pictograma getPictogramaPorNombre(String nombre) {
+        return this.getHermesDao().getPictogramaPorNombre(nombre);
     }
 }

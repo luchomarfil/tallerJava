@@ -19,6 +19,7 @@ public class HermesDaoImpl implements HermesDao {
     private static final String CONFIG_KEY_PORT = "port";
 
     private static HermesDaoImpl instance;
+    private List<Alumno> l = new ArrayList<>();
 
     public static synchronized HermesDaoImpl instancia(){
         if(instance==null){
@@ -28,19 +29,20 @@ public class HermesDaoImpl implements HermesDao {
     }
 
     public List<Alumno> getAlumnos(){
-        List<Alumno> l = new ArrayList<Alumno>();
-        l.add(new Alumno(1, "Roberto", "Perez", SEXO_MASCULINO, Alumno.GRANDE));
-        l.add(new Alumno(2,"Guillote","Coppola", SEXO_MASCULINO,Alumno.GRANDE));
-        l.add(new Alumno(3,"Diego","Maradona",   SEXO_MASCULINO,Alumno.GRANDE));
-        l.add(new Alumno(4,"Dalma","Maradona",   SEXO_FEMENINO,Alumno.GRANDE));
-        l.add(new Alumno(5,"Gianina","Maradona", SEXO_FEMENINO,Alumno.GRANDE));
-        l.add(new Alumno(6,"Laura", "Ubfal",     SEXO_FEMENINO,Alumno.GRANDE));
-        l.add(new Alumno(7,"Marcelo", "Polino",  SEXO_MASCULINO,Alumno.GRANDE));
-        l.add(new Alumno(8,"Carolina", "Ardohain", SEXO_FEMENINO,Alumno.GRANDE));
-        l.add(new Alumno(9,"Matias", "Ale",        SEXO_MASCULINO,Alumno.GRANDE));
-        l.add(new Alumno(10,"Mariana", "Fabiani",   SEXO_FEMENINO,Alumno.GRANDE));
-        l.add(new Alumno(11,"Moria", "Casán",       SEXO_FEMENINO,Alumno.GRANDE));
-        l.add(new Alumno(12,"Guillermo", "Andino",  SEXO_MASCULINO,Alumno.GRANDE));
+        if(l.isEmpty()) {
+            l.add(new Alumno(1, "Roberto", "Perez", SEXO_MASCULINO, Alumno.NORMAL));
+            l.add(new Alumno(2, "Guillote", "Coppola", SEXO_MASCULINO, Alumno.GRANDE));
+            l.add(new Alumno(3, "Diego", "Maradona", SEXO_MASCULINO, Alumno.GRANDE));
+            l.add(new Alumno(4, "Dalma", "Maradona", SEXO_FEMENINO, Alumno.GRANDE));
+            l.add(new Alumno(5, "Gianina", "Maradona", SEXO_FEMENINO, Alumno.GRANDE));
+            l.add(new Alumno(6, "Laura", "Ubfal", SEXO_FEMENINO, Alumno.GRANDE));
+            l.add(new Alumno(7, "Marcelo", "Polino", SEXO_MASCULINO, Alumno.GRANDE));
+            l.add(new Alumno(8, "Carolina", "Ardohain", SEXO_FEMENINO, Alumno.GRANDE));
+            l.add(new Alumno(9, "Matias", "Ale", SEXO_MASCULINO, Alumno.GRANDE));
+            l.add(new Alumno(10, "Mariana", "Fabiani", SEXO_FEMENINO, Alumno.GRANDE));
+            l.add(new Alumno(11, "Moria", "Casán", SEXO_FEMENINO, Alumno.GRANDE));
+            l.add(new Alumno(12, "Guillermo", "Andino", SEXO_MASCULINO, Alumno.GRANDE));
+        }
         return l;
     }
 
@@ -237,6 +239,17 @@ public class HermesDaoImpl implements HermesDao {
     @Override
     public void createNewCategoriaAlumno(Categoria categoria, Alumno alumno) {
 
+    }
+
+    @Override
+    public Pictograma getPictogramaPorNombre(String nombre) {
+        if(nombre.contains("Si")){
+            return new Pictograma(50,"emociones/Si.m4a","emociones/Si.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES);
+        }
+        else if (nombre.contains("No")){
+            return new Pictograma(51,"emociones/No.m4a","emociones/No.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES);
+        }
+        return null;
     }
 
 }

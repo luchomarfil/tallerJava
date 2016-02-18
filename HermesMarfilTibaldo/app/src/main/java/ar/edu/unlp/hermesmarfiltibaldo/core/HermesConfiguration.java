@@ -12,9 +12,10 @@ public class HermesConfiguration {
 
 
     public static void inicializar(Context c) {
-
-        HermesCore.instancia().setHermesDao(new HermesDaoDB(c));
-        //HermesCore.instancia().setHermesDao(new HermesDaoImpl());
+        if(HermesCore.instancia().getHermesDao()==null) {
+            HermesCore.instancia().setHermesDao(new HermesDaoDB(c));
+            //HermesCore.instancia().setHermesDao(new HermesDaoImpl());
+        }
 
     }
 }

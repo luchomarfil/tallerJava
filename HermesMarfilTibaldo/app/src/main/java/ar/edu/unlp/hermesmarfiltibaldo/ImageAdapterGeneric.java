@@ -65,7 +65,7 @@ public abstract class ImageAdapterGeneric extends BaseAdapter {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
             if(HermesCore.instancia().getAlumnoActual().getTamanioPictograma() != Alumno.GRANDE ){
-                imageView.setLayoutParams(new GridView.LayoutParams(100, 200));
+                imageView.setLayoutParams(new GridView.LayoutParams(150, 200));
             }
 
             //   imageView.setLayoutParams(new GridView.LayoutParams(800,600));

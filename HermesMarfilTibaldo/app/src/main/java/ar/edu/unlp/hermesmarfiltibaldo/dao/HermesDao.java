@@ -53,5 +53,6 @@ public interface HermesDao {
 
     void createNewCategoriaAlumno(Categoria categoria, Alumno alumno);
 
+    Pictograma getPictogramaPorNombre(String nombre);
 }
 
