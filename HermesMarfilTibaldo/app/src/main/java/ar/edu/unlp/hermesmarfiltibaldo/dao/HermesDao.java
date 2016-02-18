@@ -26,7 +26,7 @@ public interface HermesDao {
 
     String getIP();
 
-    void createNewAlumno(Alumno alumno);
+    long createNewAlumno(Alumno alumno);
 
     void createNewPictograma(Pictograma pictograma);
 

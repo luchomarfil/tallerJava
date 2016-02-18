@@ -35,8 +35,8 @@ public class HermesCore {
 
     public static boolean MODO_ALUMNO = false;
     public static boolean MODO_AJUSTE = true;
-    public static final String CONFIG_KEY_PORT = "port";
-    public static final String CONFIG_KEY_IP = "ip";
+    public static final String CONFIG_KEY_PORT = "PORT";
+    public static final String CONFIG_KEY_IP = "IP";
 
     private boolean modoAjuste = false;
     private static HermesCore instance;
@@ -178,7 +178,7 @@ public class HermesCore {
     }
 
     public void createNewAlumno(Alumno alumnoActual) {
-        this.getHermesDao().createNewAlumno(alumnoActual);
+        this.getAlumnoActual().setId(this.getHermesDao().createNewAlumno(alumnoActual));
         Iterator<Categoria> iterator =  alumnoActual.getCategorias().iterator();
         for (Categoria c: alumnoActual.getCategorias()) {
             this.getHermesDao().createNewCategoriaAlumno(c,alumnoActual);

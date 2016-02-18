@@ -12,7 +12,7 @@ public abstract class ImageAdapterStrategy {
 
     ImageAdapterGeneric owner;
     protected abstract void getImages();
-    protected abstract void asignarEventoTouch(ImageView imageView, Pictograma pictograma);
+    protected abstract void asignarEventoTouch(ImageView imageView, Pictograma pictograma, int number);
 
     public ImageAdapterGeneric getOwner() {
         return owner;

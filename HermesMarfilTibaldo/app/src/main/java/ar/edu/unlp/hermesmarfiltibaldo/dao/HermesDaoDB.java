@@ -24,8 +24,8 @@ import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDBHelper.*;
  */
 public class HermesDaoDB implements HermesDao {
 
-    private static final String SEXO_MASCULINO = "M";
-    private static final String SEXO_FEMENINO = "F";
+    private static final String SEXO_MASCULINO = Alumno.MASCULINO;
+    private static final String SEXO_FEMENINO = Alumno.FEMENINO;
     private static HermesDBHelper hermesDBHelper;
 
     public HermesDaoDB(Context context)
@@ -79,7 +79,7 @@ public class HermesDaoDB implements HermesDao {
         return l;
     }
 
-    public void createNewAlumno(Alumno alumno){
+    public long createNewAlumno(Alumno alumno){
         // Gets the data repository in write mode
         SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
 
@@ -98,6 +98,7 @@ public class HermesDaoDB implements HermesDao {
                 null,
                 values);
         db.close();
+        return newRowId;
     }
 
     public void createNewPictograma(Pictograma pictograma){
@@ -271,8 +272,8 @@ public class HermesDaoDB implements HermesDao {
         Cursor c = db.query(
                 HermesContract.Pictograma.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
-                " ( " + HermesContract.Pictograma.COLUMN_NAME_SEXO + "=? OR "
-                        + HermesContract.Pictograma.COLUMN_NAME_SEXO + "= 'U' ) AND "
+                " ( " + HermesContract.Pictograma.COLUMN_NAME_SEXO + " =? OR "
+                        + HermesContract.Pictograma.COLUMN_NAME_SEXO + "= '" + Alumno.UNISEX +"' ) AND "
                         + HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID + "=? ",                                // The columns for the WHERE clause
                 new String[]{sexo, cat.getId().toString()},                            // The values for the WHERE clause
                 null,                                     // don't group the rows

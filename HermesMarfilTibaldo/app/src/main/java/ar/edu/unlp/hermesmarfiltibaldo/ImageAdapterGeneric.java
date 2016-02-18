@@ -95,12 +95,12 @@ public class ImageAdapterGeneric extends BaseAdapter {
         // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         //imageView.setImageBitmap(bitmapFromAsset);
         imageView.setImageDrawable(bmd);
-        this.asignarEventoTouch(imageView,mThumbIds.get(position));
+        this.asignarEventoTouch(imageView,mThumbIds.get(position),number);
         return imageView;
     }
 
-    protected void asignarEventoTouch(ImageView imageView, Pictograma pictograma){
-        this.getStrategy().asignarEventoTouch(imageView,pictograma);
+    protected void asignarEventoTouch(ImageView imageView, Pictograma pictograma, int number){
+        this.getStrategy().asignarEventoTouch(imageView,pictograma,number);
     }
 
 

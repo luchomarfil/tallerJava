@@ -7,9 +7,9 @@ import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
  */
 public class Pictograma {
     public Long id;
-    public static final String MASCULINO = "M";
-    public static final String FEMENINO = "F";
-    public static final String UNISEX = "U";
+    public static final String MASCULINO = Alumno.MASCULINO;
+    public static final String FEMENINO = Alumno.FEMENINO;
+    public static final String UNISEX = Alumno.UNISEX;
     public String sexo;
     public String audioFilename;
     public String imageFilename;

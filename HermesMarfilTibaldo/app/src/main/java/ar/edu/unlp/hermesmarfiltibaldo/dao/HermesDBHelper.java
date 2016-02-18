@@ -103,7 +103,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
     public HermesDBHelper(Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-       // this.onUpgrade(this.getWritableDatabase(), DATABASE_VERSION, DATABASE_VERSION + 1);
+       //this.onUpgrade(this.getWritableDatabase(), DATABASE_VERSION, DATABASE_VERSION + 1);
     }
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_PICTOGRAMA);

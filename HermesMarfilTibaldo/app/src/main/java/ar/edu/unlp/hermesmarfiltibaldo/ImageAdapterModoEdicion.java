@@ -4,13 +4,14 @@ package ar.edu.unlp.hermesmarfiltibaldo;
  * Created by Agustín on 12/30/2015.
  */
 
-import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
+import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
@@ -55,6 +56,33 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
     }
 
     @Override
-    protected void asignarEventoTouch(ImageView imageView, Pictograma pictograma) {
+    protected void asignarEventoTouch(ImageView imageView, final Pictograma pictograma, final int number) {
+        imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (number == 4) {
+                    HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
+                }
+                return true;
+            }
+        });
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean esta = false;
+                for (Pictograma s: HermesCore.instancia().getHermesDao().getPictogramasAlumno(HermesCore.instancia().getAlumnoActual()))
+                {
+                    if (s.getImageFilename().equals(pictograma.getImageFilename())) {esta = true;}
+                }
+                if (esta)
+                    HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
+                else
+                    HermesCore.instancia().getHermesDao().createNewAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
+            }
+        });
+
+
     }
+
 }

@@ -64,8 +64,8 @@ public class AjustesActivity extends AppCompatActivity {
 
 
             List<String> spinnerArraySexo =  new ArrayList<String>();
-            spinnerArraySexo.add("Femenino");
-            spinnerArraySexo.add("Masculino");
+            spinnerArraySexo.add(Alumno.FEMENINO);
+            spinnerArraySexo.add(Alumno.MASCULINO);
 
 
             ArrayAdapter<String> adapterSexo = new ArrayAdapter<String>(
@@ -100,8 +100,8 @@ public class AjustesActivity extends AppCompatActivity {
 
                 inputApellido.setText(actual.getApellido());
                 inputNombre.setText(actual.getNombre());
-                sItemsS.setSelection(((actual.getSexo() == Alumno.MASCULINO) ? 1 : 0));
-                sItemsT.setSelection(((actual.getTamanioPictograma() == Alumno.GRANDE) ? 0 : 1));
+                sItemsS.setSelection(((actual.getSexo().equals(Alumno.MASCULINO)) ? 1 : 0));
+                sItemsT.setSelection(((actual.getTamanioPictograma().equals(Alumno.GRANDE)) ? 0 : 1));
 
                 listC = HermesCore.instancia().getCategorias(actual);
 
@@ -161,6 +161,7 @@ public class AjustesActivity extends AppCompatActivity {
         }
         logger.info("Guardando configuracion general");
         HermesCore.instancia().updateConfiguracion(editTextIp.getText().toString(), editTextPort.getText().toString());
+
     }
 
     /**

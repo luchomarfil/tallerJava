@@ -4,15 +4,9 @@ package ar.edu.unlp.hermesmarfiltibaldo;
  * Created by Agustín on 12/30/2015.
  */
 
-import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
@@ -45,7 +39,7 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
     }
 
     @Override
-    protected void asignarEventoTouch(ImageView imageView, final Pictograma pictograma) {
+    protected void asignarEventoTouch(ImageView imageView, final Pictograma pictograma, int number) {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -12,8 +12,9 @@ import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 public class Alumno {
     public static final String GRANDE = "grande";
     public static final String NORMAL = "normal";
-    public static final String MASCULINO = "M";
-    public static final String FEMENINO = "F";
+    public static final String MASCULINO = "masculino";
+    public static final String FEMENINO = "femenino";
+    public static final String UNISEX = "unisex";
     private Long id;
     private String nombre;
     private String apellido;

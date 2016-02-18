@@ -14,8 +14,8 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 public class HermesDaoImpl implements HermesDao {
 
-    private static final String SEXO_MASCULINO = "M";
-    private static final String SEXO_FEMENINO = "F";
+    private static final String SEXO_MASCULINO = Alumno.MASCULINO;
+    private static final String SEXO_FEMENINO = Alumno.FEMENINO;
     private static final String CONFIG_KEY_IP = "ip";
     private static final String CONFIG_KEY_PORT = "port";
 
@@ -160,8 +160,8 @@ public class HermesDaoImpl implements HermesDao {
 
     @Override
 
-    public void createNewAlumno(Alumno alumno) {
-
+    public long createNewAlumno(Alumno alumno) {
+        return -1;
     }
 
     @Override

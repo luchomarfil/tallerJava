@@ -1,5 +1,7 @@
 package ar.edu.unlp.hermesmarfiltibaldo.comunicadorjson;
 
+import android.os.StrictMode;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -99,6 +101,10 @@ public class ClientHTTPJSONListener {
 
 	public static boolean comunicarNotificacion(Notificacion notificacion) throws ComunicarNotificacionException {
 		try{
+			if (android.os.Build.VERSION.SDK_INT > 9) {
+				StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+				StrictMode.setThreadPolicy(policy);
+			}
 			URL url = new URL("http://"+IP+":"+PORT+APPLICATIONS_CONTEXT);
 
 			HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
