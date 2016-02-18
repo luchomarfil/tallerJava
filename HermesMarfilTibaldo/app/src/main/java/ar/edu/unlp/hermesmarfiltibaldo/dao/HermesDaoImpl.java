@@ -244,7 +244,7 @@ public class HermesDaoImpl implements HermesDao {
 
     @Override
     public void createNewNotificacion(Notificacion n, boolean b) {
-        
+
     }
 
     @Override

@@ -212,7 +212,7 @@ public class HermesDaoDB implements HermesDao {
        if (cursor.getCount() > 0) {
            if (cursor.moveToFirst()) {
                do {
-                   l.add( new Categoria(cursor.getLong(1),cursor.getString(2)));
+                   l.add( new Categoria(cursor.getLong(0),cursor.getString(1)));
                }
                while (cursor.moveToNext());
            }
@@ -244,7 +244,7 @@ public class HermesDaoDB implements HermesDao {
         if (cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    l.add(new Categoria(cursor.getLong(1), cursor.getString(2)));
+                    l.add(new Categoria(cursor.getLong(0), cursor.getString(1)));
                 }
                 while (cursor.moveToNext());
             }
@@ -282,7 +282,7 @@ public class HermesDaoDB implements HermesDao {
         if (c.getCount() > 0) {
             if (c.moveToFirst()) {
                 do {
-                    pictogramas.add(new Pictograma(c.getLong(1),c.getString(2), c.getString(3),c.getString(4),c.getLong(5)));
+                    pictogramas.add(new Pictograma(c.getLong(0),c.getString(1), c.getString(2),c.getString(3),c.getLong(4)));
                 }
                 while (c.moveToNext());
             }
@@ -312,7 +312,7 @@ public class HermesDaoDB implements HermesDao {
             List<Pictograma> l = new ArrayList<Pictograma>();
             if (cursor.moveToFirst()) {
                 do {
-                    l.add(new Pictograma(cursor.getLong(1),cursor.getString(2), cursor.getString(3),cursor.getString(4),cursor.getLong(5)));
+                    l.add(new Pictograma(cursor.getLong(0),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getLong(4)));
                 }
                 while (cursor.moveToNext());
             }
@@ -473,14 +473,13 @@ public class HermesDaoDB implements HermesDao {
         //List<Pictograma> l = new ArrayList<Pictograma>();
         Pictograma p = null;
         if (cursor.moveToFirst()) {
-                p = new Pictograma(cursor.getLong(1),cursor.getString(2), cursor.getString(3),cursor.getString(4),cursor.getLong(5));
+                p = new Pictograma(cursor.getLong(0),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getLong(4));
         }
 
         cursor.close();
         db.close();
         return p;
     }
-
 
     public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
         SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
@@ -498,7 +497,7 @@ public class HermesDaoDB implements HermesDao {
         if(cursor.getCount() > 0){
                 if (cursor.moveToFirst()) {
                     do {
-                        l.add(new Pictograma(cursor.getLong(1),cursor.getString(2), cursor.getString(3),cursor.getString(4),cursor.getLong(5)));
+                        l.add(new Pictograma(cursor.getLong(0),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getLong(4)));
                     }
                     while (cursor.moveToNext());
                 }

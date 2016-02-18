@@ -54,7 +54,6 @@ public interface HermesDao {
 
     void createNewCategoriaAlumno(Categoria categoria, Alumno alumno);
 
-
     void createNewNotificacion(Notificacion n, boolean b);
 
     List<Notificacion> getNotificacionesNoEnviadas();

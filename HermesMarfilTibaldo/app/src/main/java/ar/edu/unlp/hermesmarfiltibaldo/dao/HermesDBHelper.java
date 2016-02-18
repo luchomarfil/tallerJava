@@ -77,7 +77,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
 
 
     private static final String SQL_DELETE_CATEGORIA_ALUMNO =
-            "DROP TABLE IF EXISTS " + Notificacion.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + CategoriaAlumno.TABLE_NAME;
     // If you change the database schema, you must increment the database version.
 
     private static final String SQL_CREATE_CATEGORIA_NOTIFICACION =
@@ -103,7 +103,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
     public HermesDBHelper(Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        //this.onUpgrade(this.getWritableDatabase(),DATABASE_VERSION,DATABASE_VERSION+1);
+        this.onUpgrade(this.getWritableDatabase(), DATABASE_VERSION, DATABASE_VERSION + 1);
     }
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_PICTOGRAMA);
@@ -125,6 +125,7 @@ public class HermesDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_CONFIGURACION);
         db.execSQL(SQL_DELETE_CATEGORIA);
         db.execSQL(SQL_DELETE_CATEGORIA_ALUMNO);
+        db.execSQL(SQL_DELETE_CATEGORIA_NOTIFICACION);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
