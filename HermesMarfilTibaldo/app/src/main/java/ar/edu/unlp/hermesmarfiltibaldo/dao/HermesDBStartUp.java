@@ -85,6 +85,10 @@ public class HermesDBStartUp {
         pictogramas.add(new Pictograma(37, "pista/Pato.m4a", "pista/Pato.png", "U", Categoria.ID_CATEGORIA_PISTA));
         pictogramas.add(new Pictograma(38, "pista/Pelota.m4a", "pista/Pelota.png", "U", Categoria.ID_CATEGORIA_PISTA));
         pictogramas.add(new Pictograma(39, "pista/Tarima.m4a", "pista/Tarima.png", "U", Categoria.ID_CATEGORIA_PISTA));
+
+        pictogramas.add(new Pictograma(40, "emociones/Si.m4a", "emociones/Si.png", "U", Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(41, "emociones/No.m4a", "emociones/No.png", "U", Categoria.ID_CATEGORIA_EMOCIONES));
+
         Pictograma pictograma;
 
         for (Iterator<Pictograma> i = pictogramas.iterator(); i.hasNext(); ) {
