@@ -59,4 +59,15 @@ public final class HermesContract {
         public static final String COLUMN_NAME_TAMANIO = "tamanio";
     }
 
+    public static abstract class Notificacion implements BaseColumns {
+        public static final String TABLE_NAME = "notificacion";
+        public static final String COLUMN_NOTIFICACION_ID = "notificacionid";
+        public static final String COLUMN_NAME_FECHA = "fecha";
+        public static final String COLUMN_NAME_CATEGORIA = "categoria";
+        public static final String COLUMN_NAME_CONTEXTO = "contexto";
+        public static final String COLUMN_NAME_MENSAJE = "mensaje";
+        public static final String COLUMN_NAME_NINIO = "ninio";
+        public static final String COLUMN_NAME_ENVIADO = "enviado";
+    }
+
 }

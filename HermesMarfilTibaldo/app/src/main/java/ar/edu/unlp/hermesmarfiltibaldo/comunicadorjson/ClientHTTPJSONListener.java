@@ -97,7 +97,7 @@ public class ClientHTTPJSONListener {
 		return jSONArray;
 	}
 
-	public static void comunicarNotificacion(Notificacion notificacion) throws ComunicarNotificacionException {
+	public static boolean comunicarNotificacion(Notificacion notificacion) throws ComunicarNotificacionException {
 		try{
 			URL url = new URL("http://"+IP+":"+PORT+APPLICATIONS_CONTEXT);
 
@@ -127,11 +127,13 @@ public class ClientHTTPJSONListener {
 			out.close();
 			in.close();
 			httpConnection.disconnect();
-
+			return true;
 
 	} catch (Exception e) {
-		logger.log(Level.SEVERE,"Error enviando mensajes al servidor",e);
-		throw new ComunicarNotificacionException();
+
+			logger.log(Level.SEVERE,"Error enviando mensajes al servidor",e);
+			return false;
+		//throw new ComunicarNotificacionException();
 	}
 
 	}
