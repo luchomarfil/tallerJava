@@ -244,7 +244,8 @@ public class HermesDaoDB implements HermesDao {
         if (cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    l.add(new Categoria(cursor.getLong(0), cursor.getString(1)));
+                    l.add(new Categoria(cursor.getLong(cursor.getColumnIndex(HermesContract.Categoria.COLUMN_NAME_CATEGORIA_ID))
+                                     , cursor.getString(cursor.getColumnIndex(HermesContract.Categoria.COLUMN_NAME_NOMBRE))));
                 }
                 while (cursor.moveToNext());
             }
@@ -254,6 +255,7 @@ public class HermesDaoDB implements HermesDao {
         db.close();
         return l;
     }
+
 
     public List<Pictograma> getPictogramas(Categoria cat, String sexo){
         SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
@@ -312,7 +314,12 @@ public class HermesDaoDB implements HermesDao {
             List<Pictograma> l = new ArrayList<Pictograma>();
             if (cursor.moveToFirst()) {
                 do {
-                    l.add(new Pictograma(cursor.getLong(0),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getLong(4)));
+                    l.add(new Pictograma(
+                            cursor.getLong(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID)),
+                            cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_AUDIO)),
+                            cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_IMAGEN)),
+                            cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_SEXO)),
+                            cursor.getLong(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID))));
                 }
                 while (cursor.moveToNext());
             }
@@ -503,7 +510,12 @@ public class HermesDaoDB implements HermesDao {
         if(cursor.getCount() > 0){
                 if (cursor.moveToFirst()) {
                     do {
-                        l.add(new Pictograma(cursor.getLong(0),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getLong(4)));
+                        l.add(new Pictograma(
+                                cursor.getLong(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID)),
+                                cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_AUDIO)),
+                                cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_IMAGEN)),
+                                cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_SEXO)),
+                                cursor.getLong(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID))));
                     }
                     while (cursor.moveToNext());
                 }
@@ -552,7 +564,7 @@ public class HermesDaoDB implements HermesDao {
                 HermesContract.Notificacion.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
                 HermesContract.Notificacion.COLUMN_NAME_ENVIADO + " =? ",                                // The columns for the WHERE clause
-                new String[]{ "false" },                            // The values for the WHERE clause
+                new String[]{"false"},                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
                 null                                 // The sort order
