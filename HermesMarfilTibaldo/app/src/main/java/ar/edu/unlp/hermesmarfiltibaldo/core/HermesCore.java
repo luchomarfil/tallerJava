@@ -203,11 +203,12 @@ public class HermesCore {
     }
 
     public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
+        List<Pictograma> ps = new ArrayList<>();
         if (alumnoActual.getCategorias().contains(categoria)) {
-            return this.getHermesDao().getPictogramas(categoria,alumnoActual.getSexo());
-        } else {
-            return new ArrayList<>();
+            ps.addAll(this.getHermesDao().getPictogramas(categoria, alumnoActual.getSexo()));
         }
+        return ps;
+
     }
 
     public void playAudio(Pictograma pictograma, Context mContext) {

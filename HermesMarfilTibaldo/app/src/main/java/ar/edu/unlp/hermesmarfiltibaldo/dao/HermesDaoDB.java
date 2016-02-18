@@ -262,8 +262,8 @@ public class HermesDaoDB implements HermesDao {
 
         String[] projection = {
                HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID,
+                HermesContract.Pictograma.COLUMN_NAME_AUDIO,
                HermesContract.Pictograma.COLUMN_NAME_IMAGEN,
-               HermesContract.Pictograma.COLUMN_NAME_AUDIO,
                HermesContract.Pictograma.COLUMN_NAME_SEXO,
                HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID
         };
