@@ -109,14 +109,17 @@ public class HermesCore {
     }
 
     public void comunicarNotificacionesNoEnviadas(){
+        boolean enviado;
         List<Notificacion> notificaciones = hermesDao.getNotificacionesNoEnviadas();
         System.out.println("Hola desde el notificador");
+
         if (!notificaciones.isEmpty()){
-        for(Iterator<Notificacion> i = notificaciones.iterator(); i.hasNext(); ) {
-            try {
-                Notificacion n = i.next();
-                ClientHTTPJSONListener.comunicarNotificacion(n);
-            } catch (ComunicarNotificacionException e) {
+            for(Iterator<Notificacion> i = notificaciones.iterator(); i.hasNext(); ) {
+                try {
+                    Notificacion n = i.next();
+                    enviado = ClientHTTPJSONListener.comunicarNotificacion(n);
+                    if (enviado) { hermesDao.setNotificacionToEnviada(n);}
+                } catch (ComunicarNotificacionException e) {
                 // HermesCore.instancia().marcarNotificacionComoPendiente(n);
                 e.printStackTrace();
             }
@@ -130,9 +133,10 @@ public class HermesCore {
             Boolean enviado = ClientHTTPJSONListener.comunicarNotificacion(n);
             if (enviado) {
                 hermesDao.createNewNotificacion(n,true);
-                this.hayMensajesNoEnviado = true;
+
             }else{
                 hermesDao.createNewNotificacion(n,false);
+                this.hayMensajesNoEnviado = true;
             }
 
 

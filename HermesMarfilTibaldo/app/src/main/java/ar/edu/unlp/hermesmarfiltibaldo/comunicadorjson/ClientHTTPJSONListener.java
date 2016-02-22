@@ -108,6 +108,7 @@ public class ClientHTTPJSONListener {
 			URL url = new URL("http://"+IP+":"+PORT+APPLICATIONS_CONTEXT);
 
 			HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+			httpConnection.setConnectTimeout(1000);
 			httpConnection.setDoOutput(true);
 			httpConnection.setDoInput(true);
 			httpConnection.setRequestMethod("POST");

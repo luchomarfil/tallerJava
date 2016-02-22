@@ -273,7 +273,7 @@ public class HermesDaoDB implements HermesDao {
                 HermesContract.Pictograma.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
                 " ( " + HermesContract.Pictograma.COLUMN_NAME_SEXO + " =? OR "
-                        + HermesContract.Pictograma.COLUMN_NAME_SEXO + "= '" + Alumno.UNISEX +"' ) AND "
+                        + HermesContract.Pictograma.COLUMN_NAME_SEXO + "= '" + Alumno.UNISEX + "' ) AND "
                         + HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID + "=? ",                                // The columns for the WHERE clause
                 new String[]{sexo, cat.getId().toString()},                            // The values for the WHERE clause
                 null,                                     // don't group the rows
@@ -527,7 +527,7 @@ public class HermesDaoDB implements HermesDao {
         return l;
     }
 
-    public void createNewNotificacion(Notificacion n, boolean b) {
+    public void createNewNotificacion(Notificacion n, boolean enviado) {
         // Gets the data repository in write mode
         SQLiteDatabase db = hermesDBHelper.getWritableDatabase();
 
@@ -536,8 +536,8 @@ public class HermesDaoDB implements HermesDao {
 
         values.put(HermesContract.Notificacion.COLUMN_NAME_CATEGORIA, n.getCategoria());
         values.put(HermesContract.Notificacion.COLUMN_NAME_CONTEXTO,n.getContexto()) ;
-        values.put(HermesContract.Notificacion.COLUMN_NAME_ENVIADO, b );
-        values.put(HermesContract.Notificacion.COLUMN_NAME_FECHA, n.getFecha().toString() );
+        values.put(HermesContract.Notificacion.COLUMN_NAME_ENVIADO, (( enviado ==true)? "1": "0") );
+        values.put(HermesContract.Notificacion.COLUMN_NAME_FECHA, String.valueOf(n.getFecha().getTime()) );
         values.put(HermesContract.Notificacion.COLUMN_NAME_MENSAJE, n.getMensaje());
         values.put(HermesContract.Notificacion.COLUMN_NAME_NINIO, n.getNinio());
 
@@ -565,9 +565,9 @@ public class HermesDaoDB implements HermesDao {
                 HermesContract.Notificacion.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
                 HermesContract.Notificacion.COLUMN_NAME_ENVIADO + " =? ",                                // The columns for the WHERE clause
-                new String[]{"false"},                            // The values for the WHERE clause
+                new String[]{"0"},                            // The values for the WHERE clause
                 null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
+                null,                                      // don't filter by row groups
                 null                                 // The sort order
         );
 
@@ -595,18 +595,18 @@ public class HermesDaoDB implements HermesDao {
 
         ContentValues values = new ContentValues();
 
-        values.put(HermesContract.Notificacion.COLUMN_NAME_ENVIADO, "true");
+        values.put(HermesContract.Notificacion.COLUMN_NAME_ENVIADO, "1");
         
         long newRowId;
         newRowId = db.update(
                 HermesContract.Notificacion.TABLE_NAME,
                 values,
-                HermesContract.Notificacion.COLUMN_NAME_CATEGORIA + " =? " +
-                    HermesContract.Notificacion.COLUMN_NAME_CONTEXTO + " =? " +
-                    HermesContract.Notificacion.COLUMN_NAME_MENSAJE + " =? " +
-                    HermesContract.Notificacion.COLUMN_NAME_NINIO + " =? " +
+                HermesContract.Notificacion.COLUMN_NAME_CATEGORIA + " =? AND " +
+                    HermesContract.Notificacion.COLUMN_NAME_CONTEXTO + " =? AND " +
+                    HermesContract.Notificacion.COLUMN_NAME_MENSAJE + " =? AND " +
+                    HermesContract.Notificacion.COLUMN_NAME_NINIO + " =? AND " +
                     HermesContract.Notificacion.COLUMN_NAME_FECHA + " =? ",
-                new String[]{n.getCategoria(), n.getContexto(), n.getMensaje(), n.getNinio(), n.getFecha().toString()});
+                new String[]{n.getCategoria(), n.getContexto(), n.getMensaje(), n.getNinio(),String.valueOf(n.getFecha().getTime()) });
         db.close();
     }
 
