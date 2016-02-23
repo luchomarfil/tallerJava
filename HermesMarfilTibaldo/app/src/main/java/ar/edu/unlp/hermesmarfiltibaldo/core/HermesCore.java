@@ -135,7 +135,7 @@ public class HermesCore {
     public void comunicarNotificacion(Pictograma p){
         Notificacion n = null;
         try {
-            n = new Notificacion( new java.util.Date(), Categoria.getCategoriaByID(p.getCategoriaID()).getNombre(),"Mi contexto", p.getImageFilename(), this.getAlumnoActual().toString());
+            n = new Notificacion( new java.util.Date(), Categoria.getCategoriaByID(p.getCategoriaID()).getNombre(),"Mi contexto", p.getNombre(), this.getAlumnoActual().toString());
             Boolean enviado = ClientHTTPJSONListener.comunicarNotificacion(n);
             if (enviado) {
                 hermesDao.createNewNotificacion(n,true);

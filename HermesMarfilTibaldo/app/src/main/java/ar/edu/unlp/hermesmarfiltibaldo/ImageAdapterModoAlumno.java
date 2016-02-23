@@ -27,7 +27,6 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
 
     @Override
     public void asignarBordeImagen(ImageView imageView, Pictograma p, int number) {
-
     }
 
     public void getImages()
@@ -37,7 +36,7 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
         l.info("Numero " + getOwner().number);
         switch (getOwner().number) {
             case 0:
-                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                getOwner().mThumbIds.put(getOwner().number,HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual()));
                 //mThumbIds = new ArrayList<Pictograma>();
                 break;
         }
@@ -50,8 +49,11 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HermesCore.instancia().playAudio(pictograma,getOwner().mContext);
-                HermesCore.instancia().comunicarNotificacion(pictograma);
+
+                HermesCore.instancia().playAudio(pictograma, getOwner().mContext);
+                if (!(pictograma.getNombre().equals("no") ) && (pictograma.getNombre().equals("si") )){
+                    HermesCore.instancia().comunicarNotificacion(pictograma);
+                }
             }
         });
 

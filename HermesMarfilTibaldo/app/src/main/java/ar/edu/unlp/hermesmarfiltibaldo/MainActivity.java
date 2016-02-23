@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clickAlumno(int position) {
+        HermesCore.instancia().setModoAlumno();
         ListView lv = (ListView) findViewById(R.id.listView);
         HermesCore.instancia().setAlumnoActual((Alumno) lv.getItemAtPosition(position));
         Intent i = new Intent(this, AlumnoActivity.class);

@@ -28,4 +28,5 @@ public abstract class ImageAdapterStrategy {
     public abstract long getItemId(int position);
 
     public abstract void asignarBordeImagen(ImageView imageView, Pictograma p, int number);
+
 }

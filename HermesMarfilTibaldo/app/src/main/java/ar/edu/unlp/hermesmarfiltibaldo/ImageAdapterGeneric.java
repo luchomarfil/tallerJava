@@ -15,8 +15,10 @@ import android.widget.ImageView;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
@@ -28,13 +30,13 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 public class ImageAdapterGeneric extends BaseAdapter {
     protected Context mContext;
     protected int number;
-    protected List<Pictograma> mThumbIds;
+    protected Map<Integer,List<Pictograma>> mThumbIds;
     private ImageAdapterStrategy strategy;
 
     public ImageAdapterGeneric(Context c, int number, ImageAdapterStrategy strategy) {
         this.mContext = c;
         this.number = number;
-        this.mThumbIds = new LinkedList<Pictograma>();
+        this.mThumbIds = new HashMap<>();
         this.setStrategy(strategy);
         this.getStrategy().setOwner(this);
         this.getImages();
@@ -81,7 +83,6 @@ public class ImageAdapterGeneric extends BaseAdapter {
                 //imageView.setLayoutParams(new GridView.LayoutParams(400, 200));
                 imageView.setPadding(3, 3, 3, 3);
             }
-
             //   imageView.setLayoutParams(new GridView.LayoutParams(800,600));
             imageView.setAdjustViewBounds(true);
 
@@ -90,26 +91,28 @@ public class ImageAdapterGeneric extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        File imgFile = new  File(mThumbIds.get(position).getImageFilename());
-        Bitmap bitmapFromAsset = getBitmapFromAsset(imgFile.getPath());
-        BitmapDrawable bmd = new BitmapDrawable(bitmapFromAsset);
-        // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        //imageView.setImageBitmap(bitmapFromAsset);
-        imageView.setImageDrawable(bmd);
-        Pictograma p =  mThumbIds.get(position);
-        this.asignarEventoTouch(imageView,p, number);
-        this.asignarBordeImagen(imageView,p, number);
+        if(mThumbIds.get(number)!=null && !mThumbIds.get(number).isEmpty()) {
+            File imgFile = new File(mThumbIds.get(number).get(position).getImageFilename());
+            Bitmap bitmapFromAsset = getBitmapFromAsset(imgFile.getPath());
+            BitmapDrawable bmd = new BitmapDrawable(bitmapFromAsset);
+
+            // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            //imageView.setImageBitmap(bitmapFromAsset);
+            imageView.setImageDrawable(bmd);
+            Pictograma p = mThumbIds.get(number).get(position);
+            this.asignarEventoTouch(imageView, p, number);
+            this.asignarBordeImagen(imageView, p, number);
+        }
         return imageView;
     }
 
     private void asignarBordeImagen(ImageView imageView, Pictograma p, int number) {
-        this.getStrategy().asignarBordeImagen(imageView,p,number);
+        this.getStrategy().asignarBordeImagen(imageView, p, number);
     }
 
     protected void asignarEventoTouch(ImageView imageView, Pictograma pictograma, int number){
-        this.getStrategy().asignarEventoTouch( imageView, pictograma, number);
+        this.getStrategy().asignarEventoTouch(imageView, pictograma, number);
     }
-
 
     public ImageAdapterStrategy getStrategy() {
         return strategy;

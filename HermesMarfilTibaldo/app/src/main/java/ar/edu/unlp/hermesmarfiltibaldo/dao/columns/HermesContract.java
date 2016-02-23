@@ -13,6 +13,7 @@ public final class HermesContract {
     /* Inner class that defines the table contents */
     public static abstract class Pictograma implements BaseColumns {
         public static final String TABLE_NAME = "pictograma";
+        public static final String COLUMN_NAME_PICTOGRAMA_NAME = "pictogramaname";
         public static final String COLUMN_NAME_PICTOGRAMA_ID = "pictogramaid";
         public static final String COLUMN_NAME_IMAGEN = "imagen";
         public static final String COLUMN_NAME_CATEOGRIA_ID = "categoriaid";

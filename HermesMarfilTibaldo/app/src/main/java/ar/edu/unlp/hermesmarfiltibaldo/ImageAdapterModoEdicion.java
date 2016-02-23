@@ -31,7 +31,6 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
         return 0;
     }
 
-
     public void getImages()
     {
         // references to our images
@@ -39,25 +38,25 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
         l.info("Numero " + getOwner().number);
         switch (getOwner().number) {
             case 0:
-                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaPista());
+                getOwner().mThumbIds.put(getOwner().number, HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(), Categoria.getCategoriaPista()));
                 break;
             case 1:
-                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEstablo());
+                getOwner().mThumbIds.put(getOwner().number,HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEstablo()));
                 break;
             case 2:
-                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaNecesidades());
+                getOwner().mThumbIds.put(getOwner().number, HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaNecesidades()));
                 break;
             case 3:
-                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEmociones());
+                getOwner().mThumbIds.put(getOwner().number,HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEmociones()));
                 break;
             case 4:
-                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                getOwner().mThumbIds.put(getOwner().number,HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual()));
                 //mThumbIds = new ArrayList<Pictograma>();
                 break;
         }
 
-        if(getOwner().mThumbIds==null){
-            getOwner().mThumbIds = new LinkedList<>();
+        if(getOwner().mThumbIds.get(getOwner().number)==null){
+            getOwner().mThumbIds.put(getOwner().number,new LinkedList<Pictograma>());
         }
 
         l.info("Cantidad de imagenes cargadas para el alumno en modo edicion para la pagina" + getOwner().number+"  "+getOwner().mThumbIds.size());
@@ -102,6 +101,7 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
                         HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
                     } else {
                         HermesCore.instancia().getHermesDao().createNewAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
+                        getOwner().mThumbIds.get(getOwner().number).add(pictograma);
                     }
                     getOwner().redibujar();
 
@@ -114,7 +114,7 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
 
     private void confirmarBorrado(Alumno alumnoActual, Pictograma pictograma, View v) {
         HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
-        getOwner().mThumbIds.remove(pictograma);
+        getOwner().mThumbIds.get(getOwner().number).remove(pictograma);
         getOwner().redibujar();
         v.invalidate();
 
@@ -136,7 +136,7 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
 
         if(number!=4) { // si no es la solapa del alumno
             if (isEstaSeleccionado(p)){
-                imageView.setBackgroundColor(Color.parseColor("#e53935"));
+                imageView.setBackgroundResource(R.color.colorAccent);
                 imageView.setPadding(6,6,6,6);
             } else {
                // imageView.setBackgroundColor(Color.TRANSPARENT);
