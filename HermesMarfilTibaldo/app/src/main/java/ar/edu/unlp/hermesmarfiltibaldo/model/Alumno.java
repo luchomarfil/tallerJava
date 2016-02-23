@@ -93,4 +93,15 @@ public class Alumno {
         this.categorias = categorias;
     }
 
+    public String descripcion() {
+        return "Alumno{" +
+                "nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", sexo='" + sexo + '\'' +
+                ", tamanioPictograma='" + tamanioPictograma + '\'' +
+                ", categorias=" + categorias +
+                '}';
+    }
+
+
 }

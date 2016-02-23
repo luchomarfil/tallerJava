@@ -137,10 +137,8 @@ public class ClientHTTPJSONListener {
 			return true;
 
 	} catch (Exception e) {
-
-			logger.log(Level.SEVERE,"Error enviando mensajes al servidor",e);
-			return false;
-		//throw new ComunicarNotificacionException();
+			logger.log(Level.FINE,"Error enviando mensajes al servidor",e);
+		    throw new ComunicarNotificacionException(e.getMessage());
 	}
 
 	}

@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageButton;
 
+import java.util.logging.Logger;
+
 import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterGeneric;
 import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterModoAlumno;
 import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterModoEdicion;
@@ -27,6 +29,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 public class AlumnoActivity extends AppCompatActivity {
 
+    private static Logger logger = Logger.getLogger(AlumnoActivity.class.getName());
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -44,6 +47,7 @@ public class AlumnoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        logger.info("Creando activity AlumnoActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alumno);
 
@@ -74,7 +78,8 @@ public class AlumnoActivity extends AppCompatActivity {
                 HermesCore.instancia().comunicarNotificacion(p2);
             }
         });
-
+        logger.info("Informacion del alumno actual");
+        logger.info("Alumno actual:"+HermesCore.instancia().getAlumnoActual().descripcion());
     }
 
     private void recrearSolapas() {

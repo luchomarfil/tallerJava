@@ -4,6 +4,7 @@ package ar.edu.unlp.hermesmarfiltibaldo;
  * Created by Agustín on 12/30/2015.
  */
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -24,6 +25,11 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
         return 0;
     }
 
+    @Override
+    public void asignarBordeImagen(ImageView imageView, Pictograma p, int number) {
+
+    }
+
     public void getImages()
     {
         // references to our images
@@ -35,6 +41,7 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
                 //mThumbIds = new ArrayList<Pictograma>();
                 break;
         }
+        l.info("Cantidad de imagenes cargadas para el alumno "+getOwner().mThumbIds.size());
 
     }
 

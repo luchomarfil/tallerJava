@@ -259,40 +259,56 @@ public class HermesDaoDB implements HermesDao {
 
 
     public List<Pictograma> getPictogramas(Categoria cat, String sexo){
+
         SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+        Cursor c = null;
+        try {
+            String[] projection = {
+                    HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID,
+                    HermesContract.Pictograma.COLUMN_NAME_AUDIO,
+                    HermesContract.Pictograma.COLUMN_NAME_IMAGEN,
+                    HermesContract.Pictograma.COLUMN_NAME_SEXO,
+                    HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID
+            };
 
-        String[] projection = {
-               HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID,
-                HermesContract.Pictograma.COLUMN_NAME_AUDIO,
-               HermesContract.Pictograma.COLUMN_NAME_IMAGEN,
-               HermesContract.Pictograma.COLUMN_NAME_SEXO,
-               HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID
-        };
+            c = db.query(
+                    HermesContract.Pictograma.TABLE_NAME,  // The table to query
+                    projection,                               // The columns to return
+                    " ( " + HermesContract.Pictograma.COLUMN_NAME_SEXO + " =? OR "
+                            + HermesContract.Pictograma.COLUMN_NAME_SEXO + "= '" + Alumno.UNISEX + "' ) AND "
+                            + HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID + "=? ",                                // The columns for the WHERE clause
+                    new String[]{sexo, cat.getId().toString()},                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
 
-        Cursor c = db.query(
-                HermesContract.Pictograma.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                " ( " + HermesContract.Pictograma.COLUMN_NAME_SEXO + " =? OR "
-                        + HermesContract.Pictograma.COLUMN_NAME_SEXO + "= '" + Alumno.UNISEX + "' ) AND "
-                        + HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID + "=? ",                                // The columns for the WHERE clause
-                new String[]{sexo, cat.getId().toString()},                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                null                                 // The sort order
-        );
-
-        List<Pictograma> pictogramas = new ArrayList<>();
-        if (c.getCount() > 0) {
-            if (c.moveToFirst()) {
-                do {
-                    pictogramas.add(new Pictograma(c.getLong(0),c.getString(1), c.getString(2),c.getString(3),c.getLong(4)));
+            List<Pictograma> pictogramas = new ArrayList<>();
+            if (c.getCount() > 0) {
+                if (c.moveToFirst()) {
+                    do {
+                        pictogramas.add(new Pictograma(c.getLong(0),c.getString(1), c.getString(2),c.getString(3),c.getLong(4)));
+                    }
+                    while (c.moveToNext());
                 }
-                while (c.moveToNext());
             }
+            return pictogramas;
         }
-        c.close();
-        db.close();
-        return pictogramas;
+        catch (Throwable e)
+        {
+            System.out.println(e);
+            return null;
+        }
+        finally {
+            if(c!=null) {
+                c.close();
+            }
+            db.close();
+        }
+
+
+
+
     }
 
     @Deprecated

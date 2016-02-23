@@ -109,6 +109,14 @@ public class Notificacion {
 				+ "','fechaEnviado':'"
 				+ formatter.format(new Date())
 				+ "'}";
-		
+	}
+
+	@Override
+	public String toString() {
+		return "Notificacion{" +
+				"mensaje='" + mensaje + '\'' +
+				", ninio='" + ninio + '\'' +
+				", fecha=" + fecha +
+				'}';
 	}
 }

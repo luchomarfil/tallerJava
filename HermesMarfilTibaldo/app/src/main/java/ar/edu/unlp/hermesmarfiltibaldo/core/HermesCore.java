@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.comunicadorjson.ClientHTTPJSONListener;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
@@ -33,6 +35,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
  */
 public class HermesCore {
 
+    private static Logger logger = Logger.getLogger(HermesCore.class.getName());
     public static boolean MODO_ALUMNO = false;
     public static boolean MODO_AJUSTE = true;
     public static final String CONFIG_KEY_PORT = "PORT";
@@ -111,25 +114,28 @@ public class HermesCore {
     public void comunicarNotificacionesNoEnviadas(){
         boolean enviado;
         List<Notificacion> notificaciones = hermesDao.getNotificacionesNoEnviadas();
-        System.out.println("Hola desde el notificador");
-
         if (!notificaciones.isEmpty()){
+            logger.info("Enviando "+notificaciones.size()+" notificaciones pendientes");
             for(Iterator<Notificacion> i = notificaciones.iterator(); i.hasNext(); ) {
+                Notificacion n = null;
                 try {
-                    Notificacion n = i.next();
+                    n = i.next();
                     enviado = ClientHTTPJSONListener.comunicarNotificacion(n);
-                    if (enviado) { hermesDao.setNotificacionToEnviada(n);}
+                    if (enviado) {
+                        hermesDao.setNotificacionToEnviada(n);
+                    }
                 } catch (ComunicarNotificacionException e) {
-                // HermesCore.instancia().marcarNotificacionComoPendiente(n);
-                e.printStackTrace();
-            }
-        }
+                    // HermesCore.instancia().marcarNotificacionComoPendiente(n);
+                    //e.printStackTrace();
+                    logger.log(Level.SEVERE,"Error al comunicar: " +n+ "  Error: "+e.getMessage());
+                }
+             }
         }
     }
     public void comunicarNotificacion(Pictograma p){
+        Notificacion n = null;
         try {
-
-            Notificacion n = new Notificacion( new java.util.Date(), Categoria.getCategoriaByID(p.getCategoriaID()).getNombre(),"Mi contexto", p.getImageFilename(), this.getAlumnoActual().toString());
+            n = new Notificacion( new java.util.Date(), Categoria.getCategoriaByID(p.getCategoriaID()).getNombre(),"Mi contexto", p.getImageFilename(), this.getAlumnoActual().toString());
             Boolean enviado = ClientHTTPJSONListener.comunicarNotificacion(n);
             if (enviado) {
                 hermesDao.createNewNotificacion(n,true);
@@ -142,8 +148,11 @@ public class HermesCore {
 
            // HermesCore.instancia().marcarNotificacionComoRecibida(n);
         } catch (ComunicarNotificacionException e) {
-           // HermesCore.instancia().marcarNotificacionComoPendiente(n);
-            e.printStackTrace();
+            // HermesCore.instancia().marcarNotificacionComoPendiente(n);
+            //e.printStackTrace();
+            hermesDao.createNewNotificacion(n,false);
+            this.hayMensajesNoEnviado = true;
+            logger.log(Level.SEVERE, "Error al comunicar: " + n + "  Error: " + e.getMessage());
         }
 
     }

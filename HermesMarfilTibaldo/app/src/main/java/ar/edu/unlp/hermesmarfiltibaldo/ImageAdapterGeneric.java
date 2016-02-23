@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -77,14 +78,14 @@ public class ImageAdapterGeneric extends BaseAdapter {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
             if(HermesCore.instancia().getAlumnoActual().getTamanioPictograma() != Alumno.GRANDE ){
-                imageView.setLayoutParams(new GridView.LayoutParams(150, 200));
+                //imageView.setLayoutParams(new GridView.LayoutParams(400, 200));
+                imageView.setPadding(3, 3, 3, 3);
             }
 
             //   imageView.setLayoutParams(new GridView.LayoutParams(800,600));
             imageView.setAdjustViewBounds(true);
 
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            //imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
         }
@@ -95,12 +96,18 @@ public class ImageAdapterGeneric extends BaseAdapter {
         // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         //imageView.setImageBitmap(bitmapFromAsset);
         imageView.setImageDrawable(bmd);
-        this.asignarEventoTouch(imageView,mThumbIds.get(position),number);
+        Pictograma p =  mThumbIds.get(position);
+        this.asignarEventoTouch(imageView,p, number);
+        this.asignarBordeImagen(imageView,p, number);
         return imageView;
     }
 
+    private void asignarBordeImagen(ImageView imageView, Pictograma p, int number) {
+        this.getStrategy().asignarBordeImagen(imageView,p,number);
+    }
+
     protected void asignarEventoTouch(ImageView imageView, Pictograma pictograma, int number){
-        this.getStrategy().asignarEventoTouch(imageView,pictograma,number);
+        this.getStrategy().asignarEventoTouch( imageView, pictograma, number);
     }
 
 
@@ -110,6 +117,10 @@ public class ImageAdapterGeneric extends BaseAdapter {
 
     public void setStrategy(ImageAdapterStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    public void redibujar() {
+        this.notifyDataSetChanged();
     }
 }
 

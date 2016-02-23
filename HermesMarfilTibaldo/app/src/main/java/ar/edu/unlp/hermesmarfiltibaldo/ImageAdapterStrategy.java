@@ -1,5 +1,6 @@
 package ar.edu.unlp.hermesmarfiltibaldo;
 
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import ar.edu.unlp.hermesmarfiltibaldo.ImageAdapterGeneric;
@@ -25,4 +26,6 @@ public abstract class ImageAdapterStrategy {
     public abstract Object getItem(int position);
 
     public abstract long getItemId(int position);
+
+    public abstract void asignarBordeImagen(ImageView imageView, Pictograma p, int number);
 }

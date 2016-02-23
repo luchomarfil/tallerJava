@@ -4,6 +4,10 @@ package ar.edu.unlp.hermesmarfiltibaldo;
  * Created by Agustín on 12/30/2015.
  */
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,11 +15,13 @@ import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
+import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
+
+    Color backgroundOriginal = null;
 
     public Object getItem(int position) {
         return null;
@@ -25,11 +31,12 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
         return 0;
     }
 
+
     public void getImages()
     {
         // references to our images
         Logger l = Logger.getLogger(ImageAdapterModoEdicion.class.getName());
-        l.info("Numero "+getOwner().number);
+        l.info("Numero " + getOwner().number);
         switch (getOwner().number) {
             case 0:
                 getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaPista());
@@ -53,36 +60,90 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
             getOwner().mThumbIds = new LinkedList<>();
         }
 
+        l.info("Cantidad de imagenes cargadas para el alumno en modo edicion para la pagina" + getOwner().number+"  "+getOwner().mThumbIds.size());
+
+
+
     }
 
     @Override
-    protected void asignarEventoTouch(ImageView imageView, final Pictograma pictograma, final int number) {
+    protected void asignarEventoTouch(final ImageView imageView, final Pictograma pictograma, final int number) {
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                if (number == 4) {
-                    HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
+            public boolean onLongClick(final View v) {
+                if (number == 4) { //si es la solapa del alumno
+                    new AlertDialog.Builder(getOwner().mContext)
+                            .setTitle("Eliminar")
+                            .setMessage("Desea eliminar el pictograma?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    confirmarBorrado(HermesCore.instancia().getAlumnoActual(), pictograma,v);
+                                }
+                            })
+                            .setNegativeButton("No", null).create().show();
+
+
+
                 }
+
                 return true;
+
             }
         });
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean esta = false;
-                for (Pictograma s: HermesCore.instancia().getHermesDao().getPictogramasAlumno(HermesCore.instancia().getAlumnoActual()))
-                {
-                    if (s.getImageFilename().equals(pictograma.getImageFilename())) {esta = true;}
+
+                if (number != 4) { //si no es la solapa del alumno
+
+                    if (isEstaSeleccionado(pictograma)) {
+                        HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
+                    } else {
+                        HermesCore.instancia().getHermesDao().createNewAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
+                    }
+                    getOwner().redibujar();
+
                 }
-                if (esta)
-                    HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
-                else
-                    HermesCore.instancia().getHermesDao().createNewAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
             }
         });
 
 
     }
+
+    private void confirmarBorrado(Alumno alumnoActual, Pictograma pictograma, View v) {
+        HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
+        getOwner().mThumbIds.remove(pictograma);
+        getOwner().redibujar();
+        v.invalidate();
+
+
+    }
+
+    private boolean isEstaSeleccionado(Pictograma pictograma) {
+        boolean esta = false;
+        for (Pictograma s : HermesCore.instancia().getHermesDao().getPictogramasAlumno(HermesCore.instancia().getAlumnoActual())) {
+            if (s.getImageFilename().equals(pictograma.getImageFilename())) {
+                esta = true;
+            }
+        }
+        return esta;
+    }
+
+    @Override
+    public void asignarBordeImagen(ImageView imageView, Pictograma p, int number) {
+
+        if(number!=4) { // si no es la solapa del alumno
+            if (isEstaSeleccionado(p)){
+                imageView.setBackgroundColor(Color.parseColor("#e53935"));
+                imageView.setPadding(6,6,6,6);
+            } else {
+               // imageView.setBackgroundColor(Color.TRANSPARENT);
+                imageView.setPadding(3,3,0,0);
+            }
+        }
+    }
+
 
 }

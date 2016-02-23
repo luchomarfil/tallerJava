@@ -5,4 +5,7 @@ package ar.edu.unlp.hermesmarfiltibaldo.exception;
  */
 public class ComunicarNotificacionException extends Exception {
 
+    public ComunicarNotificacionException(String message) {
+        super(message);
+    }
 }
