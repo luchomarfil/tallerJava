@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
@@ -23,15 +24,18 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
  * Created by luciano on 16/02/16.
  */
 public class ImageAdapterGeneric extends BaseAdapter {
+    private final AlumnoActivity.PlaceholderFragment fragment;
     protected Context mContext;
     protected int number;
     protected List<Pictograma> mThumbIds;
     private ImageAdapterStrategy strategy;
+    private static Logger logger = Logger.getLogger(ImageAdapterGeneric.class.getName());
 
-    public ImageAdapterGeneric(Context c, int number, ImageAdapterStrategy strategy) {
+    public ImageAdapterGeneric(AlumnoActivity.PlaceholderFragment placeholderFragment, Context c, int number, ImageAdapterStrategy strategy) {
         this.mContext = c;
         this.number = number;
         this.mThumbIds = new LinkedList<>();
+        this.fragment = placeholderFragment;
         this.setStrategy(strategy);
         this.getStrategy().setOwner(this);
         this.getImages();
@@ -42,6 +46,7 @@ public class ImageAdapterGeneric extends BaseAdapter {
     }
 
     public int getCount() {
+        logger.info("Informando count:"+mThumbIds.size()+" para number:"+number);
         return mThumbIds.size();
     }
 
@@ -85,15 +90,15 @@ public class ImageAdapterGeneric extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-
-            File imgFile = new File(mThumbIds.get(position).getImageFilename());
+            List<Pictograma> aUtilizar = mThumbIds;
+            File imgFile = new File(aUtilizar.get(position).getImageFilename());
             Bitmap bitmapFromAsset = getBitmapFromAsset(imgFile.getPath());
             BitmapDrawable bmd = new BitmapDrawable(bitmapFromAsset);
 
             // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             //imageView.setImageBitmap(bitmapFromAsset);
             imageView.setImageDrawable(bmd);
-            Pictograma p = mThumbIds.get(position);
+            Pictograma p = aUtilizar.get(position);
             this.asignarEventoTouch(imageView, p, number);
             this.asignarBordeImagen(imageView, p, number);
 
@@ -117,6 +122,7 @@ public class ImageAdapterGeneric extends BaseAdapter {
     }
 
     public void redibujar() {
+        this.notifyDataSetInvalidated();
         this.notifyDataSetChanged();
     }
 }

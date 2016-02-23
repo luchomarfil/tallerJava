@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageButton;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.activityHelpers.SectionsPagerAdapterGeneric;
@@ -30,6 +31,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 public class AlumnoActivity extends AppCompatActivity {
 
     private static Logger logger = Logger.getLogger(AlumnoActivity.class.getName());
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -74,10 +76,13 @@ public class AlumnoActivity extends AppCompatActivity {
         ib2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HermesCore.instancia().playAudio(p2,getApplicationContext());
+                HermesCore.instancia().playAudio(p2, getApplicationContext());
                 //HermesCore.instancia().comunicarNotificacion(p2);
             }
         });
+
+
+
         logger.info("Informacion del alumno actual");
         logger.info("Alumno actual:"+HermesCore.instancia().getAlumnoActual().descripcion());
     }
@@ -181,10 +186,13 @@ public class AlumnoActivity extends AppCompatActivity {
 
             View view = inflater.inflate(R.layout.fragment_alumno,container,false);
             GridView gridView = (GridView) view.findViewById(R.id.gridView);
-            ImageAdapterGeneric im = new ImageAdapterGeneric(view.getContext(),number,crearEstrategiaSegunModo());
+
+            ImageAdapterGeneric im = new ImageAdapterGeneric(this,view.getContext(),number,crearEstrategiaSegunModo());
             gridView.setAdapter(im);
+
             return view;
         }
+
 
         @NonNull
         private ImageAdapterStrategy crearEstrategiaSegunModo() {

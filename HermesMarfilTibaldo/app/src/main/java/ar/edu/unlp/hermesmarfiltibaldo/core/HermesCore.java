@@ -208,9 +208,9 @@ public class HermesCore {
 
     public List<Pictograma> getPictogramas(Alumno alumnoActual, Categoria categoria) {
         List<Pictograma> ps = new ArrayList<>();
-        if (alumnoActual.getCategorias().contains(categoria)) {
+      //  if (alumnoActual.getCategorias().contains(categoria)) {
             ps.addAll(this.getHermesDao().getPictogramas(categoria, alumnoActual.getSexo()));
-        }
+      //  }
         return ps;
     }
 
