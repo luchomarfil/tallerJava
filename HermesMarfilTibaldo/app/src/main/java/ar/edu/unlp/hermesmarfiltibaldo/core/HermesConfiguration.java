@@ -3,7 +3,7 @@ package ar.edu.unlp.hermesmarfiltibaldo.core;
 import android.content.Context;
 
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoDB;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoImpl;
+
 
 /**
  * Created by luciano on 16/02/16.

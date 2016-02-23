@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
 import ar.edu.unlp.hermesmarfiltibaldo.exception.ComunicarNotificacionException;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Notificacion;
 

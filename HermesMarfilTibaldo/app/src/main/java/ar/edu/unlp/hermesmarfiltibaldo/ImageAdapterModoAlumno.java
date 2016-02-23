@@ -4,7 +4,7 @@ package ar.edu.unlp.hermesmarfiltibaldo;
  * Created by Agustín on 12/30/2015.
  */
 
-import android.graphics.drawable.Drawable;
+
 import android.view.View;
 import android.widget.ImageView;
 
@@ -51,7 +51,7 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
             public void onClick(View v) {
 
                 HermesCore.instancia().playAudio(pictograma, getOwner().mContext);
-                if (!(pictograma.getNombre().equals("no") ) && (pictograma.getNombre().equals("si") )){
+                if (!(pictograma.getNombre().equals("no") || pictograma.getNombre().equals("si") )){
                     HermesCore.instancia().comunicarNotificacion(pictograma);
                 }
             }

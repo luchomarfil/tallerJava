@@ -1,7 +1,7 @@
 package ar.edu.unlp.hermesmarfiltibaldo.model;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
+
 import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;

@@ -1,6 +1,6 @@
 package ar.edu.unlp.hermesmarfiltibaldo;
 
-import android.graphics.Color;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,9 +19,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import ar.edu.unlp.hermesmarfiltibaldo.core.HermesCore;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoDB;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 

@@ -1,9 +1,7 @@
 package ar.edu.unlp.hermesmarfiltibaldo;
 
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
 
-import ar.edu.unlp.hermesmarfiltibaldo.ImageAdapterGeneric;
+import android.widget.ImageView;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
 /**

@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;

@@ -1,5 +1,5 @@
 package ar.edu.unlp.hermesmarfiltibaldo.dao;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDBHelper;
+
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,7 +16,7 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Notificacion;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDBHelper.*;
+
 
 
 /**

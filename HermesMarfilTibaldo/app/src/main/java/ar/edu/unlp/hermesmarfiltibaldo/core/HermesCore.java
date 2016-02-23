@@ -3,14 +3,9 @@ package ar.edu.unlp.hermesmarfiltibaldo.core;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
-import android.text.Editable;
-
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -18,12 +13,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import ar.edu.unlp.hermesmarfiltibaldo.comunicadorjson.ClientHTTPJSONListener;
 import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDao;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoDB;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.HermesDaoImpl;
-import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 import ar.edu.unlp.hermesmarfiltibaldo.exception.ComunicarNotificacionException;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Alumno;
 import ar.edu.unlp.hermesmarfiltibaldo.model.Categoria;

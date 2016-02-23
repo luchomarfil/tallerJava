@@ -5,9 +5,9 @@ package ar.edu.unlp.hermesmarfiltibaldo;
  */
 
 import android.app.AlertDialog;
+
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -99,6 +99,7 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
 
                     if (isEstaSeleccionado(pictograma)) {
                         HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
+
                     } else {
                         HermesCore.instancia().getHermesDao().createNewAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
                    //     getOwner().mThumbIds.add(pictograma);

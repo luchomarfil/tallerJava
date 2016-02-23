@@ -65,7 +65,7 @@ public class AlumnoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 HermesCore.instancia().playAudio(p, getApplicationContext());
-                HermesCore.instancia().comunicarNotificacion(p);
+                //HermesCore.instancia().comunicarNotificacion(p);
             }
         });
 
@@ -75,7 +75,7 @@ public class AlumnoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 HermesCore.instancia().playAudio(p2,getApplicationContext());
-                HermesCore.instancia().comunicarNotificacion(p2);
+                //HermesCore.instancia().comunicarNotificacion(p2);
             }
         });
         logger.info("Informacion del alumno actual");

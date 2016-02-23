@@ -1,6 +1,5 @@
 package ar.edu.unlp.hermesmarfiltibaldo.model;
 
-import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
 
 /**
  * Created by luciano on 15/12/15.
