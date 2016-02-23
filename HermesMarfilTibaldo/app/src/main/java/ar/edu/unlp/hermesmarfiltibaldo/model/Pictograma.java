@@ -10,12 +10,14 @@ public class Pictograma {
     public static final String MASCULINO = Alumno.MASCULINO;
     public static final String FEMENINO = Alumno.FEMENINO;
     public static final String UNISEX = Alumno.UNISEX;
+    public String nombre;
     public String sexo;
     public String audioFilename;
     public String imageFilename;
     public long categoriaID;
 
-    public Pictograma(long id, String audio, String image, String sexo, long categoriaID) {
+    public Pictograma(long id, String nombre,String audio, String image, String sexo, long categoriaID) {
+        this.setNombre(nombre);
         this.setId(id);
         this.setSexo(sexo);
         this.setAudioFilename(audio);
@@ -67,4 +69,9 @@ public class Pictograma {
     public long getCategoriaID(){
         return categoriaID;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public String getNombre(){ return this.nombre;}
 }

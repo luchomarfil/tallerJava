@@ -24,6 +24,11 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
         return 0;
     }
 
+    @Override
+    protected void estaResaltada(ImageView imageView, Pictograma pictograma, int number) {
+
+    }
+
     public void getImages()
     {
         // references to our images
@@ -43,8 +48,11 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HermesCore.instancia().playAudio(pictograma,getOwner().mContext);
-                HermesCore.instancia().comunicarNotificacion(pictograma);
+
+                HermesCore.instancia().playAudio(pictograma, getOwner().mContext);
+                if (!(pictograma.getNombre().equals("no") ) && (pictograma.getNombre().equals("si") )){
+                    HermesCore.instancia().comunicarNotificacion(pictograma);
+                }
             }
         });
 

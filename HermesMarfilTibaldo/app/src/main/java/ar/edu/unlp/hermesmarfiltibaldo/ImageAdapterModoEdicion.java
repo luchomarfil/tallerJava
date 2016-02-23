@@ -25,6 +25,20 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
         return 0;
     }
 
+    @Override
+    protected void estaResaltada(ImageView imageView, Pictograma pictograma, int number) {
+        if (number != 4){
+            for (Pictograma s: HermesCore.instancia().getHermesDao().getPictogramasAlumno(HermesCore.instancia().getAlumnoActual()))
+            {
+                if (s.getNombre().equals(pictograma.getNombre())) {
+                    imageView.setBackgroundResource(R.color.colorAccent);return;
+                }
+            }
+
+
+        }
+    }
+
     public void getImages()
     {
         // references to our images

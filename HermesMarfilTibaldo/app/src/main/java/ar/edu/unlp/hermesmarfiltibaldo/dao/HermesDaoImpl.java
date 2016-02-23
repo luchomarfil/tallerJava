@@ -61,10 +61,10 @@ public class HermesDaoImpl implements HermesDao {
     public List<Pictograma> getPictogramas(Categoria cat, String sexo) {
         List<Pictograma> pictogramas = new ArrayList<>();
 
-        pictogramas.add(new Pictograma(2,"emociones/Cansada.m4a","emociones/Cansada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(3,"emociones/Contenta.m4a","emociones/Contenta.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(4,"emociones/Dolorida.m4a","emociones/Dolorida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(5,"emociones/Enojada.m4a","emociones/Enojada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(2,"Cansada","emociones/Cansada.m4a","emociones/Cansada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(3,"Contenta","emociones/Contenta.m4a","emociones/Contenta.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(4,"Dolorida","emociones/Dolorida.m4a","emociones/Dolorida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(5,"Enojada","emociones/Enojada.m4a","emociones/Enojada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
 
         return pictogramas;
 
@@ -74,58 +74,58 @@ public class HermesDaoImpl implements HermesDao {
         List<Pictograma> pictogramas = new ArrayList<>();
 
         if(cat.getId()==Categoria.ID_CATEGORIA_EMOCIONES){
-            pictogramas.add(new Pictograma(1,"emociones/Asustada.m4a","emociones/Asustada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(2,"emociones/Cansada.m4a","emociones/Cansada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(3,"emociones/Contenta.m4a","emociones/Contenta.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(4,"emociones/Dolorida.m4a","emociones/Dolorida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(5,"emociones/Enojada.m4a","emociones/Enojada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(6,"emociones/Sorprendida.m4a","emociones/Sorprendida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(7,"emociones/Triste.m4a","emociones/Triste Mujer.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(1,"Asustada","emociones/Asustada.m4a","emociones/Asustada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(2,"Cansada","emociones/Cansada.m4a","emociones/Cansada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(3,"Contenta","emociones/Contenta.m4a","emociones/Contenta.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(4,"Dolorida","emociones/Dolorida.m4a","emociones/Dolorida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(5,"Enojada","emociones/Enojada.m4a","emociones/Enojada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(6,"Sorprendida","emociones/Sorprendida.m4a","emociones/Sorprendida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(7,"Triste","emociones/Triste.m4a","emociones/Triste Mujer.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
 
-            pictogramas.add(new Pictograma(9,"emociones/Asustado.m4a","emociones/Asustado.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(10,"emociones/Cansado.m4a","emociones/Cansdao.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(11,"emociones/Contento.m4a","emociones/Contento.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(12,"emociones/Dolorido.m4a","emociones/Dolorido.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(13,"emociones/Enojado.m4a","emociones/Enojado.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(14,"emociones/Sorprendido.m4a","emociones/Sorprendido.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(15,"emociones/Triste.m4a","emociones/Triste Hombre.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(9,"Asustado","emociones/Asustado.m4a","emociones/Asustado.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(10,"Cansado","emociones/Cansado.m4a","emociones/Cansdao.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(11,"Contento","emociones/Contento.m4a","emociones/Contento.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(12,"Dolorido","emociones/Dolorido.m4a","emociones/Dolorido.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(13,"Enojado","emociones/Enojado.m4a","emociones/Enojado.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(14,"Sorprendido","emociones/Sorprendido.m4a","emociones/Sorprendido.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(15,"Triste","emociones/Triste.m4a","emociones/Triste Hombre.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
         }
         else if(cat.getId()==Categoria.ID_CATEGORIA_ESTABLO){
-            pictogramas.add(new Pictograma(17,"establo/Casco.m4a","establo/Casco.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(18,"establo/Cepillo.m4a","establo/Cepillo.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(19,"establo/Escarba Vasos.m4a","establo/Escarba Vasos.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(20,"establo/Limpieza.m4a","establo/Limpieza.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(21,"establo/Matra.m4a","establo/Matra.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(22,"establo/Montura.m4a","establo/Montura.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(23,"establo/Pasto.m4a","establo/Pasto.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(24,"establo/Dolorido.m4a","establo/Dolorido.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(25,"establo/Rasqueta Blanda.m4a","establo/Rasqueta Blanda.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(26,"establo/Rasqueta Dura.m4a","establo/Rasqueta Dura.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(27,"establo/Riendas.m4a","establo/Riendas.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
-            pictogramas.add(new Pictograma(28,"establo/Zanahoria.m4a","establo/Zanahoria.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(17,"Casco","establo/Casco.m4a","establo/Casco.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(18,"Cepillo","establo/Cepillo.m4a","establo/Cepillo.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(19,"Escarba ","establo/Escarba Vasos.m4a","establo/Escarba Vasos.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(20,"Limpieza","establo/Limpieza.m4a","establo/Limpieza.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(21,"Matra","establo/Matra.m4a","establo/Matra.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(22,"Montura","establo/Montura.m4a","establo/Montura.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(23,"Pasto","establo/Pasto.m4a","establo/Pasto.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(24,"Dolorido","establo/Dolorido.m4a","establo/Dolorido.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(25,"Rasqueta ","establo/Rasqueta Blanda.m4a","establo/Rasqueta Blanda.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(26,"Rasqueta ","establo/Rasqueta Dura.m4a","establo/Rasqueta Dura.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(27,"Riendas","establo/Riendas.m4a","establo/Riendas.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
+            pictogramas.add(new Pictograma(28,"Zanahoria","establo/Zanahoria.m4a","establo/Zanahoria.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_ESTABLO));
 
         }
         else if(cat.getId()==Categoria.ID_CATEGORIA_NECESIDADES){
-            pictogramas.add(new Pictograma(8,"necesidades/Sed Mujer.m4a","necesidades/Sed Mujer.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_NECESIDADES));
-                        pictogramas.add(new Pictograma(16,"necesidades/Sed Hombre.m4a","necesidades/Sed Hombre.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_NECESIDADES));
-        pictogramas.add(new Pictograma(29,"necesidades/Banio.m4a","necesidades/Banio.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_NECESIDADES));
+            pictogramas.add(new Pictograma(8,"Sed Mujer","necesidades/Sed Mujer.m4a","necesidades/Sed Mujer.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_NECESIDADES));
+                        pictogramas.add(new Pictograma(16,"Sed HombreSed ","necesidades/Sed Hombre.m4a","necesidades/Sed Hombre.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_NECESIDADES));
+        pictogramas.add(new Pictograma(29,"Banio","necesidades/Banio.m4a","necesidades/Banio.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_NECESIDADES));
 
         }
         else if(cat.getId()==Categoria.ID_CATEGORIA_PISTA){
-        pictogramas.add(new Pictograma(30,"pista/Aro.m4a","pista/Aro.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(31,"pista/Broches.m4a","pista/Broches.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(32,"pista/Burbujas.m4a","pista/Burbujas.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(33,"pista/Caballo.m4a","pista/Caballo.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(34,"pista/Caballo 2.m4a","pista/Caballo 2.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(35,"pista/Caballo 3.m4a","pista/Caballo 3.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(36,"pista/Chapas.m4a","pista/Chapas.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(37,"pista/Cubos.m4a","pista/Cubos.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(38,"pista/Letras.m4a","pista/Letras.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(39,"pista/Maracas.m4a","pista/Maracas.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(40,"pista/Palos.m4a","pista/Palos.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(41,"pista/Pato.m4a","pista/Pato.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(42,"pista/Pelota.m4a","pista/Pelota.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(43,"pista/Tarima.m4a","pista/Tarima.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(30,"Aro","pista/Aro.m4a","pista/Aro.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(31,"Broches","pista/Broches.m4a","pista/Broches.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(32,"Burbujas","pista/Burbujas.m4a","pista/Burbujas.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(33,"Caballo","pista/Caballo.m4a","pista/Caballo.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(34,"Caballo ","pista/Caballo 2.m4a","pista/Caballo 2.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(35,"Caballo ","pista/Caballo 3.m4a","pista/Caballo 3.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(36,"Chapas","pista/Chapas.m4a","pista/Chapas.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(37,"Cubos","pista/Cubos.m4a","pista/Cubos.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(38,"Letras","pista/Letras.m4a","pista/Letras.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(39,"Maracas","pista/Maracas.m4a","pista/Maracas.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(40,"Palos","pista/Palos.m4a","pista/Palos.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(41,"Pato","pista/Pato.m4a","pista/Pato.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(42,"Pelota","pista/Pelota.m4a","pista/Pelota.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(43,"Tarima","pista/Tarima.m4a","pista/Tarima.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_PISTA));
 
         }
 
@@ -137,14 +137,14 @@ public class HermesDaoImpl implements HermesDao {
     public List<Pictograma> getPictogramas(Alumno alumno) {
         List<Pictograma> pictogramas = new ArrayList<>();
 
-            pictogramas.add(new Pictograma(1, "emociones/Asustada.m4a", "emociones/Asustada.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(2, "emociones/Cansada.m4a", "emociones/Cansada.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(3, "emociones/Contenta.m4a", "emociones/Contenta.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(4, "emociones/Dolorida.m4a", "emociones/Dolorida.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(5, "emociones/Enojada.m4a", "emociones/Enojada.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(6, "emociones/Sorprendida.m4a", "emociones/Sorprendida.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(7, "emociones/Triste.m4a", "emociones/Triste Mujer.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(8, "necesidades/Sed Mujer.m4a", "necesidades/Sed Mujer.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_NECESIDADES));
+            pictogramas.add(new Pictograma(1,"Asustada", "emociones/Asustada.m4a", "emociones/Asustada.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(2,"Cansada", "emociones/Cansada.m4a", "emociones/Cansada.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(3,"Contenta", "emociones/Contenta.m4a", "emociones/Contenta.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(4,"Dolorida", "emociones/Dolorida.m4a", "emociones/Dolorida.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(5,"Enojada", "emociones/Enojada.m4a", "emociones/Enojada.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(6,"Sorprendida", "emociones/Sorprendida.m4a", "emociones/Sorprendida.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(7,"Triste", "emociones/Triste.m4a", "emociones/Triste Mujer.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(8,"Sed Muje", "necesidades/Sed Mujer.m4a", "necesidades/Sed Mujer.png", SEXO_FEMENINO, Categoria.ID_CATEGORIA_NECESIDADES));
 
             return pictogramas;
     }
@@ -194,17 +194,17 @@ public class HermesDaoImpl implements HermesDao {
     {
         List<Pictograma> pictogramas = new ArrayList<>();
 
-            pictogramas.add(new Pictograma(1,"emociones/Asustada.m4a","emociones/Asustada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(2,"emociones/Cansada.m4a","emociones/Cansada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(3,"emociones/Contenta.m4a","emociones/Contenta.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(4,"emociones/Dolorida.m4a","emociones/Dolorida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(5,"emociones/Enojada.m4a","emociones/Enojada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(6,"emociones/Sorprendida.m4a","emociones/Sorprendida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(7,"emociones/Triste.m4a","emociones/Triste Mujer.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(1,"Asustada","emociones/Asustada.m4a","emociones/Asustada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(2,"Cansada","emociones/Cansada.m4a","emociones/Cansada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(3,"Contenta","emociones/Contenta.m4a","emociones/Contenta.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(4,"Dolorida","emociones/Dolorida.m4a","emociones/Dolorida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(5,"Enojada","emociones/Enojada.m4a","emociones/Enojada.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(6,"Sorprendida","emociones/Sorprendida.m4a","emociones/Sorprendida.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(7,"Triste","emociones/Triste.m4a","emociones/Triste Mujer.png",SEXO_FEMENINO,Categoria.ID_CATEGORIA_EMOCIONES));
 
-            pictogramas.add(new Pictograma(9,"emociones/Asustado.m4a","emociones/Asustado.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(10,"emociones/Cansado.m4a","emociones/Cansdao.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
-            pictogramas.add(new Pictograma(11,"emociones/Contento.m4a","emociones/Contento.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(9,"Asustado","emociones/Asustado.m4a","emociones/Asustado.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(10,"Cansado","emociones/Cansado.m4a","emociones/Cansdao.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
+            pictogramas.add(new Pictograma(11,"Contento","emociones/Contento.m4a","emociones/Contento.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES));
         return pictogramas;
     }
 
@@ -268,10 +268,10 @@ public class HermesDaoImpl implements HermesDao {
     @Override
     public Pictograma getPictogramaPorNombre(String nombre) {
         if(nombre.contains("Si")){
-            return new Pictograma(50,"emociones/Si.m4a","emociones/Si.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES);
+            return new Pictograma(50,"si", "emociones/Si.m4a", "emociones/Si.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_EMOCIONES);
         }
         else if (nombre.contains("No")){
-            return new Pictograma(51,"emociones/No.m4a","emociones/No.png",SEXO_MASCULINO,Categoria.ID_CATEGORIA_EMOCIONES);
+            return new Pictograma(51,"no", "emociones/No.m4a", "emociones/No.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_EMOCIONES);
         }
         return null;
     }

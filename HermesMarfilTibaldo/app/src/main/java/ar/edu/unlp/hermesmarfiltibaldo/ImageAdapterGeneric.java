@@ -78,7 +78,8 @@ public class ImageAdapterGeneric extends BaseAdapter {
             imageView = new ImageView(mContext);
             if(HermesCore.instancia().getAlumnoActual().getTamanioPictograma() != Alumno.GRANDE ){
                 imageView.setLayoutParams(new GridView.LayoutParams(150, 200));
-            }
+            }else
+            {imageView.setLayoutParams(new GridView.LayoutParams(300, 400));}
 
             //   imageView.setLayoutParams(new GridView.LayoutParams(800,600));
             imageView.setAdjustViewBounds(true);
@@ -92,10 +93,12 @@ public class ImageAdapterGeneric extends BaseAdapter {
         File imgFile = new  File(mThumbIds.get(position).getImageFilename());
         Bitmap bitmapFromAsset = getBitmapFromAsset(imgFile.getPath());
         BitmapDrawable bmd = new BitmapDrawable(bitmapFromAsset);
+
         // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         //imageView.setImageBitmap(bitmapFromAsset);
         imageView.setImageDrawable(bmd);
-        this.asignarEventoTouch(imageView,mThumbIds.get(position),number);
+        this.asignarEventoTouch(imageView, mThumbIds.get(position), number);
+        this.estaResaltada(imageView, mThumbIds.get(position), number);
         return imageView;
     }
 
@@ -103,6 +106,8 @@ public class ImageAdapterGeneric extends BaseAdapter {
         this.getStrategy().asignarEventoTouch(imageView,pictograma,number);
     }
 
+    protected void estaResaltada(ImageView imageView, Pictograma pictograma, int number)
+    { this.getStrategy().estaResaltada( imageView,  pictograma,  number);}
 
     public ImageAdapterStrategy getStrategy() {
         return strategy;

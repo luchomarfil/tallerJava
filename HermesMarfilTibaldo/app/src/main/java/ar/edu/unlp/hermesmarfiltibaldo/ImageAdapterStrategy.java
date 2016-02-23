@@ -25,4 +25,6 @@ public abstract class ImageAdapterStrategy {
     public abstract Object getItem(int position);
 
     public abstract long getItemId(int position);
+
+    protected abstract void estaResaltada(ImageView imageView, Pictograma pictograma, int number);
 }
