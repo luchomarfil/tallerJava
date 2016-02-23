@@ -212,9 +212,13 @@ public class HermesCore {
             ps.addAll(this.getHermesDao().getPictogramas(categoria, alumnoActual.getSexo()));
         }
         return ps;
-
     }
 
+    public List<Pictograma> getPictogramasPorCat(Alumno alumnoActual, Categoria categoria) {
+
+
+        return hermesDao.getPictogramas(alumnoActual,categoria);
+    }
     public void playAudio(Pictograma pictograma, Context mContext) {
 
 
