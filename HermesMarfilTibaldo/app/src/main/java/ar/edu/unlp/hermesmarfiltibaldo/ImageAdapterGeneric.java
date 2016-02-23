@@ -30,13 +30,13 @@ import ar.edu.unlp.hermesmarfiltibaldo.model.Pictograma;
 public class ImageAdapterGeneric extends BaseAdapter {
     protected Context mContext;
     protected int number;
-    protected Map<Integer,List<Pictograma>> mThumbIds;
+    protected List<Pictograma> mThumbIds;
     private ImageAdapterStrategy strategy;
 
     public ImageAdapterGeneric(Context c, int number, ImageAdapterStrategy strategy) {
         this.mContext = c;
         this.number = number;
-        this.mThumbIds = new HashMap<>();
+        this.mThumbIds = new LinkedList<>();
         this.setStrategy(strategy);
         this.getStrategy().setOwner(this);
         this.getImages();
@@ -91,18 +91,17 @@ public class ImageAdapterGeneric extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        if(mThumbIds.get(number)!=null && !mThumbIds.get(number).isEmpty()) {
-            File imgFile = new File(mThumbIds.get(number).get(position).getImageFilename());
+            File imgFile = new File(mThumbIds.get(position).getImageFilename());
             Bitmap bitmapFromAsset = getBitmapFromAsset(imgFile.getPath());
             BitmapDrawable bmd = new BitmapDrawable(bitmapFromAsset);
 
             // Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             //imageView.setImageBitmap(bitmapFromAsset);
             imageView.setImageDrawable(bmd);
-            Pictograma p = mThumbIds.get(number).get(position);
+            Pictograma p = mThumbIds.get(position);
             this.asignarEventoTouch(imageView, p, number);
             this.asignarBordeImagen(imageView, p, number);
-        }
+
         return imageView;
     }
 

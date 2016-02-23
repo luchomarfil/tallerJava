@@ -3,13 +3,14 @@ package ar.edu.unlp.hermesmarfiltibaldo.activityHelpers;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import ar.edu.unlp.hermesmarfiltibaldo.AlumnoActivity;
 
 /**
  * Created by luciano on 16/02/16.
  */
-public class SectionsPagerAdapterGeneric extends FragmentPagerAdapter {
+public class SectionsPagerAdapterGeneric extends FragmentStatePagerAdapter{
     public SectionsPagerAdapterGeneric(FragmentManager fm) {
         super(fm);
     }

@@ -36,7 +36,7 @@ public class ImageAdapterModoAlumno extends ImageAdapterStrategy {
         l.info("Numero " + getOwner().number);
         switch (getOwner().number) {
             case 0:
-                getOwner().mThumbIds.put(getOwner().number,HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual()));
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
                 //mThumbIds = new ArrayList<Pictograma>();
                 break;
         }

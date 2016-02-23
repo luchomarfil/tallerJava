@@ -38,25 +38,25 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
         l.info("Numero " + getOwner().number);
         switch (getOwner().number) {
             case 0:
-                getOwner().mThumbIds.put(getOwner().number, HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(), Categoria.getCategoriaPista()));
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(), Categoria.getCategoriaPista());
                 break;
             case 1:
-                getOwner().mThumbIds.put(getOwner().number,HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEstablo()));
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEstablo());
                 break;
             case 2:
-                getOwner().mThumbIds.put(getOwner().number, HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaNecesidades()));
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaNecesidades());
                 break;
             case 3:
-                getOwner().mThumbIds.put(getOwner().number,HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEmociones()));
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual(),Categoria.getCategoriaEmociones());
                 break;
             case 4:
-                getOwner().mThumbIds.put(getOwner().number,HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual()));
+                getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
                 //mThumbIds = new ArrayList<Pictograma>();
                 break;
         }
 
-        if(getOwner().mThumbIds.get(getOwner().number)==null){
-            getOwner().mThumbIds.put(getOwner().number,new LinkedList<Pictograma>());
+        if(getOwner().mThumbIds==null){
+            getOwner().mThumbIds = new LinkedList<Pictograma>();
         }
 
         l.info("Cantidad de imagenes cargadas para el alumno en modo edicion para la pagina" + getOwner().number+"  "+getOwner().mThumbIds.size());
@@ -101,7 +101,8 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
                         HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
                     } else {
                         HermesCore.instancia().getHermesDao().createNewAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
-                        getOwner().mThumbIds.get(getOwner().number).add(pictograma);
+                   //     getOwner().mThumbIds.add(pictograma);
+                        //se deberia agregar en el mthumbs correspondiente al number del usuario el pictograma para que se refresque la vista
                     }
                     getOwner().redibujar();
 
@@ -114,7 +115,7 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
 
     private void confirmarBorrado(Alumno alumnoActual, Pictograma pictograma, View v) {
         HermesCore.instancia().getHermesDao().removeAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
-        getOwner().mThumbIds.get(getOwner().number).remove(pictograma);
+        getOwner().mThumbIds.remove(pictograma);
         getOwner().redibujar();
         v.invalidate();
 
