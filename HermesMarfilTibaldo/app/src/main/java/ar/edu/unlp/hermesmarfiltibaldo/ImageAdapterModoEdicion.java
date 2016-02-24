@@ -30,7 +30,7 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
     public long getItemId(int position) {
         return 0;
     }
-
+    public static ImageAdapterGeneric adapter4;
     public void getImages()
     {
         // references to our images
@@ -51,6 +51,7 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
                 break;
             case 4:
                 getOwner().mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                adapter4 = this.getOwner();
                 break;
         }
 
@@ -102,8 +103,9 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
                         HermesCore.instancia().getHermesDao().createNewAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
                         //se deberia agregar en el mthumbs correspondiente al number del usuario el pictograma para que se refresque la vista
                     }
+                    adapter4.mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                    adapter4.redibujar();
                     getOwner().redibujar();
-
                 }
             }
         });
