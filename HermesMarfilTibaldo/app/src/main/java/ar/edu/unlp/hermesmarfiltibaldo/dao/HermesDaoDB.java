@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ar.edu.unlp.hermesmarfiltibaldo.dao.columns.HermesContract;
@@ -631,4 +632,92 @@ public class HermesDaoDB implements HermesDao {
         db.close();
     }
 
+    public void switchSex(Alumno alumno) {
+        String viejoSexo = (alumno.getSexo().equals(Alumno.FEMENINO) ? Alumno.MASCULINO : Alumno.FEMENINO);
+        List<Pictograma> listaPictogramasAnterior = this.getPictogramasAlumno(alumno);
+        this.removeAlumnoTodosPictogramas(alumno);
+
+        Pictograma p;
+        for (Iterator<Pictograma> i = listaPictogramasAnterior.iterator(); i.hasNext(); ) {
+            p = i.next();
+            if (p.getSexo().equals(viejoSexo)) {
+                this.createNewAlumnoPictograma(alumno, this.getPictogramaSexo(p, alumno.getSexo()));
+            }
+        }
+        for (Iterator<Pictograma> i = listaPictogramasAnterior.iterator(); i.hasNext(); ) {
+            p = i.next();
+            if (p.getSexo().equals(Pictograma.UNISEX)) {
+                this.createNewAlumnoPictograma(alumno,p);
+            }
+        }
+    }
+        public Pictograma getPictogramaSexo(Pictograma p, String sexo){
+            SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+            String getPictogramasAlumno = "SELECT P.* FROM "+
+                     HermesContract.Pictograma.TABLE_NAME + " as P on "+
+                    " WHERE P." + HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_NAME + " = ? " +
+                    " AND P." + HermesContract.Pictograma.COLUMN_NAME_SEXO + " =?";
+
+            Cursor cursor = db.rawQuery(getPictogramasAlumno, new String[]{p.getNombre(), sexo});
+            Pictograma l;
+
+            l = new Pictograma(
+                                cursor.getLong(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID)),
+                                cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_NAME)),
+                                cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_AUDIO)),
+                                cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_IMAGEN)),
+                                cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_SEXO)),
+                                cursor.getLong(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_CATEOGRIA_ID))
+                );
+
+            cursor.close();
+            db.close();
+            return l;
+        }
+
+    public Alumno getAlumnoByID(long id){
+        SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
+
+// Retorna todos los alumnos
+        String[] projection = {
+                HermesContract.Alumno.COLUMN_ALUMNO_ID,
+                HermesContract.Alumno.COLUMN_NAME_NOMBRE,
+                HermesContract.Alumno.COLUMN_NAME_APELLIDO,
+                HermesContract.Alumno.COLUMN_NAME_SEXO,
+                HermesContract.Alumno.COLUMN_NAME_TAMANIO
+        };
+
+// How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                HermesContract.Alumno.COLUMN_ALUMNO_ID + " DESC";
+        String selection = HermesContract.Alumno.COLUMN_ALUMNO_ID + " =? ";
+        String selectionArgs[] = {String.valueOf(id)};
+
+        Cursor cursor = db.query(
+                HermesContract.Alumno.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        cursor.moveToFirst();
+
+        Alumno l;
+
+        l = new Alumno(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+
+
+        cursor.close();
+        db.close();
+        return l;
+    }
+
 }
+
+
+
+

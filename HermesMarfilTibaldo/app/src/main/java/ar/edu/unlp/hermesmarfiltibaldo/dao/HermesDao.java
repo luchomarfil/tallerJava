@@ -62,5 +62,11 @@ public interface HermesDao {
 
     Pictograma getPictogramaPorNombre(String nombre);
 
+    Pictograma getPictogramaSexo(Pictograma p, String sexo);
+
+    void switchSex(Alumno alumno);
+
+    Alumno getAlumnoByID(long id);
+
 }
 

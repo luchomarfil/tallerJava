@@ -173,9 +173,14 @@ public class HermesCore {
 
 
     public void updateAlumno(Alumno alumnoActual) {
+        if (!alumnoActual.getSexo().equals(this.hermesDao.getAlumnoByID(alumnoActual.getId()).getSexo()))
+        {
+            hermesDao.switchSex(alumnoActual);
+        }
         this.getHermesDao().updateAlumno(alumnoActual);
         this.getHermesDao().removeAlumnoTodasCategoria(alumnoActual);
         Iterator<Categoria> iterator =  alumnoActual.getCategorias().iterator();
+
         for (Categoria c: alumnoActual.getCategorias()) {
             this.getHermesDao().createNewCategoriaAlumno(c,alumnoActual);
         }
@@ -247,6 +252,11 @@ public class HermesCore {
 
     public Pictograma getPictogramaPorNombre(String nombre) {
         return this.getHermesDao().getPictogramaPorNombre(nombre);
+    }
+
+    public void switchSex(Alumno alumno){
+        hermesDao.switchSex(alumno);
+
     }
 
 }

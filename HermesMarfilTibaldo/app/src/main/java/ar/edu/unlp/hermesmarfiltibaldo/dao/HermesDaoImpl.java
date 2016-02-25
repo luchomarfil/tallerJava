@@ -276,4 +276,13 @@ public class HermesDaoImpl implements HermesDao {
         return null;
     }
 
+    @Override
+    public Pictograma getPictogramaSexo(Pictograma p, String sexo) {
+        return null;
+    }
+
+    public void switchSex(Alumno alumno) {}
+
+    public Alumno getAlumnoByID(long id){return null;}
+
 }
