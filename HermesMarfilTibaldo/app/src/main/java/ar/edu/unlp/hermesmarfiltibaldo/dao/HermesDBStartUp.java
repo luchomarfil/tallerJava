@@ -68,16 +68,16 @@ public class HermesDBStartUp {
 
         //  } else if (cat.getId() == Categoria.ID_CATEGORIA_NECESIDADES) {
         pictogramas.add(new Pictograma(40,"banio", "necesidades/Banio.m4a", "necesidades/Banio.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_NECESIDADES));
-        pictogramas.add(new Pictograma(41,"sed hombre", "necesidades/Sed Hombre.m4a", "necesidades/Sed Hombre.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_NECESIDADES));
-        pictogramas.add(new Pictograma(42,"sed mujer", "necesidades/Sed Mujer.m4a", "necesidades/Sed Mujer.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_NECESIDADES));
+        pictogramas.add(new Pictograma(41,"sed", "necesidades/Sed Hombre.m4a", "necesidades/Sed Hombre.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_NECESIDADES));
+        pictogramas.add(new Pictograma(42,"sed", "necesidades/Sed Mujer.m4a", "necesidades/Sed Mujer.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_NECESIDADES));
 
         //    } else if (cat.getId() == Categoria.ID_CATEGORIA_PISTA) {
         pictogramas.add(new Pictograma(26,"aro", "pista/Aro.m4a", "pista/Aro.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
         pictogramas.add(new Pictograma(27,"broches", "pista/Broches.m4a", "pista/Broches.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
         pictogramas.add(new Pictograma(28,"burbujas", "pista/Burbujas.m4a", "pista/Burbujas.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(29,"caballo 1", "pista/Caballo.m4a", "pista/Caballo.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(30,"caballo 2", "pista/Caballo.m4a", "pista/Caballo 2.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
-        pictogramas.add(new Pictograma(31,"caballo 3", "pista/Caballo.m4a", "pista/Caballo 3.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(29,"caballo", "pista/Caballo.m4a", "pista/Caballo.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(30,"caballo", "pista/Caballo.m4a", "pista/Caballo 2.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
+        pictogramas.add(new Pictograma(31,"caballo", "pista/Caballo.m4a", "pista/Caballo 3.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
         pictogramas.add(new Pictograma(32,"chapas", "pista/Chapas.m4a", "pista/Chapas.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
         pictogramas.add(new Pictograma(33,"cubos", "pista/Cubos.m4a", "pista/Cubos.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
         pictogramas.add(new Pictograma(34,"letras", "pista/Letras.m4a", "pista/Letras.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));

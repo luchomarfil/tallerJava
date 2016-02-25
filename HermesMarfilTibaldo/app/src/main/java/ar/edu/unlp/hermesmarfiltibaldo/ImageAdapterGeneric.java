@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import java.io.File;
 import java.io.IOException;
@@ -80,8 +81,13 @@ public class ImageAdapterGeneric extends BaseAdapter {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
             if(HermesCore.instancia().getAlumnoActual().getTamanioPictograma() != Alumno.GRANDE ){
-                //imageView.setLayoutParams(new GridView.LayoutParams(400, 200));
-                imageView.setPadding(3, 3, 3, 3);
+                imageView.setLayoutParams(new GridView.LayoutParams(80, 200));
+                //imageView.setCropToPadding(true);
+                imageView.setPadding(6, 6, 6, 6);
+            }
+            else{
+                //imageView.setCropToPadding(true);
+                imageView.setPadding(0, 0, 0, 0);
             }
             //   imageView.setLayoutParams(new GridView.LayoutParams(800,600));
             imageView.setAdjustViewBounds(true);
