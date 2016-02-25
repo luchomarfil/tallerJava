@@ -59,7 +59,7 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
             getOwner().mThumbIds = new LinkedList<Pictograma>();
         }
 
-        l.info("Cantidad de imagenes cargadas para el alumno en modo edicion para la pagina" + getOwner().number+"  "+getOwner().mThumbIds.size());
+        l.info("Cantidad de imagenes cargadas para el alumno en modo edicion para la pagina" + getOwner().number + "  " + getOwner().mThumbIds.size());
 
 
 
@@ -103,8 +103,12 @@ public class ImageAdapterModoEdicion extends ImageAdapterStrategy {
                         HermesCore.instancia().getHermesDao().createNewAlumnoPictograma(HermesCore.instancia().getAlumnoActual(), pictograma);
                         //se deberia agregar en el mthumbs correspondiente al number del usuario el pictograma para que se refresque la vista
                     }
-                    adapter4.mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
-                    adapter4.redibujar();
+                    if(adapter4 != null && adapter4.mThumbIds!=null){
+                        adapter4.mThumbIds = HermesCore.instancia().getPictogramas(HermesCore.instancia().getAlumnoActual());
+                        adapter4.redibujar();
+
+                    }
+
                     getOwner().redibujar();
                 }
             }
