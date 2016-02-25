@@ -38,18 +38,18 @@ public class HermesDBStartUp {
 
         List<Pictograma> pictogramas = new ArrayList<Pictograma>();
         //     if (cat.getId() == Categoria.ID_CATEGORIA_EMOCIONES) {
-        pictogramas.add(new Pictograma(1,"asustada", "emociones/Asustada.m4a", "emociones/Asustada.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(2,"asustado", "emociones/Asustado.m4a", "emociones/Asustado.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(3,"cansada", "emociones/Cansada.m4a", "emociones/Cansada.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(4,"cansado", "emociones/Cansado.m4a", "emociones/Cansado.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(5,"contenta", "emociones/Contenta.m4a", "emociones/Contenta.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(6,"contento", "emociones/Contento.m4a", "emociones/Contento.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(7,"dolorida", "emociones/Dolorida.m4a", "emociones/Dolorida.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(8,"dolorido", "emociones/Dolorido.m4a", "emociones/Dolorido.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(9,"enojada", "emociones/Enojada.m4a", "emociones/Enojada.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(10,"enojado", "emociones/Enojado.m4a", "emociones/Enojado.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(11,"sorprendida" ,"emociones/Sorprendida.m4a", "emociones/Sorprendida.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
-        pictogramas.add(new Pictograma(12,"sorprendido", "emociones/Sorprendido.m4a", "emociones/Sorprendido.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(1,"asustad@", "emociones/Asustada.m4a", "emociones/Asustada.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(2,"asustad@", "emociones/Asustado.m4a", "emociones/Asustado.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(3,"cansad@", "emociones/Cansada.m4a", "emociones/Cansada.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(4,"cansad@", "emociones/Cansado.m4a", "emociones/Cansado.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(5,"content@", "emociones/Contenta.m4a", "emociones/Contenta.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(6,"content@", "emociones/Contento.m4a", "emociones/Contento.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(7,"dolorid@", "emociones/Dolorida.m4a", "emociones/Dolorida.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(8,"dolorid@", "emociones/Dolorido.m4a", "emociones/Dolorido.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(9,"enojad@", "emociones/Enojada.m4a", "emociones/Enojada.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(10,"enojad@", "emociones/Enojado.m4a", "emociones/Enojado.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(11,"sorprendid@" ,"emociones/Sorprendida.m4a", "emociones/Sorprendida.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(12,"sorprendid@", "emociones/Sorprendido.m4a", "emociones/Sorprendido.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
         pictogramas.add(new Pictograma(13,"triste", "emociones/Triste.m4a", "emociones/Triste Hombre.png", Alumno.MASCULINO, Categoria.ID_CATEGORIA_EMOCIONES));
         pictogramas.add(new Pictograma(14,"triste", "emociones/Triste.m4a", "emociones/Triste Mujer.png", Alumno.FEMENINO, Categoria.ID_CATEGORIA_EMOCIONES));
 
@@ -87,8 +87,8 @@ public class HermesDBStartUp {
         pictogramas.add(new Pictograma(38,"pelota", "pista/Pelota.m4a", "pista/Pelota.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
         pictogramas.add(new Pictograma(39,"tarima", "pista/Tarima.m4a", "pista/Tarima.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_PISTA));
 
-        //pictogramas.add(new Pictograma(50,"si", "emociones/Si.m4a", "emociones/Si.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_EMOCIONES));
-        //pictogramas.add(new Pictograma(51,"no", "emociones/No.m4a", "emociones/No.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_EMOCIONES));
+        pictogramas.add(new Pictograma(50,"si", "emociones/Si.m4a", "emociones/Si.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_COMANDOS));
+        pictogramas.add(new Pictograma(51,"no", "emociones/No.m4a", "emociones/No.png", Alumno.UNISEX, Categoria.ID_CATEGORIA_COMANDOS));
 
         Pictograma pictograma;
 

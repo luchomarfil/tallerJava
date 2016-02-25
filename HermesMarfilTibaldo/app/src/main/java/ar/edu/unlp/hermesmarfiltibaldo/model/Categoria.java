@@ -12,6 +12,7 @@ public class Categoria {
     public static final Long ID_CATEGORIA_ESTABLO = 2L;
     public static final Long ID_CATEGORIA_NECESIDADES = 3L;
     public static final Long ID_CATEGORIA_PISTA = 4L;
+    public static final Long ID_CATEGORIA_COMANDOS = 5L;
     private static HermesContract.Categoria categoriaByID;
 
     public Categoria(long l, String n) {

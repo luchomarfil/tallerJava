@@ -655,13 +655,13 @@ public class HermesDaoDB implements HermesDao {
             SQLiteDatabase db = hermesDBHelper.getReadableDatabase();
 
             String getPictogramasAlumno = "SELECT P.* FROM "+
-                     HermesContract.Pictograma.TABLE_NAME + " as P on "+
+                     HermesContract.Pictograma.TABLE_NAME + " as P "+
                     " WHERE P." + HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_NAME + " = ? " +
                     " AND P." + HermesContract.Pictograma.COLUMN_NAME_SEXO + " =?";
 
             Cursor cursor = db.rawQuery(getPictogramasAlumno, new String[]{p.getNombre(), sexo});
             Pictograma l;
-
+            cursor.moveToFirst();
             l = new Pictograma(
                                 cursor.getLong(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_ID)),
                                 cursor.getString(cursor.getColumnIndex(HermesContract.Pictograma.COLUMN_NAME_PICTOGRAMA_NAME)),
@@ -707,7 +707,7 @@ public class HermesDaoDB implements HermesDao {
         cursor.moveToFirst();
 
         Alumno l;
-
+        cursor.moveToFirst();
         l = new Alumno(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
 
 
