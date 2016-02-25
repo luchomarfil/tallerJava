@@ -80,14 +80,16 @@ public class ImageAdapterGeneric extends BaseAdapter {
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            if(HermesCore.instancia().getAlumnoActual().getTamanioPictograma() != Alumno.GRANDE ){
-                imageView.setLayoutParams(new GridView.LayoutParams(80, 200));
+            if(!HermesCore.instancia().getAlumnoActual().getTamanioPictograma().equals(Alumno.GRANDE)){
+                //imageView.setLayoutParams(new GridView.LayoutParams(180,180));
                 //imageView.setCropToPadding(true);
-                imageView.setPadding(6, 6, 6, 6);
+                imageView.setPadding(20, 20, 20, 20);
             }
             else{
                 //imageView.setCropToPadding(true);
-                imageView.setPadding(0, 0, 0, 0);
+                //imageView.setLayoutParams(new GridView.LayoutParams(60,60));
+                imageView.setPadding(2, 2, 2, 2);
+                //imageView.getLayoutParams().width = 120;
             }
             //   imageView.setLayoutParams(new GridView.LayoutParams(800,600));
             imageView.setAdjustViewBounds(true);
